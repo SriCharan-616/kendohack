@@ -3,20 +3,12 @@ import React from 'react';
 import { Button, FloatingActionButton } from '@progress/kendo-react-buttons';
 import { Card, CardHeader, CardTitle, CardBody } from '@progress/kendo-react-layout';
 import { Fade } from '@progress/kendo-react-animation';
-import bg from '../assets/background.jpg';
+
 
 
 const App = () => {
   return (
-    <div
-      className="manuscript-container"
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundSize: 'cover'
-      }}
-    >
+    <div>
       <header className="manuscript-header">
         <h1>The Chronicles of Time</h1>
         <p className="subtitle">A Journey Through History</p>
