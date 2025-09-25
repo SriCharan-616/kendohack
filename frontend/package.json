@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@progress/kendo-intl": "^3.1.2",
     "@progress/kendo-licensing": "^1.7.1",
+    "@progress/kendo-popup-common": "^1.9.5",
+    "@progress/kendo-react-animation": "^12.0.2",
     "@progress/kendo-react-buttons": "^12.0.2",
     "@progress/kendo-react-charts": "^12.0.2",
     "@progress/kendo-react-common": "^12.0.2",
@@ -19,15 +22,19 @@
     "@progress/kendo-react-grid": "^12.0.2",
     "@progress/kendo-react-indicators": "^12.0.2",
     "@progress/kendo-react-inputs": "^12.0.2",
-    "@progress/kendo-react-intl": "^12.0.2",
+    "@progress/kendo-react-intl": "^12.0.0",
     "@progress/kendo-react-layout": "^12.0.2",
+    "@progress/kendo-react-popup": "^12.0.2",
     "@progress/kendo-react-progressbars": "^12.0.2",
     "@progress/kendo-react-tooltip": "^12.0.2",
     "@progress/kendo-theme-default": "^12.0.1",
+    "@progress/kendo-webspeech-common": "^1.0.1",
     "lucide-react": "^0.544.0",
+    "page-flip": "^2.0.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.2"
+    "react-router-dom": "^7.9.2",
+    "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
