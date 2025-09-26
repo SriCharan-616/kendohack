@@ -195,10 +195,8 @@ const EraSelectPage = () => {
                           onClick={() => {
                             playClickSound();
                             setFlipped(true);
-                            setTimeout(
-                              () => navigate(`/era/${era.name}`),
-                              1200
-                            );
+                            const eraSlug = era.name.toLowerCase().replace(/\s+/g, '-'); // e.g., "Ancient Rome Era" → "ancient-rome-era"
+                            setTimeout(() => navigate(`/characters/${eraSlug}`), 1200);
                           }}
                         >
                           Explore {era.name.split(" ")[0]}

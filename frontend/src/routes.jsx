@@ -17,7 +17,7 @@ const AppRoutes = () => {
         {/* Era selection page */}
         <Route path="/era-select" element={<EraSelect />} />
         {/* Character selection page */}
-        <Route path="/character-select" element={<CharacterSelectPage />} />
+        <Route path="/characters/:eraSlug" element={<CharacterSelectPage />} />
 
       </Routes>
     </Router>
