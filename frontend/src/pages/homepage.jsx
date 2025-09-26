@@ -92,32 +92,48 @@ export default function HomePage() {
   };
 
   /* --- Data --- */
-  const eras = [
-    { 
-      name: "Ancient Era", 
-      icon: ancientIcon, 
-      description: "Step into the dawn of civilization, where kings, empires, and legendary heroes shaped history.", 
-      className: "ancient-era" 
-    },
-    { 
-      name: "Medieval Era", 
-      icon: medievalIcon, 
-      description: "Explore castles, knights, and epic quests in a world of chivalry and intrigue.", 
-      className: "medieval-era" 
-    },
-    { 
-      name: "Renaissance Era", 
-      icon: renaissanceIcon, 
-      description: "Witness the rebirth of art, science, and culture as visionaries change the world.", 
-      className: "renaissance-era" 
-    }
-  ];
+  /* --- Data --- */
+const eras = [
+  { 
+    name: "Ancient Era", 
+    icon: ancientIcon, 
+    description: "Step into the dawn of civilization, where kings, empires, and legendary heroes shaped history.", 
+    className: "ancient-era" 
+  },
+  { 
+    name: "Medieval Era", 
+    icon: medievalIcon, 
+    description: "Explore castles, knights, and epic quests in a world of chivalry and intrigue.", 
+    className: "medieval-era" 
+  },
+  { 
+    name: "Renaissance Era", 
+    icon: renaissanceIcon, 
+    description: "Witness the rebirth of art, science, and culture as visionaries change the world.", 
+    className: "renaissance-era" 
+  },
+  { 
+    name: "Industrial Era", 
+    icon: "/assets/industrial-icon.png", 
+    description: "Discover the rise of machines, industry, and urban civilization.", 
+    className: "industrial-era" 
+  },
+  { 
+    name: "Modern Era", 
+    icon: "/assets/modern-icon.png", 
+    description: "Experience contemporary history with global events, innovations, and revolutions.", 
+    className: "modern-era" 
+  }
+];
 
-  const characters = [
-    { name: "Arthur", era: "Medieval", img: arthurIcon },
-    { name: "Cleopatra", era: "Ancient", img: cleopatraIcon },
-    { name: "Leonardo", era: "Renaissance", img: leonardoIcon }
-  ];
+const characters = [
+  { name: "Arthur", era: "Medieval", img: arthurIcon },
+  { name: "Cleopatra", era: "Ancient", img: cleopatraIcon },
+  { name: "Leonardo", era: "Renaissance", img: leonardoIcon },
+  { name: "Napoleon", era: "Modern", img: "/assets/napoleon.png" },
+  { name: "Marie Curie", era: "Modern", img: "/assets/marie-curie.png" },
+];
+
 
   return (
     <div className="homepage-container">

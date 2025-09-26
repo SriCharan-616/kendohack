@@ -71,9 +71,24 @@ export default function Book({ character, story }) {
           >
             <CardHeader><h3>{story[currentPage]?.title || "Current Page"}</h3></CardHeader>
             <CardBody>
-              <p>{story[currentPage]?.description || "Current page content..."}</p>
-              <div className="page-number">Page {currentPage + 1}</div>
-            </CardBody>
+            {/* Show character info on page 1 */}
+            {currentPage === 0 && character && (
+              <div className="character-info">
+                {character.img && (
+                  <img
+                    src={character.img}
+                    alt={character.name}
+                    className="character-icon"
+                    style={{ width: "50px", height: "50px", marginRight: "10px" }}
+                  />
+                )}
+                <strong>{character.name}</strong>
+              </div>
+            )}
+            <p>{story[currentPage]?.description || "Current page content..."}</p>
+            <div className="page-number">Page {currentPage + 1}</div>
+          </CardBody>
+
           </Card>
 
           {currentPage < story.length - 1 && (

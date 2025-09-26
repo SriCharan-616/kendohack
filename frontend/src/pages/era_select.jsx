@@ -96,37 +96,58 @@ const EraSelectPage = () => {
 
   /* --- Data --- */
   const eras = [
-    {
-      name: "Ancient Rome Era",
-      years: "27 BC - 476 AD",
-      description:
-        "Step into the sandals of Caesar, walk the marble halls, and command legions of the eternal city.",
-      img: romeImage,
-      className: "ancient-rome-card",
-      buttonColor: "var(--highlight)",
-      decoration: "🌿"
-    },
-    {
-      name: "Industrial Revolution",
-      years: "1800 - 1900",
-      description:
-        "Witness the rise of steam and steel, lead nations through industrial transformation.",
-      img: industrialImage,
-      className: "industrial-era-card",
-      buttonColor: "var(--secondary)",
-      decoration: "⚙️"
-    },
-    {
-      name: "Modern Era",
-      years: "1900 - 2000",
-      description:
-        "Navigate through world wars, technological revolutions, and the most transformative century.",
-      img: modernImage,
-      className: "modern-era-card",
-      buttonColor: "var(--primary)",
-      decoration: "💡"
-    }
-  ];
+  {
+    name: "Ancient Rome Era",
+    years: "27 BC - 476 AD",
+    description:
+      "Step into the sandals of Caesar, walk the marble halls, and command legions of the eternal city.",
+    img: romeImage,
+    className: "ancient-rome-card",
+    buttonColor: "var(--highlight)",
+    decoration: "🌿"
+  },
+  {
+    name: "Medieval Era",
+    years: "500 - 1500",
+    description:
+      "Experience the age of knights, castles, and epic legends that shaped kingdoms across Europe.",
+    img: "/assets/medieval.png", // make sure you have this image
+    className: "medieval-era-card",
+    buttonColor: "var(--secondary)",
+    decoration: "🛡️"
+  },
+  {
+    name: "Renaissance Era",
+    years: "1400 - 1600",
+    description:
+      "Dive into the rebirth of art, science, and culture as human creativity reaches new heights.",
+    img: "/assets/renaissance.png", // make sure you have this image
+    className: "renaissance-era-card",
+    buttonColor: "var(--primary)",
+    decoration: "🎨"
+  },
+  {
+    name: "Industrial Revolution",
+    years: "1800 - 1900",
+    description:
+      "Witness the rise of steam and steel, lead nations through industrial transformation.",
+    img: industrialImage,
+    className: "industrial-era-card",
+    buttonColor: "var(--secondary)",
+    decoration: "⚙️"
+  },
+  {
+    name: "Modern Era",
+    years: "1900 - 2000",
+    description:
+      "Navigate through world wars, technological revolutions, and the most transformative century.",
+    img: modernImage,
+    className: "modern-era-card",
+    buttonColor: "var(--primary)",
+    decoration: "💡"
+  }
+];
+
 
   return (
     <div className="homepage-container">
