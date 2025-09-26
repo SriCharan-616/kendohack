@@ -109,13 +109,8 @@ export default function HomePage() {
     { name: "Leonardo", era: "Renaissance", img: leonardoIcon }
   ];
 
-<<<<<<< HEAD
 
   
-=======
-  const zoomIn = () => setZoom(prev => Math.min(prev + 0.1, 1.5));
-  const zoomOut = () => setZoom(prev => Math.max(prev - 0.1, 0.5));
->>>>>>> c62726ce406da898fac8cd816907b58693e2cc9f
 
   return (
     <div className="homepage-container">
@@ -192,18 +187,9 @@ export default function HomePage() {
           {/* Timeline Section */}
          
 
-<<<<<<< HEAD
               <TimeLine  />
             
-=======
-            <div style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}>
-              <TimeLine />
-            </div>
->>>>>>> c62726ce406da898fac8cd816907b58693e2cc9f
-          </div>
-        
-
-        {/* Book Section - Add this after Timeline Section */}
+            {/* Book Section - Add this after Timeline Section */}
         <div className="hero-section">
           <h2 className="hero-title">Interactive Storybook</h2>
           <div className="inline-book-wrapper">
@@ -213,6 +199,10 @@ export default function HomePage() {
             />
           </div>
         </div>
+          </div>
+        
+
+        
 
         {/* --- BACK PAGE --- */}
         <div className="homepage-back">
