@@ -16,7 +16,6 @@
   align-items: center !important;
   justify-content: center !important;
   font-family: 'MedievalSharp', cursive !important;
-  background: url("../assets/background.jpeg") center/cover no-repeat !important;
   color: var(--text) !important;
 }
 
