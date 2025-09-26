@@ -1,26 +1,5 @@
 
-.manuscript-container {
-  min-height: 100vh;
-  padding: 2rem;
-  color: #3b2f2f;
-}
-
-.manuscript-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.manuscript-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Card Styles */
 .story-card {
-
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   padding: 1.5rem;
@@ -34,29 +13,322 @@
 /* Hover effect */
 .story-card:hover {
   transform: translateY(-8px) scale(1.02); /* smooth lift */
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); /* stronger shadow */
-  border-color: #c69c6d; /* warm highlight */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.50); /* stronger shadow */
+  border-radius: 15px;
 }
 
 
-/* Typography */
-.story-card p {
-  line-height: 1.8;
-  margin-bottom: 1rem;
+/* Ancient Rome Era - Imperial Gold & Crimson */
+.ancient-rome-card {
+  background: linear-gradient(135deg, #8B0000 0%, #CD853F 50%, #DAA520 100%);
+  border: 3px solid #B8860B;
 }
 
-html, body {
+.ancient-rome-card .k-card-title {
+  color: #FFD700 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  font-size: 1.4em;
+}
+
+.ancient-rome-card .k-card-body p {
+  color: #F5DEB3 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  line-height: 1.6;
+}
+
+.ancient-rome-card .k-button {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+  color: #8B0000 !important;
+  border: 2px solid #B8860B !important;
+  font-weight: bold;
+  text-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.ancient-rome-card .k-button:hover {
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%) !important;
+  color: #F0F8FF !important;
+  transform: translateY(-2px);
+}
+
+/* Industrial Era - Steel & Steam */
+.industrial-era-card {
+  background: linear-gradient(135deg, #2F4F4F 0%, #708090 50%, #4682B4 100%);
+  border: 3px solid #5F9EA0;
+}
+
+.industrial-era-card .k-card-title {
+  color: #87CEEB !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-weight: bold;
+  font-size: 1.4em;
+}
+
+.industrial-era-card .k-card-body p {
+  color: #D3D3D3 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+}
+
+.industrial-era-card .k-button {
+  background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%) !important;
+  color: #2F4F4F !important;
+  border: 2px solid #5F9EA0 !important;
+  font-weight: bold;
+  text-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.industrial-era-card .k-button:hover {
+  background: linear-gradient(135deg, #4682B4 0%, #1E90FF 100%) !important;
+  color: #F0F8FF !important;
+  transform: translateY(-2px);
+}
+
+/* Modern Era - Innovation Purple */
+.modern-era-card {
+  background: linear-gradient(135deg, #800080 0%, #4B0082 50%, #2E8B57 100%);
+  border: 3px solid #6A5ACD;
+  box-shadow: 0 8px 32px rgba(128, 0, 128, 0.4), inset 0 1px 0 rgba(221, 160, 221, 0.3);
+}
+
+.modern-era-card .k-card-title {
+  color: #DDA0DD !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-weight: bold;
+  font-size: 1.4em;
+}
+
+.modern-era-card .k-card-body p {
+  color: #E0E0E0 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+}
+
+.modern-era-card .k-button {
+  background: linear-gradient(135deg, #DDA0DD 0%, #9370DB 100%) !important;
+  color: #4B0082 !important;
+  border: 2px solid #6A5ACD !important;
+  font-weight: bold;
+  text-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.modern-era-card .k-button:hover {
+  background: linear-gradient(135deg, #9370DB 0%, #8A2BE2 100%) !important;
+  color: #F0F8FF !important;
+  transform: translateY(-2px);
+}
+
+/* Manuscript container to work with your background */
+.manuscript-container {
+  min-height: 100vh;
+  padding: 3rem 2rem;
+}
+
+/* Change grid to flex column for vertical stacking */
+.manuscript-content {
+  max-width: 800px; /* Reduced max-width for better single column appearance */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* Increased gap between cards for better spacing */
+}
+
+/* Header styling to match parchment */
+/* Ultra-elaborate version - Compact */
+.manuscript-header {
+  text-align: center;
+  margin-bottom: 2rem; /* Reduced from 4rem */
+  position: relative;
+  padding: 1.5rem 0; /* Reduced from 3rem */
+}
+
+.manuscript-header h1 {
+  font-family: 'Cinzel', 'Trajan Pro', 'Georgia', serif;
+  font-size: 2rem;
+  font-weight: 700;
   margin: 0;
-  padding: 0;
-  min-height: 100%;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 2rem; /* Reduced from 2rem 4rem */
+  
+  /* Keep the original styling */
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  
+  /* Keep Royal purple and gold gradient text */
+  background: linear-gradient(45deg, #DAA520, #FFD700, #B8860B, #DAA520);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: royalShine 4s ease-in-out infinite;
+  
+  /* Simple border */
+  border: 2px solid; /* Reduced from 3px */
+  border-image: linear-gradient(45deg, #DAA520, #FFD700, #B8860B, #DAA520) 1;
+  border-radius: 0;
+  
+  /* Subtle background */
+  background-color: rgba(218, 165, 32, 0.05);
+  backdrop-filter: blur(2px);
+  
+  /* Refined shadow - smaller */
+  box-shadow: 
+    0 0 0 1px rgba(218, 165, 32, 0.3),
+    0 4px 15px rgba(0, 0, 0, 0.15); /* Reduced shadow */
+  
+  /* Text shadow for depth */
+  text-shadow: 
+    1px 1px 0px rgba(218, 165, 32, 0.3),
+    0 0 10px rgba(255, 215, 0, 0.2);
 }
 
-body {
-  font-family: 'MedievalSharp', cursive;
-  color: #3b2f2f;
+@keyframes royalShine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-  background-image: url('../assets/background.jpeg'); /* your game homepage background */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+/* Smaller corner elements */
+.manuscript-header h1::before,
+.manuscript-header h1::after {
+  content: '';
+  position: absolute;
+  width: 12px; /* Reduced from 20px */
+  height: 12px;
+  border: 1px solid #DAA520; /* Reduced from 2px */
+  background: linear-gradient(45deg, #DAA520, #FFD700);
+}
+
+.manuscript-header h1::before {
+  top: -6px; /* Reduced from -10px */
+  left: -6px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.manuscript-header h1::after {
+  bottom: -6px; /* Reduced from -10px */
+  right: -6px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Shorter ornamental lines */
+.manuscript-header::before,
+.manuscript-header::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 1px;
+  width: 200px; /* Reduced from 300px */
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #DAA520 20%, 
+    #FFD700 50%, 
+    #DAA520 80%, 
+    transparent 100%);
+}
+
+.manuscript-header::before {
+  top: 0.5rem; /* Reduced from 1rem */
+}
+
+.manuscript-header::after {
+  bottom: 0.5rem; /* Reduced from 1rem */
+}
+
+/* Smaller center decorative element */
+.manuscript-header .center-ornament {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem; /* Reduced from 1.5rem */
+  color: #DAA520;
+  z-index: -1;
+  opacity: 0.3;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+
+
+/* Card content spacing */
+.story-card .k-card-header {
+  padding: 2rem 2rem 1rem 2rem;
+}
+
+.story-card .k-card-body {
+  padding: 0 2rem 2rem 2rem;
+}
+
+.story-card .k-card-body p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1em;
+}
+
+/* Card Content Layout with Images */
+.card-content-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  min-height: 250px;
+}
+
+.card-text-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.era-image {
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  filter: sepia(20%) brightness(0.9);
+}
+
+.story-card:hover .era-image {
+  transform: scale(1.05) rotate(1deg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  filter: sepia(10%) brightness(1.1);
+}
+
+/* Era-specific image borders */
+.ancient-rome-card .era-image {
+  border-color: #FFD700;
+  box-shadow: 0 8px 24px rgba(218, 165, 32, 0.3);
+}
+
+.industrial-era-card .era-image {
+  border-color: #87CEEB;
+  box-shadow: 0 8px 24px rgba(135, 206, 235, 0.3);
+}
+
+.modern-era-card .era-image {
+  border-color: #DDA0DD;
+  box-shadow: 0 8px 24px rgba(221, 160, 221, 0.3);
 }
