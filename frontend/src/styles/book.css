@@ -1,0 +1,310 @@
+/* book.css */
+
+.interactive-book {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  perspective: 1200px;
+  position: relative;
+  background: var(--background);
+  border-radius: 15px;
+  border: 3px solid var(--secondary);
+  box-shadow: 0 10px 25px rgba(92, 64, 51, 0.4);
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.interactive-book:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(92, 64, 51, 0.6);
+}
+
+/* Book Spine Effect */
+.book-spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: linear-gradient(to bottom, 
+    var(--secondary) 0%, 
+    var(--primary) 50%, 
+    var(--secondary) 100%);
+  transform: translateX(-50%);
+  border-radius: 4px;
+  z-index: 200;
+  box-shadow: 
+    inset 2px 0 4px rgba(0,0,0,0.3),
+    inset -2px 0 4px rgba(0,0,0,0.3);
+}
+
+.book-spine::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 4px;
+  height: 60%;
+  background: var(--highlight);
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+/* Pages Container */
+.book-pages-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  margin-bottom: 2rem;
+}
+
+.book-pages-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Individual Book Pages */
+.book-page {
+  position: absolute;
+  width: 48%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    var(--background) 0%, 
+    #f9f3e8 50%, 
+    var(--background) 100%);
+  border: 2px solid var(--secondary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: 
+    0 4px 12px rgba(92, 64, 51, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Left side pages (already turned) */
+.book-page-left {
+  left: 1%;
+  transform-origin: right center;
+  transform: rotateY(0deg);
+  background: linear-gradient(135deg, 
+    #f0e8d8 0%, 
+    var(--background) 50%, 
+    #f0e8d8 100%);
+}
+
+/* Right side pages (current page) */
+.book-page-right {
+  right: 1%;
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  z-index: 100;
+}
+
+/* Flipping animation */
+.book-page-right.flipping {
+  transform: rotateY(-180deg);
+  z-index: 150;
+}
+
+/* Next page preview */
+.book-page-next-preview {
+  right: 1%;
+  transform-origin: left center;
+  transform: rotateY(0deg) translateZ(-10px);
+  opacity: 0.7;
+  filter: brightness(0.9);
+}
+
+/* Page Content */
+.book-page-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  font-family: 'Times New Roman', serif;
+}
+
+.book-page-content h3 {
+  font-size: 1.8rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  border-bottom: 2px solid var(--highlight);
+  padding-bottom: 0.5rem;
+}
+
+.book-page-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text);
+  flex-grow: 1;
+  text-align: justify;
+  text-indent: 2rem;
+  margin-bottom: 1rem;
+}
+
+.page-number {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.9rem;
+  color: var(--secondary);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* Book Controls */
+.book-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--secondary);
+}
+
+.book-control-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
+  color: var(--background);
+  border: 2px solid var(--secondary);
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(92, 64, 51, 0.3);
+}
+
+.book-control-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(92, 64, 51, 0.5);
+  background: linear-gradient(135deg, var(--highlight) 0%, var(--primary) 100%);
+}
+
+.book-control-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.book-control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Progress Section */
+.book-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  max-width: 200px;
+}
+
+.book-progress span {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  font-weight: bold;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(92, 64, 51, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--highlight) 100%);
+  border-radius: 3px;
+  transition: width 0.6s ease;
+  box-shadow: 0 0 6px rgba(196, 154, 108, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .interactive-book {
+    padding: 1rem;
+  }
+  
+  .book-pages-container {
+    height: 300px;
+  }
+  
+  .book-page-content h3 {
+    font-size: 1.4rem;
+  }
+  
+  .book-page-content p {
+    font-size: 1rem;
+    text-indent: 1rem;
+  }
+  
+  .book-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .book-control-btn {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .book-progress {
+    max-width: 100%;
+    order: -1;
+  }
+}
+
+/* Synchronize with homepage flip */
+.homepage-book.flipped .interactive-book {
+  transform: rotateY(180deg) translateY(-5px);
+}
+
+.homepage-book.flipped .book-page {
+  transform: rotateY(180deg);
+}
+
+.homepage-book.flipped .book-page-content {
+  transform: rotateY(180deg);
+}
+
+/* Add depth and shadow effects */
+.book-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(0,0,0,0.1) 0%, 
+    transparent 20%, 
+    transparent 80%, 
+    rgba(0,0,0,0.1) 100%);
+  pointer-events: none;
+  border-radius: 6px;
+}
+
+/* Page aging effect */
+.book-page-left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(210, 180, 140, 0.1);
+  pointer-events: none;
+  border-radius: 6px;
+}

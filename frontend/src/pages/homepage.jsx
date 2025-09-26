@@ -11,7 +11,8 @@ import {
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import TimeLine from "../components/TimeLine/TimeLine";
 import "../styles/homepage.css";
-
+import Book from "../components/Book/Book";
+import { caesarTimeline } from "../data/caesar";
 // Era icons
 import ancientIcon from "../assets/ancient-icon.png";
 import medievalIcon from "../assets/medieval-icon.png";
@@ -106,30 +107,6 @@ export default function HomePage() {
     { name: "Arthur", era: "Medieval", img: arthurIcon },
     { name: "Cleopatra", era: "Ancient", img: cleopatraIcon },
     { name: "Leonardo", era: "Renaissance", img: leonardoIcon }
-  ];
-
-  const timelineData = [
-    {
-      text: "Ancient Era",
-      items: [
-        { text: "Build the Great Pyramid", tooltip: "Allocate resources to pyramid construction." },
-        { text: "Found Athens", tooltip: "Establish Athens as a city-state." }
-      ]
-    },
-    {
-      text: "Medieval Era",
-      items: [
-        { text: "Crusades", tooltip: "Participate in religious wars for territory." },
-        { text: "Feudal System", tooltip: "Implement feudal hierarchy for stability." }
-      ]
-    },
-    {
-      text: "Renaissance Era",
-      items: [
-        { text: "Patron Leonardo", tooltip: "Fund Leonardo da Vinci's projects." },
-        { text: "Explore New World", tooltip: "Send explorers across the Atlantic." }
-      ]
-    }
   ];
 
   const zoomIn = () => setZoom(prev => Math.min(prev + 0.1, 1.5));
@@ -227,8 +204,19 @@ export default function HomePage() {
             </div>
 
             <div style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}>
-              <TimeLine timelineData={timelineData} />
+              <TimeLine />
             </div>
+          </div>
+        </div>
+
+        {/* Book Section - Add this after Timeline Section */}
+        <div className="hero-section">
+          <h2 className="hero-title">Interactive Storybook</h2>
+          <div className="inline-book-wrapper">
+            <Book
+              character={{ name: "Caesar", era: "Ancient", img: "/assets/cleopatra.png" }}
+              story={caesarTimeline.events}
+            />
           </div>
         </div>
 
