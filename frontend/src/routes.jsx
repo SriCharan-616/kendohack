@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Homepage from './pages/homepage';
 import EraSelect from './pages/era_select';
 import CharacterSelect from './pages/character_select';
+import CharacterSelectPage from './pages/character_select';
 
 const AppRoutes = () => {
   return (
@@ -16,7 +17,8 @@ const AppRoutes = () => {
         {/* Era selection page */}
         <Route path="/era-select" element={<EraSelect />} />
         {/* Character selection page */}
-        <Route path="/character-select" element={<CharacterSelect />} />
+        <Route path="/character-select" element={<CharacterSelectPage />} />
+
       </Routes>
     </Router>
   );
