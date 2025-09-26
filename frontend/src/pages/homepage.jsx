@@ -9,8 +9,7 @@ import {
   CardBody
 } from "@progress/kendo-react-layout";
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
-import { Tooltip } from "@progress/kendo-react-tooltip";
-
+import TimeLine from "../components/TimeLine/TimeLine";
 import "../styles/homepage.css";
 
 // Era icons
@@ -40,6 +39,7 @@ const musicList = [
 export default function HomePage() {
   const [flipped, setFlipped] = useState(false);
   const [musicOn, setMusicOn] = useState(true);
+  const [zoom, setZoom] = useState(0.8); // default smaller to fit background
   const navigate = useNavigate();
   const bgAudioRef = useRef(new Audio(musicList[0].file));
 
@@ -95,11 +95,6 @@ export default function HomePage() {
     console.log(`Clicked on ${name}`);
   };
 
-  const handleTimelineClick = (text) => {
-    playClickSound();
-    console.log("Timeline event clicked:", text);
-  };
-
   /* --- Data --- */
   const eras = [
     { name: "Ancient Era", icon: ancientIcon, description: "Discover castles, knights, and the medieval world.", className: "ancient-era" },
@@ -137,6 +132,9 @@ export default function HomePage() {
     }
   ];
 
+  const zoomIn = () => setZoom(prev => Math.min(prev + 0.1, 1.5));
+  const zoomOut = () => setZoom(prev => Math.max(prev - 0.1, 0.5));
+
   return (
     <div className="homepage-container">
       <div className={`homepage-book ${flipped ? "flipped" : ""}`}>
@@ -157,8 +155,11 @@ export default function HomePage() {
 
               <DropDownButton
                 className="music-dropdown"
-                text="⋮"
-                icon={<img src={parchmentIcon} alt="parchment" className="parchment-icon" />}
+                text={
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                    ⋮ <img src={parchmentIcon} alt="parchment" className="parchment-icon" />
+                  </span>
+                }
                 items={musicList.map(m => ({
                   text: m.text,
                   onClick: () => {
@@ -206,45 +207,29 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Timeline */}
-          <div className="hero-section">
-            <h2 className="hero-title">Timeline & Decisions</h2>
-            <div className="timeline-scroll">
-              <svg className="timeline-svg" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M20,100 C150,20 300,180 450,100 C600,20 750,180 900,100"
-                  fill="transparent"
-                  stroke="var(--secondary)"
-                  strokeWidth="4"
-                />
-                {timelineData.map((era, i) =>
-                  era.items.map((item, j) => {
-                    const x = 50 + (i * 300 + j * 120);
-                    const y = 100 + ((i + j) % 2 === 0 ? -40 : 40);
-                    return (
-                      <Tooltip key={`${i}-${j}`} content={item.tooltip} position="top">
-                        <circle cx={x} cy={y} r="18" onClick={() => handleTimelineClick(item.text)} />
-                      </Tooltip>
-                    );
-                  })
-                )}
-              </svg>
-              <div className="timeline-labels">
-                {timelineData.map((era, i) =>
-                  era.items.map((item, j) => {
-                    const left = 50 + (i * 300 + j * 120) - 40;
-                    const top = 100 + ((i + j) % 2 === 0 ? -90 : 50);
-                    return (
-                      <div key={`label-${i}-${j}`} className="timeline-item-label" style={{ left, top }} onClick={() => handleTimelineClick(item.text)}>
-                        {item.text}
-                      </div>
-                    );
-                  })
-                )}
-              </div>
+          {/* Timeline Section */}
+          <div
+            className="timeline-wrapper"
+            style={{
+              overflow: "auto",
+              padding: "1rem",
+              backgroundImage: "url('/assets/homepage-bg.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: "12px",
+              position: "relative"
+            }}
+          >
+            {/* Zoom buttons inside timeline container */}
+            <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 10, display: "flex", gap: "0.5rem" }}>
+              <Button onClick={zoomIn}>+</Button>
+              <Button onClick={zoomOut}>-</Button>
+            </div>
+
+            <div style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}>
+              <TimeLine timelineData={timelineData} />
             </div>
           </div>
-
         </div>
 
         {/* --- BACK PAGE --- */}
