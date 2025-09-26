@@ -102,7 +102,7 @@ export default function HomePage() {
 
   /* --- Data --- */
   const eras = [
-    { name: "Ancient Era", icon: ancientIcon, description: "Explore the dawn of civilizations.", className: "ancient-era" },
+    { name: "Ancient Era", icon: ancientIcon, description: "Discover castles, knights, and the medieval world.", className: "ancient-era" },
     { name: "Medieval Era", icon: medievalIcon, description: "Discover castles, knights, and the medieval world.", className: "medieval-era" },
     { name: "Renaissance Era", icon: renaissanceIcon, description: "Witness the rebirth of art, science, and culture.", className: "renaissance-era" }
   ];
