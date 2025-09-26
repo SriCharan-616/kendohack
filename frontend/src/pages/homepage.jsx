@@ -157,7 +157,7 @@ export default function HomePage() {
                 className="music-dropdown"
                 text={
                   <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                    ⋮ <img src={parchmentIcon} alt="parchment" className="parchment-icon" />
+                  <img src={parchmentIcon} alt="parchment" className="parchment-icon" />
                   </span>
                 }
                 items={musicList.map(m => ({

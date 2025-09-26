@@ -171,6 +171,61 @@
 }
 .era-icon { width: 100% !important; max-height: 150px !important; object-fit: contain !important; margin-bottom: 0.5rem !important; }
 
+/* Timeline Scroll & SVG */
+.timeline-scroll {
+  position: relative !important;
+  width: 690px !important;
+  height: 250px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 2rem 0 !important;
+  background: url("/assets/parchment-texture.jpg") center/cover no-repeat !important;
+  border: 2px solid var(--secondary) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 14px rgba(92,64,51,0.3) !important;
+  scroll-behavior: smooth !important;
+}
+.timeline-svg {
+  width: 1200px !important;
+  height: 200px !important;
+  overflow: visible !important;
+}
+.timeline-svg path {
+  fill: none !important;
+  stroke: var(--secondary) !important;
+  stroke-width: 4px !important;
+  stroke-linecap: round !important;
+  stroke-dasharray: 8 6 !important;
+}
+.timeline-svg circle {
+  fill: var(--primary) !important;
+  stroke: var(--secondary) !important;
+  stroke-width: 3px !important;
+  transition: transform 0.3s ease !important, fill 0.3s ease !important, stroke 0.3s ease !important;
+  cursor: pointer !important;
+}
+.timeline-svg circle:hover {
+  fill: var(--highlight) !important;
+  stroke: var(--text) !important;
+  transform: scale(1.2) !important;
+}
+
+/* Timeline Labels */
+.timeline-item-label {
+  position: absolute !important;
+  width: 100px !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  color: var(--text) !important;
+  font-family: 'MedievalSharp', cursive !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: transform 0.3s ease !important, color 0.3s ease !important;
+}
+.timeline-item-label:hover {
+  color: var(--highlight) !important;
+  transform: scale(1.1) !important;
+}
 
 /* Music Dropdown Popup */
 .custom-music-dropdown-popup {
@@ -203,4 +258,9 @@
   .welcome-portal h1 { font-size: 2rem !important; }
   .welcome-portal p { font-size: 1.2rem !important; }
   .k-appbar { font-size: 1rem !important; }
+  .timeline-scroll { height: 200px !important; padding: 1.5rem 0 !important; }
+  .timeline-item-label { width: 70px !important; font-size: 0.9rem !important; }
+  .timeline-svg { width: 800px !important; height: 150px !important; }
+  .timeline-items { gap: 0.5rem !important; }
+  .timeline-item { padding: 0.8rem 1rem !important; font-size: 0.9rem !important; }
 }
