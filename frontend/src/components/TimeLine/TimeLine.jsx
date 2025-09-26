@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { caesarTimeline } from "../../data/caesar.js";
 import { Button } from '@progress/kendo-react-buttons';
-import { Card, CardHeader, CardBody, CardActions } from '@progress/kendo-react-layout';
-import { PanelBar, PanelBarItem } from '@progress/kendo-react-layout'; 
-import { Tooltip } from '@progress/kendo-react-tooltip';
+import { Card, CardHeader, CardBody } from '@progress/kendo-react-layout';
 import "@progress/kendo-theme-default/dist/all.css";
 import "../../styles/timeline.css";
 
-// Automatically assign colors to each branch
+// Assign colors to branches
 const getBranchColors = (events) => {
   const colorsPalette = ["#2c3e50","#e74c3c","#3498db","#e67e22","#8e44ad","#27ae60","#f39c12","#1abc9c"];
   const uniqueBranches = [...new Set(events.map(e => e.branch))];
@@ -16,11 +14,28 @@ const getBranchColors = (events) => {
   return branchColors;
 };
 
-const EventNode = ({ event, onClick, isActive, branchColor }) => (
+// Assign lanes to branches
+const assignBranchLanes = (events) => {
+  const branchLanes = {};
+  let lane = 0;
+  const sortedBranches = [...new Set(events.map(e => e.branch))];
+  sortedBranches.forEach(branch => {
+    branchLanes[branch] = lane++;
+  });
+  return branchLanes;
+};
+
+const EventNode = ({ event, onClick, isActive, branchColor, lane }) => (
   <div
     className={`event-node ${isActive ? "scale-125" : ""}`}
-    style={{ left: `${50 + event.x * 80}px`, top: `${100 + event.y * 100}px` }}
-    onClick={(e) => onClick(event, { x: e.clientX, y: e.clientY })}
+    style={{
+      left: `${50 + lane * 100}px`,
+      top: `${100 + event.y * 100}px`,
+      position: "absolute",
+      cursor: "pointer",
+      zIndex: 10
+    }}
+    onClick={(e) => { e.stopPropagation(); onClick(event, { x: e.clientX, y: e.clientY }); }}
   >
     <div className="circle" style={{ backgroundColor: branchColor }} />
     <div className="label">{event.title}</div>
@@ -33,19 +48,21 @@ const DialogueBox = ({ event, position, onClose }) => {
     <div
       className="dialogue-box"
       style={{
-        left: Math.min(position.x + 20, window.innerWidth - 320),
-        top: Math.max(position.y - 50, 10),
+        position: "absolute",
+        left: Math.min(position.x + 10, window.innerWidth - 260),
+        top: Math.max(position.y - 40, 10),
+        width: "250px",
+        zIndex: 1000,
+        pointerEvents: "auto",
       }}
     >
       <Button look="flat" icon="close" style={{ position: "absolute", top: 5, right: 5 }} onClick={onClose} />
       <Card>
-        <CardHeader>
-          <h3>{event.title}</h3>
-        </CardHeader>
-        <CardBody>
+        <CardHeader style={{ fontSize: "0.85rem" }}>{event.title}</CardHeader>
+        <CardBody style={{ fontSize: "0.75rem" }}>
           <p>{event.description}</p>
-          <p style={{ fontSize: "0.75rem", color: "#f1c40f" }}>📅 {event.date}</p>
-          {event.cause && <p style={{ fontSize: "0.75rem", color: "#2ecc71" }}>🔗 {event.cause}</p>}
+          <p style={{ color: "#f1c40f" }}>📅 {event.date}</p>
+          {event.cause && <p style={{ color: "#2ecc71" }}>🔗 {event.cause}</p>}
         </CardBody>
       </Card>
     </div>
@@ -55,7 +72,6 @@ const DialogueBox = ({ event, position, onClose }) => {
 const GitTimeline = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [dialoguePosition, setDialoguePosition] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
 
   const handleEventClick = (event, position) => {
     setSelectedEvent(event);
@@ -64,49 +80,56 @@ const GitTimeline = () => {
   const closeDialogue = () => setSelectedEvent(null);
 
   const branchColors = getBranchColors(caesarTimeline.events);
+  const branchLanes = assignBranchLanes(caesarTimeline.events);
 
-  const maxX = Math.max(...caesarTimeline.events.map(e => e.x));
   const maxY = Math.max(...caesarTimeline.events.map(e => e.y));
-  const containerWidth = (maxX + 3) * 80 + 200;
-  const containerHeight = (maxY + 3) * 100 + 300;
+  const containerWidth = Object.keys(branchLanes).length * 100 + 100;
+  const containerHeight = (maxY + 3) * 100;
 
-  // Build branch lines, all lines inherit branch color
   const branchLines = [];
   caesarTimeline.events.forEach(event => {
-    const sameBranchEvents = caesarTimeline.events.filter(e => e.branch === event.branch).sort((a,b)=>a.y-b.y);
+    const sameBranchEvents = caesarTimeline.events
+      .filter(e => e.branch === event.branch)
+      .sort((a,b) => a.y - b.y);
+
     for (let i = 0; i < sameBranchEvents.length - 1; i++) {
-      branchLines.push({ from: sameBranchEvents[i], to: sameBranchEvents[i+1], color: branchColors[event.branch] });
+      const from = sameBranchEvents[i];
+      const to = sameBranchEvents[i+1];
+      branchLines.push({ from, to, color: branchColors[event.branch] });
     }
-    // connect to any spawned branch
+
     event.branches.forEach(b => {
       const childEvent = caesarTimeline.events.find(e => e.branch === b.branch);
       if (childEvent) branchLines.push({ from: event, to: childEvent, color: branchColors[b.branch] });
     });
   });
 
+  // Close dialogue when clicking outside
+  const handleBackgroundClick = () => closeDialogue();
+
   return (
-    <div >
+    <div onClick={handleBackgroundClick} style={{ position: 'relative' }}>
       <div className="timeline-container">
-        <Card style={{ top: 10  }}>
-            <CardHeader>Branches</CardHeader>
-            <CardBody>
-              {Object.entries(branchColors).map(([branch,color]) => (
-                <div key={branch} style={{ display:"flex", alignItems:"center", marginBottom:4 }}>
-                  <div style={{ width:12, height:12, borderRadius:"50%", backgroundColor:color, marginRight:6 }} />
-                  <span style={{ fontSize:12, textTransform:"capitalize" }}>{branch.replace("-"," ")}</span>
-                </div>
-              ))}
-            </CardBody>
-          </Card>
-        <div className="timeline-content" style={{ width: `${containerWidth}px`, height: `${containerHeight}px`, transform: `scale(${zoom})`, left:"50%"}}>
-          <svg className="timeline-svg">
+        <div style={{ marginBottom: 20 }}>
+          <strong>Branches:</strong>
+          <div style={{ display: "flex", flexWrap: "wrap", marginTop: 5 }}>
+            {Object.entries(branchColors).map(([branch,color]) => (
+              <div key={branch} style={{ display:"flex", alignItems:"center", marginRight: 10, marginBottom: 4 }}>
+                <div style={{ width:12, height:12, borderRadius:"50%", backgroundColor:color, marginRight:4 }} />
+                <span style={{ fontSize:12 }}>{branch.replace("-"," ")}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="timeline-content" style={{ width: containerWidth, height: containerHeight, position: 'relative' }}>
+          <svg className="timeline-svg" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
             {branchLines.map((line, idx) => {
-              const fromX = 50 + line.from.x * 80;
+              const fromX = 50 + branchLanes[line.from.branch] * 100;
               const fromY = 100 + line.from.y * 100;
-              const toX = 50 + line.to.x * 80;
+              const toX = 50 + branchLanes[line.to.branch] * 100;
               const toY = 100 + line.to.y * 100;
-              const pathData = `M ${fromX} ${fromY} Q ${(fromX+toX)/2} ${(fromY+toY)/2} ${toX} ${toY}`;
-              return <path key={idx} d={pathData} stroke={line.color} strokeWidth="2" fill="none" />;
+              return <line key={idx} x1={fromX} y1={fromY} x2={toX} y2={toY} stroke={line.color} strokeWidth="2" />;
             })}
           </svg>
 
@@ -117,14 +140,13 @@ const GitTimeline = () => {
               branchColor={branchColors[event.branch]}
               onClick={handleEventClick}
               isActive={selectedEvent?.id === event.id}
+              lane={branchLanes[event.branch]}
             />
           ))}
-          
         </div>
       </div>
 
       <DialogueBox event={selectedEvent} position={dialoguePosition} onClose={closeDialogue} />
-      {selectedEvent && <div className="fixed inset-0 z-40" onClick={closeDialogue} />}
     </div>
   );
 };
