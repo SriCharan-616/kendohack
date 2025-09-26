@@ -1,0 +1,114 @@
+/* Timeline container for scrollable view */
+.timeline-container {
+  overflow: auto;
+  border: 2px dashed #ccc;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  position: relative;
+  padding: 1rem;
+}
+
+/* Zoomable content inside container */
+.timeline-content {
+  transform-origin: top left;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+}
+
+/* Event nodes */
+.event-node {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 1; /* always visible */
+}
+
+.event-node.scale-125 {
+  transform: scale(1.25);
+}
+
+/* Circle of node */
+.event-node .circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.event-node .circle:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* Label below node */
+.event-node .label {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  background: #fff;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Branch lines SVG */
+.timeline-svg path {
+  stroke-width: 2;
+  fill: none;
+  opacity: 0.8;
+}
+
+/* Dialogue box */
+.dialogue-box {
+  position: fixed;
+  max-width: 20rem;
+  background-color: #1a202c;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #4a5568;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  z-index: 50;
+}
+
+/* Branch labels panel */
+.branch-labels {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  border: 1px solid #e2e8f0;
+  z-index: 30;
+}
+
+/* Zoom buttons */
+.zoom-buttons {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 40;
+}
+
+.zoom-buttons button {
+  background-color: #2d3748;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+}
+
+.zoom-buttons button:hover {
+  background-color: #4a5568;
+}
