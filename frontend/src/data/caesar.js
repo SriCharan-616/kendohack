@@ -47,7 +47,7 @@ export const caesarTimeline = {
       description: "Defeated the migrating Helvetii tribe",
       date: "58 BCE",
       branch: "gallic-tribes",
-      x: 2,
+      x: -2,
       y: 4,
       branches: [{ branch: "germanic-threat", color: "#27ae60" }],
       cause: "Strategic response to tribal movements"

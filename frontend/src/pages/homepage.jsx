@@ -108,32 +108,8 @@ export default function HomePage() {
     { name: "Leonardo", era: "Renaissance", img: leonardoIcon }
   ];
 
-  const timelineData = [
-    {
-      text: "Ancient Era",
-      items: [
-        { text: "Build the Great Pyramid", tooltip: "Allocate resources to pyramid construction." },
-        { text: "Found Athens", tooltip: "Establish Athens as a city-state." }
-      ]
-    },
-    {
-      text: "Medieval Era",
-      items: [
-        { text: "Crusades", tooltip: "Participate in religious wars for territory." },
-        { text: "Feudal System", tooltip: "Implement feudal hierarchy for stability." }
-      ]
-    },
-    {
-      text: "Renaissance Era",
-      items: [
-        { text: "Patron Leonardo", tooltip: "Fund Leonardo da Vinci's projects." },
-        { text: "Explore New World", tooltip: "Send explorers across the Atlantic." }
-      ]
-    }
-  ];
 
-  const zoomIn = () => setZoom(prev => Math.min(prev + 0.1, 1.5));
-  const zoomOut = () => setZoom(prev => Math.max(prev - 0.1, 0.5));
+  
 
   return (
     <div className="homepage-container">
@@ -208,29 +184,12 @@ export default function HomePage() {
           </div>
 
           {/* Timeline Section */}
-          <div
-            className="timeline-wrapper"
-            style={{
-              overflow: "auto",
-              padding: "1rem",
-              backgroundImage: "url('/assets/homepage-bg.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              borderRadius: "12px",
-              position: "relative"
-            }}
-          >
-            {/* Zoom buttons inside timeline container */}
-            <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 10, display: "flex", gap: "0.5rem" }}>
-              <Button onClick={zoomIn}>+</Button>
-              <Button onClick={zoomOut}>-</Button>
-            </div>
+         
 
-            <div style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}>
-              <TimeLine timelineData={timelineData} />
-            </div>
+              <TimeLine  />
+            
           </div>
-        </div>
+        
 
         {/* --- BACK PAGE --- */}
         <div className="homepage-back">

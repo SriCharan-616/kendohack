@@ -85,22 +85,21 @@ const GitTimeline = () => {
   });
 
   return (
-    <div className="relative bg-gray-100 min-h-screen p-8">
-      {/* Zoom Buttons */}
-      <div className="zoom-buttons">
-        <Button onClick={() => setZoom(prev => Math.min(prev + 0.1, 2))}>+</Button>
-        <Button onClick={() => setZoom(prev => Math.max(prev - 0.1, 0.5))}>-</Button>
-      </div>
-
-      <PanelBar>
-        <PanelBarItem title="Julius Caesar Timeline">
-          <p>Click on any node to see event details</p>
-        </PanelBarItem>
-      </PanelBar>
-
+    <div >
       <div className="timeline-container">
-        <div className="timeline-content" style={{ width: `${containerWidth}px`, height: `${containerHeight}px`, transform: `scale(${zoom})` }}>
-          <svg className="timeline-svg absolute top-0 left-0 w-full h-full pointer-events-none">
+        <Card style={{ top: 10  }}>
+            <CardHeader>Branches</CardHeader>
+            <CardBody>
+              {Object.entries(branchColors).map(([branch,color]) => (
+                <div key={branch} style={{ display:"flex", alignItems:"center", marginBottom:4 }}>
+                  <div style={{ width:12, height:12, borderRadius:"50%", backgroundColor:color, marginRight:6 }} />
+                  <span style={{ fontSize:12, textTransform:"capitalize" }}>{branch.replace("-"," ")}</span>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+        <div className="timeline-content" style={{ width: `${containerWidth}px`, height: `${containerHeight}px`, transform: `scale(${zoom})`, left:"50%"}}>
+          <svg className="timeline-svg">
             {branchLines.map((line, idx) => {
               const fromX = 50 + line.from.x * 80;
               const fromY = 100 + line.from.y * 100;
@@ -120,19 +119,7 @@ const GitTimeline = () => {
               isActive={selectedEvent?.id === event.id}
             />
           ))}
-
-          {/* Branch legend */}
-          <Card style={{ position: "absolute", top: 10, left: 10, zIndex: 30 }}>
-            <CardHeader>Branches</CardHeader>
-            <CardBody>
-              {Object.entries(branchColors).map(([branch,color]) => (
-                <div key={branch} style={{ display:"flex", alignItems:"center", marginBottom:4 }}>
-                  <div style={{ width:12, height:12, borderRadius:"50%", backgroundColor:color, marginRight:6 }} />
-                  <span style={{ fontSize:12, textTransform:"capitalize" }}>{branch.replace("-"," ")}</span>
-                </div>
-              ))}
-            </CardBody>
-          </Card>
+          
         </div>
       </div>
 

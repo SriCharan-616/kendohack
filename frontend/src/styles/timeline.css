@@ -1,8 +1,10 @@
 /* Timeline container for scrollable view */
 .timeline-container {
-  overflow: auto;
-  border: 2px dashed #ccc;
-  background-color: #fff;
+  height: 400px;
+                 
+  overflow-y: auto; 
+  border: 2px solid #5C4033;
+  background-color: #F4E4C1;
   border-radius: 0.5rem;
   position: relative;
   padding: 1rem;
@@ -89,26 +91,50 @@
   z-index: 30;
 }
 
-/* Zoom buttons */
-.zoom-buttons {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  z-index: 40;
+
+
+
+.timeline-svg {
+  
+ 
+  overflow: visible !important;
 }
 
-.zoom-buttons button {
-  background-color: #2d3748;
-  color: #fff;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
+.timeline-svg path {
+  fill: none !important;
+  stroke: var(--secondary) !important;
+  stroke-width: 4px !important;
+  stroke-linecap: round !important;
+ 
+}
+.timeline-svg circle {
+  fill: var(--primary) !important;
+  stroke: var(--secondary) !important;
+  stroke-width: 3px !important;
+  transition: transform 0.3s ease !important, fill 0.3s ease !important, stroke 0.3s ease !important;
+  cursor: pointer !important;
 }
 
-.zoom-buttons button:hover {
-  background-color: #4a5568;
+.timeline-svg circle:hover {
+  fill: var(--highlight) !important;
+  stroke: var(--text) !important;
+  transform: scale(1.2) !important;
+}
+
+/* Timeline Labels */
+.timeline-item-label {
+  position: absolute !important;
+  width: 100px !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  color: var(--text) !important;
+  font-family: 'MedievalSharp', cursive !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: transform 0.3s ease !important, color 0.3s ease !important;
+}
+
+.timeline-item-label:hover {
+  color: var(--highlight) !important;
+  transform: scale(1.1) !important;
 }
