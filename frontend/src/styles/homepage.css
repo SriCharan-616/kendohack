@@ -52,7 +52,7 @@
 
 .homepage-back {
   transform: rotateY(180deg) !important;
-  background: url("/assets/parchment-texture.jpg") center/cover no-repeat !important;
+  background: url("../assets/background.jpeg") center/cover no-repeat !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
