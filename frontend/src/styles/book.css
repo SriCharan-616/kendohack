@@ -12,6 +12,7 @@
   box-shadow: 0 10px 25px rgba(92, 64, 51, 0.4);
   padding: 2rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10 !important; /* High z-index to appear above other content */
 }
 
 .interactive-book:hover {
@@ -32,7 +33,7 @@
     var(--secondary) 100%);
   transform: translateX(-50%);
   border-radius: 4px;
-  z-index: 200;
+  z-index: 15 !important; /* Higher than book */
   box-shadow: 
     inset 2px 0 4px rgba(0,0,0,0.3),
     inset -2px 0 4px rgba(0,0,0,0.3);
@@ -56,6 +57,7 @@
   width: 100%;
   height: 400px;
   margin-bottom: 2rem;
+  z-index: 12 !important; /* Above book but below spine */
 }
 
 .book-pages-wrapper {
@@ -168,6 +170,8 @@
   gap: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--secondary);
+  z-index: 13 !important; /* Ensure controls are clickable */
+  position: relative;
 }
 
 .book-control-btn {
