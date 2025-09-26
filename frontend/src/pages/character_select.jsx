@@ -13,7 +13,7 @@ import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import { Fade, Slide } from "@progress/kendo-react-animation";
 import "../styles/character_select.css";
 
-import parchmentIcon from "../assets/parchment-icon.png";
+import parchmentIcon from "/assets/parchment-icon.png";
 
 const characters = [
   {

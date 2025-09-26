@@ -14,15 +14,15 @@ import "../styles/homepage.css";
 import Book from "../components/Book/Book";
 import { caesarTimeline } from "../data/caesar";
 // Era icons
-import ancientIcon from "../assets/ancient-icon.png";
-import medievalIcon from "../assets/medieval-icon.png";
-import renaissanceIcon from "../assets/renaissance-icon.png";
+import ancientIcon from "/assets/ancient-Icon.png";
+import medievalIcon from "/assets/medieval-Icon.png";
+import renaissanceIcon from "/assets/renaissance-Icon.png";
 // Character icons
-import arthurIcon from "../assets/arthur.png";
-import cleopatraIcon from "../assets/cleopatra.png";
-import leonardoIcon from "../assets/leonardo.png";
+import arthurIcon from "/assets/arthur.png";
+import cleopatraIcon from "/assets/cleopatra.png";
+import leonardoIcon from "/assets/leonardo.png";
 // Parchment icon for dropdown
-import parchmentIcon from "../assets/parchment-icon.png";
+import parchmentIcon from "/assets/parchment-icon.png";
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");

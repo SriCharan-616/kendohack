@@ -13,10 +13,10 @@ import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import { Fade } from "@progress/kendo-react-animation";
 import "../styles/era_select.css";
 
-import parchmentIcon from "../assets/parchment-icon.png";
-import romeImage from "../assets/rome.png";
-import industrialImage from "../assets/industrial.png";
-import modernImage from "../assets/modern.png";
+import parchmentIcon from "/assets/parchment-icon.png";
+import romeImage from "/assets/rome.png";
+import industrialImage from "/assets/industrial.png";
+import modernImage from "/assets/modern.png";
 
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
