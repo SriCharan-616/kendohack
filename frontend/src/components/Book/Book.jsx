@@ -1,5 +1,12 @@
 // Book.jsx
 import { useState } from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody
+} from "@progress/kendo-react-layout";
+import { Button } from "@progress/kendo-react-buttons";
+import { ProgressBar } from '@progress/kendo-react-progressbars';
 import "../../styles/book.css";
 
 // Page flip sound
@@ -11,14 +18,13 @@ export default function Book({ character, story }) {
 
   const playPageFlipSound = () => {
     pageFlipSound.currentTime = 0;
-    pageFlipSound.play().catch(() => {}); // Ignore errors if audio fails
+    pageFlipSound.play().catch(() => {});
   };
 
   const nextPage = () => {
     if (currentPage < story.length - 1 && !isFlipping) {
       setIsFlipping(true);
       playPageFlipSound();
-      
       setTimeout(() => {
         setCurrentPage(prev => prev + 1);
         setTimeout(() => setIsFlipping(false), 300);
@@ -30,7 +36,6 @@ export default function Book({ character, story }) {
     if (currentPage > 0 && !isFlipping) {
       setIsFlipping(true);
       playPageFlipSound();
-      
       setTimeout(() => {
         setCurrentPage(prev => prev - 1);
         setTimeout(() => setIsFlipping(false), 300);
@@ -43,78 +48,72 @@ export default function Book({ character, story }) {
       <div className="book-spine"></div>
       <div className="book-pages-container">
         <div className="book-pages-wrapper">
-          {/* Previous pages (showing as a stack) */}
           {Array.from({ length: currentPage }).map((_, idx) => (
-            <div
+            <Card
               key={`prev-${idx}`}
               className="book-page book-page-left"
-              style={{ 
+              style={{
                 zIndex: currentPage - idx,
                 transform: `rotateY(0deg) translateZ(${idx * 2}px)`
               }}
             >
-              <div className="book-page-content">
-                <h3>{story[idx]?.title || "Previous Page"}</h3>
+              <CardHeader><h3>{story[idx]?.title || "Previous Page"}</h3></CardHeader>
+              <CardBody>
                 <p>{story[idx]?.description || "Content from previous page..."}</p>
                 <div className="page-number">Page {idx + 1}</div>
-              </div>
-            </div>
+              </CardBody>
+            </Card>
           ))}
 
-          {/* Current page (right side) */}
-          <div
-            className={`book-page book-page-right ${isFlipping ? 'flipping' : ''}`}
+          <Card
+            className={`book-page book-page-right ${isFlipping ? "flipping" : ""}`}
             style={{ zIndex: 100 }}
           >
-            <div className="book-page-content">
-              <h3>{story[currentPage]?.title || "Current Page"}</h3>
+            <CardHeader><h3>{story[currentPage]?.title || "Current Page"}</h3></CardHeader>
+            <CardBody>
               <p>{story[currentPage]?.description || "Current page content..."}</p>
               <div className="page-number">Page {currentPage + 1}</div>
-            </div>
-          </div>
+            </CardBody>
+          </Card>
 
-          {/* Next page preview (slightly visible) */}
           {currentPage < story.length - 1 && (
-            <div
+            <Card
               className="book-page book-page-next-preview"
               style={{ zIndex: 50 }}
             >
-              <div className="book-page-content">
-                <h3>{story[currentPage + 1]?.title || "Next Page"}</h3>
+              <CardHeader><h3>{story[currentPage + 1]?.title || "Next Page"}</h3></CardHeader>
+              <CardBody>
                 <p>{story[currentPage + 1]?.description || "Next page content..."}</p>
                 <div className="page-number">Page {currentPage + 2}</div>
-              </div>
-            </div>
+              </CardBody>
+            </Card>
           )}
         </div>
       </div>
 
       <div className="book-controls">
-        <button 
-          onClick={prevPage} 
+        <Button
+          onClick={prevPage}
           disabled={currentPage === 0 || isFlipping}
           className="book-control-btn book-prev-btn"
         >
-          ◀ Previous Page
-        </button>
-        
+          ◀ Previous
+        </Button>
+
         <div className="book-progress">
           <span>Page {currentPage + 1} of {story.length}</span>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${((currentPage + 1) / story.length) * 100}%` }}
-            ></div>
-          </div>
+          <ProgressBar
+            value={((currentPage + 1) / story.length) * 100}
+          />
         </div>
-        
-        <button 
-          onClick={nextPage} 
+
+        <Button
+          onClick={nextPage}
           disabled={currentPage === story.length - 1 || isFlipping}
           className="book-control-btn book-next-btn"
         >
-          Next Page ▶
-        </button>
+          Next ▶
+        </Button>
       </div>
     </div>
   );
