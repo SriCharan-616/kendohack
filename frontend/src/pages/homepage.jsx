@@ -131,7 +131,7 @@ export default function HomePage() {
             </AppBarSection>
             <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
               <Button
-                className={`music-button ${musicOn ? "pulse" : "pulse-flip"}`}
+                className={'music-button' }
                 onClick={toggleMusic}
               >
                 {musicOn ? "🔊 Music On" : "🔇 Music Off"}
@@ -139,12 +139,7 @@ export default function HomePage() {
 
               <DropDownButton
                 className="music-dropdown"
-                text={
-                  <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                    <img src={parchmentIcon} alt="parchment" className="parchment-icon" />
-                    Change Track
-                  </span>
-                }
+                text="🎵"
                 items={musicList.map(m => ({
                   text: m.text,
                   onClick: () => {
@@ -161,12 +156,13 @@ export default function HomePage() {
           {/* Welcome Portal */}
           <Card className="welcome-portal" onClick={handlePortalClick}>
             <CardHeader><h1>Welcome, Adventurer!</h1></CardHeader>
-            <CardBody><p>Enter the world of epic history and legendary quests. Click to begin your journey!</p></CardBody>
+            <CardBody><p>Immerse yourself in an interactive world of empires, heroes, and
+    discoveries. Click to unlock your journey through time.</p></CardBody>
           </Card>
 
           {/* Eras Section */}
           <div className="hero-section">
-            <h2 className="hero-title">Choose Your Era</h2>
+            <h2 className="hero-title">Explore Legendary Eras</h2>
             <div className="hero-cards-container">
               {eras.map((era, idx) => (
                 <Card key={idx} className={`hero-card ${era.className}`} onClick={() => handleHeroCardClick(era.name)}>
@@ -180,7 +176,7 @@ export default function HomePage() {
 
           {/* Characters Section */}
           <div className="hero-section">
-            <h2 className="hero-title">Select Your Champion</h2>
+            <h2 className="hero-title">Play As Famous Characters</h2>
             <div className="hero-cards-container">
               {characters.map((char, idx) => (
                 <Card key={idx} className={`hero-card ${char.era.toLowerCase()}-era`} onClick={() => handleHeroCardClick(char.name)}>
@@ -194,15 +190,15 @@ export default function HomePage() {
 
           {/* Timeline Section */}
           <div className="hero-section">
-            <h2 className="hero-title">Legendary Timeline</h2>
-            <p>Follow the epic events that shaped the world, branch by branch.</p>
+            <h2 className="hero-title" style={{ marginBottom: '0px' }}>Dynamic Timeline</h2>
+            <span style={{fontSize:'20px'}}>Watch And Change History With Your Decisions.</span>
             <TimeLine />
           </div>
 
           {/* Interactive Storybook Section */}
           <div className="hero-section">
-            <h2 className="hero-title">Ancient Chronicles</h2>
-            <p>Flip through the story of Caesar and relive historical moments interactively.</p>
+            <h2 className="hero-title" style={{ marginBottom: '0px' }}>Ancient Chronicles</h2>
+            <p style={{fontSize:'20px'}}>Flip through the story of Caesar and relive historical moments interactively.</p>
             <div className="inline-book-wrapper">
               <Book
                 character={{ name: "Caesar", era: "Ancient", img: "/assets/cleopatra.png" }}
