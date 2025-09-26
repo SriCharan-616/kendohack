@@ -16,7 +16,7 @@
 }
 
 .interactive-book:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
   box-shadow: 0 15px 35px rgba(92, 64, 51, 0.6);
 }
 

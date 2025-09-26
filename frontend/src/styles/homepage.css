@@ -48,7 +48,6 @@
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
-.homepage-front::-webkit-scrollbar { display: none !important; }
 
 .homepage-back {
   transform: rotateY(180deg) !important;
@@ -87,22 +86,16 @@
   border-radius: 8px !important;
   padding: 0.5rem 0.8rem !important;
   cursor: pointer !important;
-  transition: transform 0.3s ease , box-shadow 0.3s ease , background 0.3s ease , color 0.3s ease !important;
 }
 
-.music-button:hover,
-.music-dropdown:hover {
+.music-button.k-button:hover,
+.music-dropdown.k-button:hover {
   background: var(--highlight) !important;
   color: var(--text) !important;
-  transform: scale(1.05) !important;
+  transform: scale(1.04) !important;
   box-shadow: 0 6px 16px rgba(92, 64, 51, 0.5) !important;
 }
 
-/* Pulse & Flip Animations */
-@keyframes pulse { 0%{transform: scale(1) !important} 50%{transform: scale(1.2) !important} 100%{transform: scale(1) !important} }
-@keyframes flip { 0%{transform: rotateY(0) !important} 50%{transform: rotateY(180deg) scale(1.1) !important} 100%{transform: rotateY(0) !important} }
-.music-button.pulse { animation: pulse 3s ease infinite !important; }
-.music-button.pulse-flip { animation: flip 3s ease infinite !important; }
 
 /* Welcome Portal */
 .welcome-portal {
@@ -110,6 +103,7 @@
   left: 30% !important;
   width: 80% !important;
   max-width: 500px !important;
+  margin-bottom: 20px !important;
   background: var(--background) !important;
   border: 2px solid var(--secondary) !important;
   border-radius: 12px !important;
@@ -121,7 +115,14 @@
   cursor: pointer !important;
   text-align: center !important;
   box-shadow: 0 8px 20px rgba(92, 64, 51, 0.4) !important;
+  transition: transform 0.4s ease, box-shadow 0.4s ease !important;
 }
+
+.welcome-portal:hover {
+  transform: translateY(-10px) !important; /* float effect */
+  box-shadow: 0 16px 30px rgba(92, 64, 51, 0.6) !important; /* enhanced shadow */
+}
+
 .welcome-portal h1 { font-size: 2.5rem !important; margin-bottom: 1rem !important; color: var(--text) !important; }
 .welcome-portal p { font-size: 1.5rem !important; font-weight: bold !important; color: var(--text) !important; }
 
@@ -134,24 +135,26 @@
   flex-direction: column !important;
   align-items: center !important;
   gap: 2rem !important;
-  margin-top: 2rem !important;
 }
+
 .hero-title {
   font-size: 2rem !important;
-  margin-bottom: 1rem !important;
   text-align: center !important;
   font-weight: bold !important;
   color: var(--text) !important;
 }
+
 .hero-cards-container {
   display: flex !important;
   gap: 1rem !important;
-  overflow-x: auto !important;
+  overflow: auto !important;
   padding-bottom: 1rem !important;
+  padding-right: 2rem !important;
   scroll-behavior: smooth !important;
   scroll-snap-type: x mandatory !important;
   min-width: 200px !important;
 }
+
 .hero-card {
   min-width: 250px !important;
   flex: 0 0 auto !important;
@@ -161,8 +164,9 @@
   border: 2px solid var(--secondary) !important;
   box-shadow: 0 6px 16px rgba(92, 64, 51, 0.3) !important;
   padding: 1.5rem !important;
-  transition: transform 0.3s ease , box-shadow 0.3s ease , border-color 0.3s ease !important;
+  transition: transform .4s ease , box-shadow .4s ease, border-color 0.4s ease !important;
 }
+
 .hero-card:hover {
   transform: translateY(-5px) rotateX(2deg) !important;
   box-shadow: 0 12px 24px rgba(92, 64, 51, 0.5) !important;
@@ -181,11 +185,11 @@
 }
 .custom-music-dropdown-popup .k-item {
   padding: 0.5rem 1rem !important;
-  font-size: 1rem !important;
+  font-size: .8rem !important;
   font-weight: bold !important;
   color: var(--text) !important;
   cursor: pointer !important;
-  transition: transform 0.2s ease , background 0.3s ease , color 0.3s ease !important;
+  transition: transform 0.2s ease , color 0.3s ease !important;
 }
 .custom-music-dropdown-popup .k-item:hover {
   background: var(--highlight) !important;
@@ -306,29 +310,15 @@
   opacity: 1 !important;
 }
 
-/* --- Book Node / Inline Book Hover Effects --- */
-.inline-book-wrapper,
-.interactive-book {
-  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-  cursor: pointer !important;
-}
 
-.inline-book-wrapper:hover,
-.interactive-book:hover {
-  transform: translateY(-5px) scale(1.02) !important;
-  box-shadow: 0 16px 32px rgba(196, 154, 108, 0.6) !important;
-  z-index: 20 !important;
-}
+
 
 /* Slight tilt 3D effect for nodes on hover */
 .event-node:hover {
   transform: translateY(-6px) scale(1.15) rotateX(5deg) rotateY(5deg) !important;
 }
 
-.inline-book-wrapper:hover,
-.interactive-book:hover {
-  transform: translateY(-5px) scale(1.02) rotateX(2deg) rotateY(1deg) !important;
-}
+
 
 /* Timeline Path Glow */
 .timeline-svg path {
@@ -347,25 +337,11 @@
   100% { box-shadow: 0 6px 12px rgba(196, 154, 108, 0.4); }
 }
 
-.event-node.pulse,
-.inline-book-wrapper.pulse,
-.interactive-book.pulse {
-  animation: softPulse 2s ease-in-out infinite !important;
-}
+
 
 /* Ensure dialogue box stays on top */
 .dialogue-box {
   z-index: 9999 !important;
 }
 
-/* Responsive adjustments for small screens */
-@media (max-width: 768px) {
-  .event-node .label {
-    font-size: 0.7rem !important;
-  }
 
-  .inline-book-wrapper,
-  .interactive-book {
-    transform: scale(0.95) !important;
-  }
-}
