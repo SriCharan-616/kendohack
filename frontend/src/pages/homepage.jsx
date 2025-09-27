@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -146,7 +146,7 @@ const characters = [
             <h2 className="hero-title" style={{ marginBottom: '0px' }}>Dynamic Timeline</h2>
             <span style={{fontSize:'20px'}}>Watch And Change History With Your Decisions.</span>
             <TimeLine
-            timelineData={caesarTimelineeg.events} 
+            timelineData={caesarTimelineeg} 
           />
           </div>
 
