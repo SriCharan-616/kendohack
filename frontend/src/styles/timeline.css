@@ -82,9 +82,11 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.timeline-container:has(.event-node:hover) .event-node:not(:hover) {
+.timeline-container:has(.event-node:hover) .event-node:not(:hover) .label {
   opacity: 0;
+  transition: opacity 0.3s ease;
 }
+
 
 .timeline-container:has(.event-node.scale-125)
   .event-node:not(.scale-125) {
