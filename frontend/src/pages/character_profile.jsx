@@ -1,24 +1,29 @@
 import { useRef, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@progress/kendo-react-buttons";
 import { Fade, Slide } from "@progress/kendo-react-animation";
 import { ProgressBar } from "@progress/kendo-react-progressbars";
 import "../styles/character_profile.css";
 import Appbar from "../components/appbar";
 
+// Components
+import TimeLine from "../components/TimeLine/TimeLine";
+import Book from "../components/Book/Book";
+
 // Import timelines for all characters
 import { caesarTimeline } from "../data/caesar";
 import { gandhiTimeline } from "../data/gandhi";
 import { lincolnTimeline } from "../data/lincoln";
-// Add more timelines as needed
+
+// Sounds
+const clickSound = new Audio("/assets/click.mp3");
+const pageFlipSound = new Audio("/assets/page-flip.mp3");
 
 const characters = [
   { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/caesar.png", timelineData: caesarTimeline },
   { name: "Mahatma Gandhi", era: "modern-era", img: "/assets/gandhi.png", timelineData: gandhiTimeline },
   { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/lincoln.png", timelineData: lincolnTimeline },
 ];
-
-const clickSound = new Audio("/assets/click.mp3");
 
 function toTitleCase(str) {
   return str
@@ -75,12 +80,15 @@ export default function CharacterProfile() {
   const [selectedChar, setSelectedChar] = useState(null);
   const bgAudioRef = useRef(new Audio("/assets/bg2.mp3"));
   const [musicOn, setMusicOn] = useState(true);
+  const [lastClickedNode, setLastClickedNode] = useState(null);
+  const [flipped, setFlipped] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const char = characters.find(c => c.name.toLowerCase() === characterName.toLowerCase());
     if (!char) return;
 
-    // Always take the latest stats from the last timeline event
     const lastEvent = char.timelineData.events[char.timelineData.events.length - 1];
     setSelectedChar({
       ...char,
@@ -114,27 +122,57 @@ export default function CharacterProfile() {
     clickSound.play();
   };
 
+  const handleNodeClick = (nodeId) => {
+    if (lastClickedNode === nodeId) {
+      pageFlipSound.currentTime = 0;
+      pageFlipSound.play();
+      setFlipped(true);
+      setTimeout(() => navigate(`/game/${selectedChar.name}`), 1200);
+    } else {
+      setLastClickedNode(nodeId);
+      playClickSound();
+    }
+  };
+
   if (!selectedChar) return <p style={{ padding: "2rem" }}>Character not found!</p>;
 
   return (
-    <div className="character-page">
+    <div className={`character-page ${flipped ? "flipped" : ""}`}>
       <Appbar title="Play Page" />
-      <div className="character-select-container" style={{ justifyContent: "flex-start" }}>
-        <Slide direction="start" in={true}>
-          <Fade in={true}>
-            <div className="character-preview" style={{ marginLeft: "2rem" }}>
-              <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
-              <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
-              <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
-              <Button
-                style={{ marginTop: "1rem", fontWeight: "bold" }}
-                onClick={playClickSound}
-              >
-                Start Game
-              </Button>
-            </div>
-          </Fade>
-        </Slide>
+
+      {/* Top Row: Character Preview & Book */}
+      <div className="Top" >
+        <div className="character-preview">
+          <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
+          <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
+          <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
+          <Button
+            style={{ marginTop: "1rem", fontWeight: "bold" }}
+            onClick={() => navigate(`/game/${selectedChar.name}`)}
+          >
+            Start Game
+          </Button>
+        </div>
+
+        <div style={{ flex: 1, maxWidth: "700px" }}>
+          <h3 style={{ marginBottom: "1rem" }}>{selectedChar.name} Chronicles</h3>
+          <Book
+            character={selectedChar}
+            story={selectedChar.timelineData.events}
+            onNodeClick={handleNodeClick}
+          />
+        </div>
+      </div>
+
+      {/* Bottom Row: Timeline with scrollbar */}
+      <div style={{ padding: "2rem" }}>
+        <h3 style={{ marginBottom: "1rem" }}>Interactive Timeline</h3>
+        <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
+          <TimeLine
+            events={selectedChar.timelineData.events}
+            onNodeClick={handleNodeClick}
+          />
+        </div>
       </div>
     </div>
   );
