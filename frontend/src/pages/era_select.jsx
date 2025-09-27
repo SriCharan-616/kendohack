@@ -104,7 +104,7 @@ const EraSelectPage = () => {
           <Appbar title="Era Selection" onHomeClick={goHome}/>
           <div className="manuscript-content-centered">
             <header className="manuscript-header">
-              <div className="center-ornament">◆</div>
+              
               <h1>Select the era you want to explore</h1>
             </header>
 
