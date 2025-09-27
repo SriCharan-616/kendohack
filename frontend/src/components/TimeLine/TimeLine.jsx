@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from '@progress/kendo-react-buttons';
 import { Card, CardHeader, CardBody } from '@progress/kendo-react-layout';
+import { Tooltip } from "@progress/kendo-react-tooltip";
 import "@progress/kendo-theme-default/dist/all.css";
 import "../../styles/timeline.css";
 
@@ -9,9 +10,7 @@ const getBranchColors = (events) => {
   const uniqueBranches = [...new Set(events.map(e => e.branch))];
   const branchColors = {};
   uniqueBranches.forEach((branch, idx) => {
-    // Evenly space hues on the color wheel (0–360)
     const hue = (idx * 360) / uniqueBranches.length;
-    // Use template literal properly
     branchColors[branch] = `hsl(${hue}, 70%, 50%)`;
   });  
   return branchColors;
@@ -28,6 +27,7 @@ const assignBranchLanes = (events) => {
   return branchLanes;
 };
 
+// Event Node Component
 const EventNode = ({ event, onClick, isActive, branchColor, lane }) => {
   const x = 100 - 10 + lane * 70;
   const y = 100 - 15 + event.y * 90;
@@ -52,6 +52,7 @@ const EventNode = ({ event, onClick, isActive, branchColor, lane }) => {
   );
 };
 
+// Dialogue Box Component
 const DialogueBox = ({ event, position, onClose }) => {
   if (!event) return null;
   return (
@@ -63,7 +64,7 @@ const DialogueBox = ({ event, position, onClose }) => {
         width: "250px",
         zIndex: 1000,
         pointerEvents: "auto",
-        position: "absolute" // make sure it floats
+        position: "absolute"
       }}
     >
       <Button
@@ -83,24 +84,25 @@ const DialogueBox = ({ event, position, onClose }) => {
         <CardBody style={{ fontSize: "0.75rem" }}>
           <p>{event.event}</p>
           <p style={{ color: "#f1c40f" }}>📅 {event.date}</p>
-          {event.cause && (
-            <p style={{ color: "#2ecc71" }}>🔗 {event.cause}</p>
-          )}
+          {event.cause && <p style={{ color: "#2ecc71" }}>🔗 {event.cause}</p>}
+          <p style={{ color: event.valid ? "#2ecc71" : "#e74c3c" }}>
+            {event.valid ? "✅ Valid Branch" : "❌ Invalid Branch"}
+          </p>
         </CardBody>
       </Card>
     </div>
   );
 };
 
-const GitTimeline = ({ timelineData }) => {
+// Main Timeline Component
+const TimeLine = ({ timelineData, onNodeDoubleClick }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [dialoguePosition, setDialoguePosition] = useState({ x: 0, y: 0 });
+  const lastClickRef = useRef({ nodeId: null, time: 0 });
 
-  const handleEventClick = (event, position) => {
-    setSelectedEvent(event);
-    setDialoguePosition(position);
-  };
-  const closeDialogue = () => setSelectedEvent(null);
+  const [tooltipMessage, setTooltipMessage] = useState("");
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const events = timelineData?.events || [];
   const branchColors = getBranchColors(events);
@@ -109,6 +111,39 @@ const GitTimeline = ({ timelineData }) => {
   const maxY = Math.max(...events.map(e => e.y));
   const containerWidth = Object.keys(branchLanes).length * 100 + 100;
   const containerHeight = (maxY + 3) * 100;
+
+  const handleEventClick = (event, position) => {
+    const now = Date.now();
+    const DOUBLE_CLICK_DELAY = 400;
+
+    if (
+      lastClickRef.current.nodeId === event.id &&
+      now - lastClickRef.current.time < DOUBLE_CLICK_DELAY
+    ) {
+      if (event.valid && onNodeDoubleClick) {
+        // ✅ Double-click on valid node: trigger game navigation
+        onNodeDoubleClick(event);
+        lastClickRef.current = { nodeId: null, time: 0 };
+        return; // skip dialogue box
+      } else if (!event.valid) {
+        // Show tooltip for invalid node
+        setTooltipMessage("❌ This node is invalid. Cannot enter the game.");
+        setTooltipPosition(position);
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 1500); // hide after 1.5s
+        lastClickRef.current = { nodeId: null, time: 0 };
+        return; // skip dialogue box
+      }
+    } else {
+      lastClickRef.current = { nodeId: event.id, time: now };
+    }
+
+    // Single click: show dialogue box
+    setSelectedEvent(event);
+    setDialoguePosition(position);
+  };
+
+  const closeDialogue = () => setSelectedEvent(null);
 
   // Build branch lines
   const branchLines = [];
@@ -160,9 +195,7 @@ const GitTimeline = ({ timelineData }) => {
                   marginRight: 4
                 }}
               />
-              <span style={{ fontSize: 12 }}>
-                {branch.replace("-", " ")}
-              </span>
+              <span style={{ fontSize: 12 }}>{branch.replace("-", " ")}</span>
             </div>
           ))}
         </div>
@@ -211,7 +244,7 @@ const GitTimeline = ({ timelineData }) => {
               key={event.id}
               event={event}
               branchColor={branchColors[event.branch]}
-              onClick={handleEventClick}
+              onClick={handleEventClick} // ✅ Updated handler
               isActive={selectedEvent?.id === event.id}
               lane={branchLanes[event.branch]}
             />
@@ -222,10 +255,20 @@ const GitTimeline = ({ timelineData }) => {
             position={dialoguePosition}
             onClose={closeDialogue}
           />
+
+          {showTooltip && (
+            <Tooltip
+              anchorElement={() => document.elementFromPoint(tooltipPosition.x, tooltipPosition.y)}
+              position="top"
+              show={true}
+            >
+              {tooltipMessage}
+            </Tooltip>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default GitTimeline;
+export default TimeLine;

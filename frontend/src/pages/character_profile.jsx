@@ -77,7 +77,7 @@ export default function CharacterProfile() {
   const { characterName } = useParams();
   const [selectedChar, setSelectedChar] = useState(null);
   const [flipped, setFlipped] = useState(false);
-  const [flipType, setFlipType] = useState(null); // ✅ Flip type state
+  const [flipType, setFlipType] = useState(null);
   const lastClickRef = useRef({ nodeId: null, time: 0 });
   const navigate = useNavigate();
 
@@ -98,7 +98,7 @@ export default function CharacterProfile() {
     });
   }, [characterName]);
 
-const goHome = () => {
+  const goHome = () => {
     pageFlipSound.currentTime = 0;
     pageFlipSound.play();
     setFlipType("home"); 
@@ -106,27 +106,22 @@ const goHome = () => {
     setTimeout(() => navigate("/"), 1200);
   };
 
-  // Timeline node clicks
-  const handleNodeClick = (nodeId) => {
+  // Handle double-click on valid timeline node
+  const handleNodeDoubleClick = (node) => {
     if (!selectedChar) return;
-    const now = Date.now();
-    const DOUBLE_CLICK_DELAY = 800;
+    pageFlipSound.currentTime = 0;
+    pageFlipSound.play();
+    setFlipType("game");
+    setFlipped(true);
 
-    if (lastClickRef.current.nodeId === nodeId && now - lastClickRef.current.time < DOUBLE_CLICK_DELAY) {
-      pageFlipSound.currentTime = 0;
-      pageFlipSound.play();
-      setFlipType("game");
-      setFlipped(true);
+    const encodedName = encodeURIComponent(selectedChar.name);
+    setTimeout(() => navigate(`/game/${encodedName}`), 1200);
+  };
 
-      const encodedName = encodeURIComponent(selectedChar.name);
-      setTimeout(() => navigate(`/game/${encodedName}`), 1200);
-
-      lastClickRef.current = { nodeId: null, time: 0 };
-    } else {
-      lastClickRef.current = { nodeId, time: now };
-      clickSound.currentTime = 0;
-      clickSound.play();
-    }
+  // Timeline node clicks (single-click for dialogue)
+  const handleNodeClick = (nodeId) => {
+    clickSound.currentTime = 0;
+    clickSound.play();
   };
 
   if (!selectedChar) return <p style={{ padding: "2rem" }}>Character not found!</p>;
@@ -159,7 +154,7 @@ const goHome = () => {
             <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
               <TimeLine
                 timelineData={selectedChar.timelineData}
-                onNodeClick={(event) => handleNodeClick(event.id)}
+                onNodeDoubleClick={handleNodeDoubleClick} // ✅ double-click handler
               />
             </div>
           </div>
