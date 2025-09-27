@@ -60,11 +60,11 @@ const DialogueBox = ({ event, position, onClose }) => {
         pointerEvents: "auto",
       }}
     >
-      <Button look="flat" icon="close" style={{ position: "absolute", top: 5, right: 5 }} onClick={onClose} />
+      <Button look="flat" style={{ position: "absolute", top: 5, right: 5 }} onClick={onClose} />
       <Card>
         <CardHeader style={{ fontSize: "0.85rem" }}>{event.title}</CardHeader>
         <CardBody style={{ fontSize: "0.75rem" }}>
-          <p>{event.description}</p>
+          <p>{event.event}</p>
           <p style={{ color: "#f1c40f" }}>📅 {event.date}</p>
           {event.cause && <p style={{ color: "#2ecc71" }}>🔗 {event.cause}</p>}
         </CardBody>
