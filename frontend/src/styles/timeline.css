@@ -74,11 +74,17 @@
 }
 
 
-
-
 .timeline-svg {
   overflow-y: visible !important;
 }
 
+.timeline-container .event-node {
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.timeline-container:has(.event-node:hover) .event-node:not(:hover) {
+  opacity: 0;
+}
 
 
