@@ -21,11 +21,14 @@ const characters = [
 ];
 
 const clickSound = new Audio("/assets/click.mp3");
+const pageFlipSound = new Audio("/assets/page-flip.mp3");
 
 export default function CharacterSelectPage() {
+  const [flipped, setFlipped] = useState(false);
+  const [flipType, setFlipType] = useState(null); // NEW
   const { eraSlug } = useParams();
   const navigate = useNavigate();
-  
+
   const filteredChars = characters.filter(
     (char) => char.era.toLowerCase() === eraSlug
   );
@@ -53,54 +56,91 @@ export default function CharacterSelectPage() {
       .map((w) => w[0].toUpperCase() + w.slice(1))
       .join(" ");
 
+  // Home click handler
+  const goHome = () => {
+    pageFlipSound.currentTime = 0;
+    pageFlipSound.play();
+    setFlipType("home");
+    setFlipped(true);
+    setTimeout(() => navigate("/"), 1200);
+  };
+
+  // Play (select character) handler
+  const goPlay = (char) => {
+    pageFlipSound.currentTime = 0;
+    pageFlipSound.play();
+    setFlipType("play");
+    setFlipped(true);
+    setTimeout(() => navigate(`/play/${char.name.toLowerCase()}`), 1200);
+  };
+
   return (
-    <div className="character-page">
-      <Appbar title="Character Selection" />
+    <div className="homepage-container">
+      <div className={`homepage-book ${flipped ? "flipped" : ""}`}>
+        {/* --- FRONT PAGE --- */}
+        <div className="homepage-front">
+          <Appbar title="Character Selection" onHomeClick={goHome} />
 
-      <div className="character-select-container">
-        <div className="character-select-main">
+         
+            <div className="character-select-main">
+              {/* Character List */}
+              <div className="character-list">
+                {filteredChars.map((char) => (
+                  <Fade key={char.name}>
+                    <Card
+                      className={`hero-card ${selectedChar?.name === char.name ? "selected" : ""}`}
+                      onClick={() => handleSelectCharacter(char)}
+                    >
+                      <CardHeader>
+                        <CardTitle>{char.name}</CardTitle>
+                      </CardHeader>
+                      <CardBody>
+                        <img src={char.img} alt={char.name} className="char-thumbnail" />
+                        <p>{formatEra(char.era)}</p>
+                      </CardBody>
+                    </Card>
+                  </Fade>
+                ))}
+              </div>
 
-          {/* Character List */}
-          <div className="character-list">
-            {filteredChars.map((char) => (
-              <Fade key={char.name}>
-                <Card
-                  className={`hero-card ${selectedChar?.name === char.name ? "selected" : ""}`}
-                  onClick={() => handleSelectCharacter(char)}
-                >
-                  <CardHeader>
-                    <CardTitle>{char.name}</CardTitle>
-                  </CardHeader>
-                  <CardBody>
-                    <img src={char.img} alt={char.name} className="char-thumbnail" />
-                    <p>{formatEra(char.era)}</p>
-                  </CardBody>
-                </Card>
-              </Fade>
-            ))}
-          </div>
+              {/* Character Preview */}
+              {selectedChar && (
+                <Slide direction="end" in={true}>
+                  <Fade in={true} key={selectedChar.name}>
+                    <div className="character-preview">
+                      <h2>
+                        {selectedChar.name} ({formatEra(selectedChar.era)})
+                      </h2>
+                      <img
+                        src={selectedChar.img}
+                        alt={selectedChar.name}
+                        className="char-full-image"
+                      />
+                      <div className="character-facts">
+                        <p>{selectedChar.fact}</p>
+                      </div>
+                      <Button
+                        style={{ marginTop: "1rem", fontWeight: "bold" }}
+                        onClick={() => goPlay(selectedChar)} // NEW
+                      >
+                        Select Character
+                      </Button>
+                    </div>
+                  </Fade>
+                </Slide>
+              )}
+            </div>
+          
+        </div>
 
-          {/* Character Preview */}
-          {selectedChar && (
-            <Slide direction="end" in={true}>
-              <Fade in={true} key={selectedChar.name}>
-                <div className="character-preview">
-                  <h2>{selectedChar.name} ({formatEra(selectedChar.era)})</h2>
-                  <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
-                  <div className="character-facts">
-                    <p>{selectedChar.fact}</p>
-                  </div>
-                  <Button
-                    style={{ marginTop: "1rem", fontWeight: "bold" }}
-                    onClick={() => navigate(`/play/${selectedChar.name.toLowerCase()}`)}
-                  >
-                    Select Character
-                  </Button>
-                </div>
-              </Fade>
-            </Slide>
+        {/* --- BACK PAGE --- */}
+        <div className="homepage-back">
+          {flipType === "home" && (
+            <p className="goback">Going back home...</p>
           )}
-
+          {flipType === "play" && (
+            <p className="era">Preparing your adventure...</p>
+          )}
         </div>
       </div>
     </div>

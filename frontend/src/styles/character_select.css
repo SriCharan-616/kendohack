@@ -8,39 +8,19 @@
   --shadow: rgba(0, 0, 0, 0.2);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
-body, html {
-  font-family: 'MedievalSharp', cursive, serif;
-  color: var(--text-color);
-  background: url("/assets/output_black.png") no-repeat center center fixed;
-  background-size: cover;
-  min-height: 100vh;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
+
+
 
 body::-webkit-scrollbar { display: none; }
 
 /* Main layout */
-.character-select-container {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-}
 
 .character-select-main {
-  margin-left: 9vh;
-  padding: 50px;
+  margin-top: 100px;
   display: flex;
   gap: 2rem;
   width: 100%;
-  max-width: 1200px;
   align-items: flex-start;
 }
 
@@ -48,7 +28,7 @@ body::-webkit-scrollbar { display: none; }
 .character-list {
   position: relative;
   width: 300px;
-  min-height: 100vh;
+  
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -198,4 +178,9 @@ body::-webkit-scrollbar { display: none; }
 @media (max-width: 480px) {
   .char-full-image { width: 120px; height: 120px; }
   .character-list .hero-card { flex: 0 0 140px; }
+}
+
+@media (min-width: 768px) {
+  .character-select-main{
+  margin-left: 38vh;}
 }

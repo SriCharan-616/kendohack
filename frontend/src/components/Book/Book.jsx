@@ -59,7 +59,7 @@ export default function Book({ character, story }) {
             >
               <CardHeader><h3>{story[idx]?.title || "Previous Page"}</h3></CardHeader>
               <CardBody>
-                <p>{story[idx]?.description || "Content from previous page..."}</p>
+                <p>{story[idx]?.event || "Content from previous page..."}</p>
                 <div className="page-number">Page {idx + 1}</div>
               </CardBody>
             </Card>
@@ -85,7 +85,7 @@ export default function Book({ character, story }) {
                 <strong>{character.name}</strong>
               </div>
             )}
-            <p>{story[currentPage]?.description || "Current page content..."}</p>
+            <p>{story[currentPage]?.event || "Current page content..."}</p>
             <div className="page-number">Page {currentPage + 1}</div>
           </CardBody>
 
@@ -98,7 +98,7 @@ export default function Book({ character, story }) {
             >
               <CardHeader><h3>{story[currentPage + 1]?.title || "Next Page"}</h3></CardHeader>
               <CardBody>
-                <p>{story[currentPage + 1]?.description || "Next page content..."}</p>
+                <p>{story[currentPage + 1]?.event || "Next page content..."}</p>
                 <div className="page-number">Page {currentPage + 2}</div>
               </CardBody>
             </Card>
