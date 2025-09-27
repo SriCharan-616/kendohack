@@ -89,6 +89,6 @@
 
 
 .timeline-container:has(.event-node.scale-125)
-  .event-node:not(.scale-125) {
+  .event-node:not(.scale-125) .label{
   opacity: 0;
 }

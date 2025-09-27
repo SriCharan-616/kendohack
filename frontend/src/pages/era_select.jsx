@@ -22,71 +22,18 @@ const musicList = [
   { text: "Renaissance Song", file: "/assets/bg_renaissance.mp3" }
 ];
 
-const FadeOnScroll = ({ children }) => {
-  const ref = useRef();
-  const [visible, setVisible] = useState(true); // always visible
 
-  return (
-    <div ref={ref} className="story-card">
-      <Fade>
-        <div
-          style={{
-            opacity: visible ? 1 : 1,
-            transition: "opacity 0.6s ease-in-out"
-          }}
-        >
-          {children}
-        </div>
-      </Fade>
-    </div>
-  );
-};
 
 const EraSelectPage = () => {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
-  const [musicOn, setMusicOn] = useState(true);
-  const bgAudioRef = useRef(new Audio(musicList[0].file));
-
-  /* --- Music Handling --- */
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    audio.loop = true;
-    audio.volume = 0.2;
-    if (musicOn) audio.play().catch(console.log);
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, []);
-
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    if (musicOn) audio.play().catch(console.log);
-    else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  }, [musicOn]);
 
   const playClickSound = () => {
     clickSound.currentTime = 0;
     clickSound.play();
   };
 
-  const toggleMusic = () => {
-    playClickSound();
-    setMusicOn((prev) => !prev);
-  };
-
-  const changeMusic = (file) => {
-    const audio = bgAudioRef.current;
-    audio.pause();
-    audio.currentTime = 0;
-    audio.src = file;
-    audio.play().catch(console.log);
-    setMusicOn(true);
-  };
+ 
 
   /* --- Era Data --- */
   const eras = [
