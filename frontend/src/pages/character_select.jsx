@@ -25,6 +25,8 @@ const characters = [
 
 const clickSound = new Audio("/assets/click.mp3");
 
+import  Appbar  from "../components/appbar";  
+
 function toTitleCase(str) {
   return str
     .split("-")
@@ -78,12 +80,10 @@ const StaggeredStats = ({ stats, timeline }) => {
   );
 };
 
-export default function CharacterSelect() {
+export default function CharacterSelectPage() {
   const { eraSlug } = useParams();
   const navigate = useNavigate();
-  const bgAudioRef = useRef(new Audio("/assets/bg2.mp3"));
-  const [musicOn, setMusicOn] = useState(true);
-
+  
   const filteredChars = characters.filter(
     (char) => char.era.toLowerCase() === eraSlug
   );
@@ -95,25 +95,6 @@ export default function CharacterSelect() {
     else setSelectedChar(null);
   }, [eraSlug]);
 
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    audio.loop = true;
-    audio.volume = 0.2;
-    if (musicOn) audio.play().catch(console.log);
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, []);
-
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    if (musicOn) audio.play().catch(console.log);
-    else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  }, [musicOn]);
 
   const playClickSound = () => {
     clickSound.currentTime = 0;
@@ -127,34 +108,7 @@ export default function CharacterSelect() {
 
   return (
     <div className="character-page">
-      <AppBar className="app-bar">
-        <AppBarSection>
-          <h2>Character Selection</h2>
-        </AppBarSection>
-        <AppBarSpacer />
-        <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
-          <Button
-            className={`music-button ${musicOn ? "pulse" : "pulse-flip"}`}
-            onClick={() => setMusicOn(prev => !prev)}
-          >
-            {musicOn ? "🔉 Music" : "🔇 Music"}
-          </Button>
-          <DropDownButton
-            className="music-dropdown"
-            text={"Change Track"}
-            items={[{
-              text: "Medieval Tune",
-              onClick: () => {
-                playClickSound();
-                bgAudioRef.current.src = "/assets/bg2.mp3";
-                bgAudioRef.current.play();
-                setMusicOn(true);
-              }
-            }]}
-            popupSettings={{ className: "custom-music-dropdown-popup" }}
-          />
-        </AppBarSection>
-      </AppBar>
+      <Appbar title='Character Selection'/>
 
       <div className="character-select-container">
         <div className="character-select-main">
