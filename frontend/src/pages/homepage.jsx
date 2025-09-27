@@ -1,14 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  AppBar,
-  AppBarSection,
-  AppBarSpacer,
   Card,
   CardHeader,
   CardBody
 } from "@progress/kendo-react-layout";
-import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import TimeLine from "../components/TimeLine/TimeLine";
 import "../styles/homepage.css";
 import Book from "../components/Book/Book";
@@ -31,12 +27,8 @@ import  Appbar  from "../components/appbar";
 
 export default function HomePage() {
   const [flipped, setFlipped] = useState(false);
-  const [musicOn, setMusicOn] = useState(true);
   
-  const navigate = useNavigate();
-  
-
-  
+  const navigate = useNavigate();  
 
   const playClickSound = () => {
     clickSound.currentTime = 0;
@@ -50,19 +42,11 @@ export default function HomePage() {
     setTimeout(() => navigate("/era-select"), 1200);
   };
 
-  const toggleMusic = () => {
-    playClickSound();
-    setMusicOn(prev => !prev);
-  };
-
- 
-
   const handleHeroCardClick = (name) => {
     playClickSound();
     console.log(`Selected ${name}`);
   };
 
-  /* --- Data --- */
   /* --- Data --- */
 const eras = [
   { 
