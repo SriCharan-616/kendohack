@@ -15,99 +15,54 @@
   padding: 0;
 }
 
-body, html {
+html, body {
   font-family: 'MedievalSharp', cursive, serif;
   color: var(--text-color);
   background: url("/assets/output_black.png") no-repeat center center fixed;
   background-size: cover;
-  min-height: 100vh;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  min-height: 100%;
+  height: 100%;
+  overflow-y: auto;  /* enable vertical scroll */
+  scrollbar-width: none;   /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
-body::-webkit-scrollbar { display: none; }
+body::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
 /* ===================== */
-/* Character Preview Box */
+/* Centered Container    */
 /* ===================== */
 .character-select-container {
   display: flex;
-  justify-content: flex-start;
-  padding: 2rem 0 2rem 12rem;
-}
-
-.character-preview {
-  flex: 0 0 340px;
-  min-height: 520px;
-  border-radius: 14px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
-  background: white;
-  border: 3px solid var(--border-color);
-  transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
-  transform-style: preserve-3d;
-}
-
-.character-preview h2 {
-  color: var(--secondary);
-  margin-bottom: 1rem;
-  font-size: 1.6rem;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-.char-full-image {
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 4px solid var(--highlight);
-  margin-bottom: 1rem;
-}
-
-.character-preview button {
-  background: var(--secondary);
-  color: white;
-  border: none;
-  padding: 0.9rem 1.6rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: auto;
-}
-
-.character-preview button:hover {
-  background: var(--hover-color);
-  transform: translateY(-2px);
-}
-
-/* ================= */
-/* Fun fact section  */
-/* ================= */
-.character-facts {
-  margin-top: 1rem;
+  padding: 2rem;
   width: 100%;
-  text-align: left;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--secondary);
+  gap: 2rem; /* space between sidebar and preview */
+  flex-wrap: wrap; /* responsive fix */
 }
 
-/* Sidebar character list */
+/* ===================== */
+/* Sidebar              */
+/* ===================== */
 .character-list {
-  position: relative;
-  width: 260px;
-  min-height: 100vh;
+  flex: 0 0 260px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow-y: scroll;
   padding: 1rem;
   border-right: 3px solid var(--highlight);
   box-shadow: 2px 0 10px var(--shadow);
+  background: white;
+  border-radius: 12px;
+  max-height: 80vh; /* scrollable area */
+  overflow-y: auto;
+}
+
+.character-list::-webkit-scrollbar { display: none; }
+.character-list {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .hero-card {
@@ -154,6 +109,100 @@ body::-webkit-scrollbar { display: none; }
   text-align: center;
 }
 
+/* ===================== */
+/* Character Preview Box */
+/* ===================== */
+.character-preview {
+  flex: 0 1 340px;
+  max-width: 100%;
+  min-height: 520px;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border: 3px solid var(--border-color);
+  transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.character-preview h2 {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.char-full-image {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 4px solid var(--highlight);
+  margin-bottom: 1rem;
+}
+
+.character-preview button {
+  background: var(--secondary);
+  color: white;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: auto;
+}
+
+.character-preview button:hover {
+  background: var(--hover-color);
+  transform: translateY(-2px);
+}
+
+/* ================= */
+/* Fun fact section  */
+/* ================= */
+.character-facts {
+  margin-top: 1rem;
+  width: 100%;
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--secondary);
+  max-height: 200px; /* optional: scrollable if many facts */
+  overflow-y: auto;
+}
+
+.character-facts::-webkit-scrollbar { display: none; }
+.character-facts {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.Top {
+  display: flex;
+  justify-content: center; /* center the two columns horizontally */
+  align-items: flex-start; /* align top edges */
+  gap: 2rem; /* space between preview and book */
+  padding: 2rem;
+  flex-wrap: wrap; /* for responsiveness on smaller screens */
+}
+
+/* Preview box (left column) */
+.Top .character-preview {
+  flex: 0 0 340px; /* fixed width */
+  max-width: 100%;
+}
+
+/* Book container (right column) */
+.Top > div:nth-child(2) {
+  flex: 1; /* take remaining space */
+  max-width: 700px;
+}
+
+
 /* ============================= */
 /* Vertical Stats / Progressbars */
 /* ============================= */
@@ -165,15 +214,13 @@ body::-webkit-scrollbar { display: none; }
   margin-top: 1rem;
 }
 
-/* Wrapper for each stat */
 .stat-bar-wrapper {
   display: flex;
-  flex-direction: column;      /* Stack label above the bar */
+  flex-direction: column;
   gap: 0.3rem;
   width: 100%;
 }
 
-/* Stat text / label */
 .stat-bar-wrapper p {
   margin: 0;
   font-weight: bold;
@@ -181,7 +228,6 @@ body::-webkit-scrollbar { display: none; }
   font-size: 0.95rem;
 }
 
-/* Progress bar container */
 .k-progressbar {
   width: 100%;
   height: 16px;
@@ -191,10 +237,9 @@ body::-webkit-scrollbar { display: none; }
   overflow: hidden;
 }
 
-/* Progress value */
 .k-progressbar .k-progressbar-value {
   height: 100%;
-  width: 0%;                   /* Dynamically set via JS */
+  width: 0%;
   background: linear-gradient(135deg, var(--highlight), var(--secondary));
   border-radius: 8px;
   transition: width 0.5s ease;
@@ -206,15 +251,6 @@ body::-webkit-scrollbar { display: none; }
 .character-page {
   perspective: 2000px;
   transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
-}
-
-.Top {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  padding: 2rem;
-  margin-top: 1rem;
-  margin-left: 5rem;
 }
 
 .character-page.flipped .character-preview {
@@ -242,15 +278,74 @@ body::-webkit-scrollbar { display: none; }
   color: var(--text-color);
 }
 
+/* ========================= */
+/* Full Page 3D Flip Effect  */
+/* ========================= */
+.character-page-container {
+  perspective: 2500px;
+}
+
+.character-page-book {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
+  position: relative;
+  margin: 0 auto;
+}
+
+.character-page-book.flipped {
+  transform: rotateY(180deg);
+}
+
+.character-page-front,
+.character-page-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  top: 0;
+  left: 0;
+}
+
+.character-page-front {
+  z-index: 2;
+  overflow-y: auto; /* allow scroll */
+}
+
+.character-page-back {
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--text-color);
+  background: url("/assets/output_black.png") center/cover no-repeat;
+}
+
 /* ================= */
 /* Responsive        */
 /* ================= */
-@media (max-width: 768px) {
-  .character-preview {
-    width: 100%;
-    min-height: auto;
+@media (max-width: 1024px) {
+  .character-select-container {
+    flex-direction: column;
     align-items: center;
   }
+
+  .character-list {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .character-preview {
+    width: 80%;
+    min-height: auto;
+  }
+}
+
+@media (max-width: 768px) {
   .char-full-image { width: 140px; height: 140px; }
 }
 

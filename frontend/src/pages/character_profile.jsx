@@ -84,10 +84,9 @@ export default function CharacterProfile() {
   const [musicOn, setMusicOn] = useState(true);
   const [flipped, setFlipped] = useState(false);
   const lastClickRef = useRef({ nodeId: null, time: 0 });
-
   const navigate = useNavigate();
 
-  // Preload audio once
+  // Preload audio
   useEffect(() => {
     clickSound.load();
     pageFlipSound.load();
@@ -111,7 +110,7 @@ export default function CharacterProfile() {
     });
   }, [characterName]);
 
-  // Background music handling
+  // Background music
   useEffect(() => {
     const audio = bgAudioRef.current;
     audio.loop = true;
@@ -132,7 +131,19 @@ export default function CharacterProfile() {
     }
   }, [musicOn]);
 
-  // Handle timeline node clicks (single vs double)
+  // Start game (flip page)
+  const startGame = () => {
+    if (!selectedChar) return;
+
+    pageFlipSound.currentTime = 0;
+    pageFlipSound.play();
+    setFlipped(true);
+
+    const encodedName = encodeURIComponent(selectedChar.name);
+    setTimeout(() => navigate(`/game/${encodedName}`), 1200);
+  };
+
+  // Timeline node clicks
   const handleNodeClick = (nodeId) => {
     if (!selectedChar) return;
     const now = Date.now();
@@ -157,40 +168,50 @@ export default function CharacterProfile() {
   if (!selectedChar) return <p style={{ padding: "2rem" }}>Character not found!</p>;
 
   return (
-    <div className={`character-page ${flipped ? "flipped" : ""}`}>
-      <Appbar title="Play Page" />
+    <div className="character-page-container">
+      <div className={`character-page-book ${flipped ? "flipped" : ""}`}>
 
-      <div className="Top">
-        <div className="character-preview">
-          <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
-          <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
-          <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
-          <Button
-            style={{ marginTop: "1rem", fontWeight: "bold" }}
-            onClick={() => navigate(`/game/${encodeURIComponent(selectedChar.name)}`)}
-          >
-            Start Game
-          </Button>
+        {/* Front face */}
+        <div className="character-page-front">
+          <Appbar title="Play Page" />
+          <div className="Top">
+            <div className="character-preview">
+              <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
+              <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
+              <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
+              <Button
+                style={{ marginTop: "1rem", fontWeight: "bold" }}
+                onClick={startGame}
+              >
+                Start Game
+              </Button>
+            </div>
+
+            <div style={{ flex: 1, maxWidth: "700px" }}>
+              <h3 style={{ marginBottom: "1rem" }}>{selectedChar.name} Chronicles</h3>
+              <Book
+                character={selectedChar}
+                story={selectedChar.timelineData.events}
+              />
+            </div>
+          </div>
+
+          <div style={{ padding: "2rem" }}>
+            <h3 style={{ marginBottom: "1rem" }}>Interactive Timeline</h3>
+            <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
+              <TimeLine
+                timelineData={selectedChar.timelineData}
+                onNodeClick={(event) => handleNodeClick(event.id)}
+              />
+            </div>
+          </div>
         </div>
 
-        <div style={{ flex: 1, maxWidth: "700px" }}>
-          <h3 style={{ marginBottom: "1rem" }}>{selectedChar.name} Chronicles</h3>
-          <Book
-            character={selectedChar}
-            story={selectedChar.timelineData.events}
-            onNodeClick={handleNodeClick} // pass click handler for book nodes
-          />
+        {/* Back face */}
+        <div className="character-page-back">
+          <h1>Ready for the Game?</h1>
         </div>
-      </div>
 
-      <div style={{ padding: "2rem" }}>
-        <h3 style={{ marginBottom: "1rem" }}>Interactive Timeline</h3>
-        <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
-          <TimeLine
-            timelineData={selectedChar.timelineData} // full object
-            onNodeClick={(event) => handleNodeClick(event.id)} // click handler
-          />
-        </div>
       </div>
     </div>
   );
