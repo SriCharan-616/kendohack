@@ -1,17 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  AppBar,
-  AppBarSection,
-  AppBarSpacer,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody
-} from "@progress/kendo-react-layout";
+import { Card, CardHeader, CardTitle, CardBody } from "@progress/kendo-react-layout";
 import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import { Fade } from "@progress/kendo-react-animation";
 import "../styles/era_select.css";
+
+import Appbar from "../components/appbar";
 
 import parchmentIcon from "/assets/parchment-icon.png";
 import romeImage from "/assets/rome.png";
@@ -94,101 +88,67 @@ const EraSelectPage = () => {
     setMusicOn(true);
   };
 
-  /* --- Data --- */
+  /* --- Era Data --- */
   const eras = [
-  {
-    name: "Ancient Rome Era",
-    years: "27 BC - 476 AD",
-    description:
-      "Step into the sandals of Caesar, walk the marble halls, and command legions of the eternal city.",
-    img: romeImage,
-    className: "ancient-rome-card",
-    buttonColor: "var(--highlight)",
-    decoration: "🌿"
-  },
-  {
-    name: "Medieval Era",
-    years: "500 - 1500",
-    description:
-      "Experience the age of knights, castles, and epic legends that shaped kingdoms across Europe.",
-    img: "/assets/medieval.png", // make sure you have this image
-    className: "medieval-era-card",
-    buttonColor: "var(--secondary)",
-    decoration: "🛡️"
-  },
-  {
-    name: "Renaissance Era",
-    years: "1400 - 1600",
-    description:
-      "Dive into the rebirth of art, science, and culture as human creativity reaches new heights.",
-    img: "/assets/renaissance.png", // make sure you have this image
-    className: "renaissance-era-card",
-    buttonColor: "var(--primary)",
-    decoration: "🎨"
-  },
-  {
-    name: "Industrial Revolution",
-    years: "1800 - 1900",
-    description:
-      "Witness the rise of steam and steel, lead nations through industrial transformation.",
-    img: industrialImage,
-    className: "industrial-era-card",
-    buttonColor: "var(--secondary)",
-    decoration: "⚙️"
-  },
-  {
-    name: "Modern Era",
-    years: "1900 - 2000",
-    description:
-      "Navigate through world wars, technological revolutions, and the most transformative century.",
-    img: modernImage,
-    className: "modern-era-card",
-    buttonColor: "var(--primary)",
-    decoration: "💡"
-  }
-];
-
+    {
+      name: "Ancient Rome Era",
+      years: "27 BC - 476 AD",
+      description:
+        "Step into the sandals of Caesar, walk the marble halls, and command legions of the eternal city.",
+      img: romeImage,
+      className: "ancient-rome-card",
+      buttonColor: "var(--highlight)",
+      decoration: "🌿"
+    },
+    {
+      name: "Medieval Era",
+      years: "500 - 1500",
+      description:
+        "Experience the age of knights, castles, and epic legends that shaped kingdoms across Europe.",
+      img: "/assets/medieval.png",
+      className: "medieval-era-card",
+      buttonColor: "var(--secondary)",
+      decoration: "🛡️"
+    },
+    {
+      name: "Renaissance Era",
+      years: "1400 - 1600",
+      description:
+        "Dive into the rebirth of art, science, and culture as human creativity reaches new heights.",
+      img: "/assets/renaissance.png",
+      className: "renaissance-era-card",
+      buttonColor: "var(--primary)",
+      decoration: "🎨"
+    },
+    {
+      name: "Industrial Revolution",
+      years: "1800 - 1900",
+      description:
+        "Witness the rise of steam and steel, lead nations through industrial transformation.",
+      img: industrialImage,
+      className: "industrial-era-card",
+      buttonColor: "var(--secondary)",
+      decoration: "⚙️"
+    },
+    {
+      name: "Modern Era",
+      years: "1900 - 2000",
+      description:
+        "Navigate through world wars, technological revolutions, and the most transformative century.",
+      img: modernImage,
+      className: "modern-era-card",
+      buttonColor: "var(--primary)",
+      decoration: "💡"
+    }
+  ];
 
   return (
     <div className="homepage-container">
       <div className={`homepage-book ${flipped ? "flipped" : ""}`}>
         {/* --- FRONT PAGE --- */}
         <div className="homepage-front">
-          <AppBar className="k-appbar">
-            <AppBarSection>
-              <h2>Era Selection</h2>
-            </AppBarSection>
-            <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
-              <Button
-                className={`music-button ${musicOn ? "pulse" : "pulse-flip"}`}
-                onClick={toggleMusic}
-              >
-                {musicOn ? "🔉 Music" : "🔇 Music"}
-              </Button>
-
-              <DropDownButton
-                className="music-dropdown"
-                text="⋮"
-                icon={
-                  <img
-                    src={parchmentIcon}
-                    alt="parchment"
-                    className="parchment-icon"
-                  />
-                }
-                items={musicList.map((m) => ({
-                  text: m.text,
-                  onClick: () => {
-                    playClickSound();
-                    changeMusic(m.file);
-                  }
-                }))}
-                popupSettings={{ className: "custom-music-dropdown-popup" }}
-              />
-            </AppBarSection>
-          </AppBar>
-          <AppBarSpacer />
-
+          {/* Use custom Appbar */}
+          <Appbar title="Era Selection" />
           <div className="manuscript-content-centered">
             <header className="manuscript-header">
               <div className="center-ornament">◆</div>
@@ -216,8 +176,13 @@ const EraSelectPage = () => {
                           onClick={() => {
                             playClickSound();
                             setFlipped(true);
-                            const eraSlug = era.name.toLowerCase().replace(/\s+/g, '-'); // e.g., "Ancient Rome Era" → "ancient-rome-era"
-                            setTimeout(() => navigate(`/characters/${eraSlug}`), 1200);
+                            const eraSlug = era.name
+                              .toLowerCase()
+                              .replace(/\s+/g, "-");
+                            setTimeout(
+                              () => navigate(`/characters/${eraSlug}`),
+                              1200
+                            );
                           }}
                         >
                           Explore {era.name.split(" ")[0]}
@@ -225,11 +190,7 @@ const EraSelectPage = () => {
                       </CardBody>
                     </div>
                     <div className="card-image-section">
-                      <img
-                        src={era.img}
-                        alt={era.name}
-                        className="era-image"
-                      />
+                      <img src={era.img} alt={era.name} className="era-image" />
                       <div className="card-decorations">
                         <span
                           className={
