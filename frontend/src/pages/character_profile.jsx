@@ -155,7 +155,7 @@ const goHome = () => {
           </div>
 
           <div style={{ padding: "2rem" }}>
-            <h3 style={{ marginBottom: "1rem" }}>Interactive Timeline</h3>
+            <h3 style={{ marginBottom: "1rem" }}>Choose a valid Node to start playing</h3>
             <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
               <TimeLine
                 timelineData={selectedChar.timelineData}

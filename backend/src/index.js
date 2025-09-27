@@ -1,15 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
-import timelineRoutes from "./route/timeline.js";
+import get from "./controllers/getChoices.js";
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
-
+app.use(express.json());
 
 // API Routes
-app.use("/api/timeline", timelineRoutes);
+app.use("/get-options", get);
 
 const PORT = process.env.PORT || 5000;
 
