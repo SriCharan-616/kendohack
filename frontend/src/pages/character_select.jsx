@@ -17,26 +17,48 @@ import "../styles/character_select.css";
 const characters = [
   {
     name: "Arthur",
-    era: "Medieval",
+    era: "medieval-era",
     img: "/assets/arthur.png",
     stats: { strength: 85, intelligence: 70, agility: 75 },
     timeline: 60
   },
   {
     name: "Cleopatra",
-    era: "Ancient",
+    era: "ancient-rome-era",
     img: "/assets/cleopatra.png",
     stats: { strength: 60, intelligence: 95, agility: 80 },
     timeline: 50
   },
   {
     name: "Leonardo",
-    era: "Renaissance",
+    era: "renaissance-era",
     img: "/assets/leonardo.png",
     stats: { strength: 55, intelligence: 98, agility: 65 },
     timeline: 70
+  },
+  {
+    name: "Abraham Lincoln",
+    era: "industrial-era",
+    img: "/assets/lincoln.png",
+    stats: { strength: 70, intelligence: 88, agility: 60 },
+    timeline: 75
+  },
+  {
+    name: "Gandhi",
+    era: "modern-era",
+    img: "/assets/gandhi.png",
+    stats: { strength: 35, intelligence: 94, agility: 55 },
+    timeline: 85
+  },
+  {
+    name: "Julius Caesar",
+    era: "ancient-rome-era",
+    img: "/assets/caesar.png",
+    stats: { strength: 90, intelligence: 85, agility: 72 },
+    timeline: 55
   }
 ];
+
 
 const clickSound = new Audio("/assets/click.mp3");
 
