@@ -196,7 +196,7 @@ const EraSelectPage = () => {
             </header>
 
             {eras.map((era, idx) => (
-              <FadeOnScroll key={idx}>
+              
                 <Card className={`era-card ${era.className}`}>
                   <div className="card-content-wrapper">
                     <div className="card-text-section">
@@ -254,7 +254,7 @@ const EraSelectPage = () => {
                     </div>
                   </div>
                 </Card>
-              </FadeOnScroll>
+             
             ))}
           </div>
         </div>
