@@ -18,6 +18,7 @@ import arthurIcon from "/assets/arthur.png";
 import cleopatraIcon from "/assets/cleopatra.png";
 import leonardoIcon from "/assets/leonardo.png";
 
+import {caesarTimelineeg} from "../data/eg";
 import {caesarTimeline} from "../data/caesar";
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
@@ -145,7 +146,7 @@ const characters = [
             <h2 className="hero-title" style={{ marginBottom: '0px' }}>Dynamic Timeline</h2>
             <span style={{fontSize:'20px'}}>Watch And Change History With Your Decisions.</span>
             <TimeLine
-            timelineData={caesarTimeline} 
+            timelineData={caesarTimelineeg.events} 
           />
           </div>
 

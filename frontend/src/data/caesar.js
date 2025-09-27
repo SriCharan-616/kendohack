@@ -1,4 +1,4 @@
-export  const caesarTimeline = {
+export const caesarTimeline = {
   events: [
     {
       id: 1,
@@ -10,7 +10,8 @@ export  const caesarTimeline = {
       y: 0,
       branches: [],
       stats: { popularity: 5, political_power: 0, wealth: 2 },
-      personality: "Curious, resilient child with a sense of duty and ambition."
+      personality: "Curious, resilient child with a sense of duty and ambition.",
+      valid: false
     },
     {
       id: 2,
@@ -22,7 +23,8 @@ export  const caesarTimeline = {
       y: 1,
       branches: [],
       stats: { popularity: 6, political_power: 0, wealth: 1 },
-      personality: "Adapts to political life, learning strategy and diplomacy."
+      personality: "Adapts to political life, learning strategy and diplomacy.",
+      valid: true
     },
     {
       id: 3,
@@ -32,174 +34,62 @@ export  const caesarTimeline = {
       date: "81 BCE",
       branch: "main",
       y: 2,
-      branches: [{ branch: "military", color: "#e74c3c" }],
+      branches: [],
       stats: { popularity: 6, political_power: 0, wealth: 1 },
-      personality: "Disciplined and courageous, building early leadership skills."
+      personality: "Disciplined and courageous, building early leadership skills.",
+      valid: true
     },
     {
       id: 4,
-      title: "Gallic Campaign Start",
-      age: 42,
-      event: "Began the conquest of Gaul",
-      date: "58 BCE",
-      branch: "military",
-      y: 3,
-      branches: [{ branch: "gallic-tribes", color: "#8e44ad" }],
-      cause: "Military expertise led to this campaign",
-      stats: { popularity: 10, political_power: 5, wealth: 4 },
-      personality: "Strategic and ambitious, expanding influence through conquest."
-    },
-    {
-      id: 5,
-      title: "Helvetii War",
-      age: 42,
-      event: "Defeated the migrating Helvetii tribe",
-      date: "58 BCE",
-      branch: "gallic-tribes",
-      y: 4,
-      branches: [{ branch: "germanic-threat", color: "#27ae60" }],
-      cause: "Strategic response to tribal movements",
-      stats: { popularity: 12, political_power: 6, wealth: 5 },
-      personality: "Tactical and determined, securing territories efficiently."
-    },
-    {
-      id: 6,
-      title: "Germanic Invasion",
-      age: 45,
-      event: "Repelled Germanic tribes across the Rhine",
-      date: "55 BCE",
-      branch: "germanic-threat",
-      y: 5,
-      branches: [],
-      cause: "Germanic tribes threatened Gallic allies",
-      stats: { popularity: 15, political_power: 10, wealth: 6 },
-      personality: "Protective and resolute, defending allies with decisive action."
-    },
-    {
-      id: 7,
-      title: "Gallic Wars End",
-      age: 50,
-      event: "Completed conquest of Gaul with victory at Alesia",
-      date: "50 BCE",
-      branch: "military",
-      y: 6,
-      branches: [],
-      cause: "Final consolidation of Gallic territories",
-      stats: { popularity: 20, political_power: 15, wealth: 8 },
-      personality: "Victorious and strategic, securing long-term influence in Gaul."
-    },
-    {
-      id: 8,
       title: "Consul Election",
       age: 41,
       event: "Elected as Consul of Rome",
       date: "59 BCE",
       branch: "main",
       y: 3,
-      branches: [{ branch: "political", color: "#3498db" }],
-      stats: { popularity: 25, political_power: 20, wealth: 10 },
-      personality: "Ambitious politician, building alliances and consolidating power."
-    },
-    {
-      id: 9,
-      title: "First Triumvirate",
-      age: 40,
-      event: "Formed political alliance with Pompey and Crassus",
-      date: "60 BCE",
-      branch: "political",
-      y: 4,
-      branches: [{ branch: "senate-relations", color: "#f39c12" }],
-      cause: "Political maneuvering to gain power",
-      stats: { popularity: 30, political_power: 25, wealth: 12 },
-      personality: "Clever strategist, navigating complex Roman politics."
-    },
-    {
-      id: 10,
-      title: "Senate Opposition",
-      age: 46,
-      event: "Growing tension with traditional senators",
-      date: "54 BCE",
-      branch: "senate-relations",
-      y: 5,
       branches: [],
-      cause: "Conservative senators opposed reforms",
-      stats: { popularity: 35, political_power: 30, wealth: 14 },
-      personality: "Persistent and persuasive, challenging established norms."
+      stats: { popularity: 25, political_power: 20, wealth: 10 },
+      personality: "Ambitious politician, building alliances and consolidating power.",
+      valid: true
     },
     {
-      id: 11,
+      id: 5,
       title: "Crosses the Rubicon",
       age: 51,
       event: "Made the fateful decision to cross the Rubicon river",
       date: "49 BCE",
       branch: "main",
-      y: 7,
-      branches: [{ branch: "civil-war", color: "#e67e22" }],
+      y: 4,
+      branches: [],
       stats: { popularity: 40, political_power: 35, wealth: 16 },
-      personality: "Bold and decisive, committing to irreversible action."
+      personality: "Bold and decisive, committing to irreversible action.",
+      valid: true
     },
     {
-      id: 12,
-      title: "Civil War Begins",
-      age: 51,
-      event: "War against Pompey and the Roman Senate",
-      date: "49 BCE",
-      branch: "civil-war",
-      y: 8,
-      branches: [{ branch: "egyptian-campaign", color: "#1abc9c" }],
-      cause: "Crossing the Rubicon started civil war",
-      stats: { popularity: 45, political_power: 40, wealth: 18 },
-      personality: "Strategic and determined, navigating complex conflicts."
-    },
-    {
-      id: 13,
-      title: "Egyptian Alliance",
-      age: 53,
-      event: "Formed alliance with Cleopatra in Egypt",
-      date: "47 BCE",
-      branch: "egyptian-campaign",
-      y: 9,
-      branches: [],
-      cause: "Strategic alliance during civil war",
-      stats: { popularity: 50, political_power: 45, wealth: 20 },
-      personality: "Astute diplomat, using alliances to strengthen position."
-    },
-    {
-      id: 14,
-      title: "Victory at Pharsalus",
-      age: 52,
-      event: "Decisive victory over Pompey at Pharsalus",
-      date: "48 BCE",
-      branch: "civil-war",
-      y: 10,
-      branches: [],
-      cause: "Major battle in the civil war",
-      stats: { popularity: 55, political_power: 50, wealth: 22 },
-      personality: "Resilient commander, leading troops to decisive victories."
-    },
-    {
-      id: 15,
+      id: 6,
       title: "Dictator of Rome",
       age: 56,
       event: "Became dictator and implemented major reforms",
       date: "44 BCE",
       branch: "main",
-      y: 11,
+      y: 5,
       branches: [],
       stats: { popularity: 60, political_power: 55, wealth: 25 },
-      personality: "Visionary leader, enacting reforms to consolidate Rome."
+      personality: "Visionary leader, enacting reforms to consolidate Rome.",
+      valid: true
     },
     {
-      id: 16,
+      id: 7,
       title: "Assassination",
       age: 56,
       event: "Assassinated on the Ides of March by senators",
       date: "44 BCE",
       branch: "main",
-      y: 12,
+      y: 6,
       branches: [],
       stats: { popularity: 65, political_power: 60, wealth: 27 },
-      personality: "Martyrdom cements his legacy as a unifying and transformative leader."
+      personality: "Martyrdom cements his legacy as a unifying and transformative leader.",
+      valid: false
     }
   ]
 };

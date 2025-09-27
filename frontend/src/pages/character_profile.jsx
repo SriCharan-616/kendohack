@@ -69,10 +69,6 @@ const StaggeredStats = ({ stats, timeline }) => {
           </div>
         </Fade>
       ))}
-      <div className="timeline-section" style={{ marginTop: "1rem" }}>
-        <p>Timeline Progress: {timeline}%</p>
-        <AnimatedStat value={timeline} delay={statEntries.length * 300} />
-      </div>
     </div>
   );
 };
@@ -102,7 +98,13 @@ export default function CharacterProfile() {
     });
   }, [characterName]);
 
-
+const goHome = () => {
+    pageFlipSound.currentTime = 0;
+    pageFlipSound.play();
+    setFlipType("home"); 
+    setFlipped(true);
+    setTimeout(() => navigate("/"), 1200);
+  };
 
   // Timeline node clicks
   const handleNodeClick = (nodeId) => {
@@ -137,14 +139,14 @@ export default function CharacterProfile() {
           <Appbar title="Play Page" onHomeClick={goHome} />
 
           <div className="Top">
-            <div className="character-preview">
-              <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
+            <div className="character-preview" style={{ marginTop: "2rem" }}>
+              <h2>{selectedChar.name} Main Timeline Stats</h2>
               <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
               <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
             </div>
 
             <div style={{ flex: 1, maxWidth: "700px" }}>
-              <h3 style={{ marginBottom: "1rem" }}>{selectedChar.name} Chronicles</h3>
+              <h3 style={{ marginBottom: "1rem" }}>{selectedChar.name} Main Timeline Chronicles</h3>
               <Book
                 character={selectedChar}
                 story={selectedChar.timelineData.events}
