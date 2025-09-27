@@ -88,12 +88,18 @@ const GitTimeline = ({ timelineData }) => {
   const events = timelineData?.events || [];;
   const branchColors = getBranchColors(events);
   const branchLanes = assignBranchLanes(events);
+  const events = timelineData?.events || [];;
+  const branchColors = getBranchColors(events);
+  const branchLanes = assignBranchLanes(events);
 
+  const maxY = Math.max(...events.map(e => e.y));
   const maxY = Math.max(...events.map(e => e.y));
   const containerWidth = Object.keys(branchLanes).length * 100 + 100;
   const containerHeight = (maxY + 3) * 100;
 
   const branchLines = [];
+  events.forEach(event => {
+    const sameBranchEvents = events
   events.forEach(event => {
     const sameBranchEvents = events
       .filter(e => e.branch === event.branch)
@@ -107,6 +113,8 @@ const GitTimeline = ({ timelineData }) => {
 
     event.branches?.forEach(b => {
       const childEvent = events.find(e => e.branch === b.branch);
+    event.branches?.forEach(b => {
+      const childEvent = events.find(e => e.branch === b.branch);
       if (childEvent) branchLines.push({ from: event, to: childEvent, color: branchColors[b.branch] });
     });
   });
@@ -114,6 +122,9 @@ const GitTimeline = ({ timelineData }) => {
   const handleBackgroundClick = () => closeDialogue();
 
   return (
+    <div onClick={handleBackgroundClick} style={{ position: 'relative' }}>
+      <div className="timeline-container">
+
     <div onClick={handleBackgroundClick} style={{ position: 'relative' }}>
       <div className="timeline-container">
 
@@ -140,6 +151,7 @@ const GitTimeline = ({ timelineData }) => {
             })}
           </svg>
 
+          {events.map(event => (
           {events.map(event => (
             <EventNode
               key={event.id}
