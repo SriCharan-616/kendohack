@@ -169,6 +169,7 @@ body::-webkit-scrollbar { display: none; } /* Chrome/Safari */
   gap: 2rem; /* space between preview and book */
   padding: 2rem;
   flex-wrap: wrap; /* for responsiveness on smaller screens */
+  
 }
 
 /* Preview box (left column) */
@@ -293,6 +294,8 @@ body::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 .character-page-front {
   z-index: 2;
   overflow-y: auto; /* allow scroll */
+  scrollbar-width: none;   /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 .character-page-back {

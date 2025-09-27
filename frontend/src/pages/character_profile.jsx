@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@progress/kendo-react-buttons";
 import { Fade } from "@progress/kendo-react-animation";
@@ -81,8 +81,12 @@ export default function CharacterProfile() {
   const { characterName } = useParams();
   const [selectedChar, setSelectedChar] = useState(null);
   const [flipped, setFlipped] = useState(false);
+  const [flipType, setFlipType] = useState(null); // ✅ Flip type state
   const lastClickRef = useRef({ nodeId: null, time: 0 });
   const navigate = useNavigate();
+
+  const bgAudioRef = useRef(new Audio("/assets/background-music.mp3"));
+  const [musicOn, setMusicOn] = useState(true);
 
   // Preload audio
   useEffect(() => {
@@ -108,7 +112,7 @@ export default function CharacterProfile() {
     });
   }, [characterName]);
 
-  // Background music
+  // Background music effect
   useEffect(() => {
     const audio = bgAudioRef.current;
     audio.loop = true;
@@ -118,23 +122,24 @@ export default function CharacterProfile() {
       audio.pause();
       audio.currentTime = 0;
     };
-  }, []);
-
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    if (musicOn) audio.play().catch(console.log);
-    else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
   }, [musicOn]);
 
-  // Start game (flip page)
+  // Go back home with flip
+  const goHome = () => {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    setFlipType("home");
+    setFlipped(true);
+    setTimeout(() => navigate("/"), 1200);
+  };
+
+  // Start game with flip
   const startGame = () => {
     if (!selectedChar) return;
 
     pageFlipSound.currentTime = 0;
     pageFlipSound.play();
+    setFlipType("game");
     setFlipped(true);
 
     const encodedName = encodeURIComponent(selectedChar.name);
@@ -150,6 +155,7 @@ export default function CharacterProfile() {
     if (lastClickRef.current.nodeId === nodeId && now - lastClickRef.current.time < DOUBLE_CLICK_DELAY) {
       pageFlipSound.currentTime = 0;
       pageFlipSound.play();
+      setFlipType("game");
       setFlipped(true);
 
       const encodedName = encodeURIComponent(selectedChar.name);
@@ -168,10 +174,10 @@ export default function CharacterProfile() {
   return (
     <div className="character-page-container">
       <div className={`character-page-book ${flipped ? "flipped" : ""}`}>
-
-        {/* Front face */}
+        {/* FRONT FACE */}
         <div className="character-page-front">
-          <Appbar title="Play Page" />
+          <Appbar title="Play Page" onHomeClick={goHome} />
+
           <div className="Top">
             <div className="character-preview">
               <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
@@ -205,11 +211,11 @@ export default function CharacterProfile() {
           </div>
         </div>
 
-        {/* Back face */}
+        {/* BACK FACE */}
         <div className="character-page-back">
-          <h1>Ready for the Game?</h1>
+          {flipType === "game" && <p className="game-flip">Entering the game...</p>}
+          {flipType === "home" && <p className="home-flip">Going back home...</p>}
         </div>
-
       </div>
     </div>
   );
