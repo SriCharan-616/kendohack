@@ -11,18 +11,13 @@
   padding-bottom: 1rem;
 }
 
-/* Zoomable content inside container */
-.timeline-content {
-  transform-origin: top left;
-  transition: transform 0.3s ease-in-out;
-  position: relative;
-}
+
 
 /* Event nodes */
 .event-node {
   position: absolute;
   cursor: pointer;
-  transition: transform 0.3s, opacity 0.3s;
+  transition: transform 0.5s, opacity 0.3s;
   opacity: 1; /* always visible */
 }
 
@@ -42,7 +37,9 @@
 
 
 .event-node:hover{
+  position: inherit;
   transform: scale(1.1);
+  z-index: 9999;
 }
 
 /* Label below node */
@@ -52,7 +49,7 @@
   left: 50%;
   font-weight: bold !important;
   transform: translateX(-50%);
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   white-space: nowrap;
   background: #fff;
   padding: 0.1rem 0.3rem;
@@ -60,12 +57,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* Branch lines SVG */
-.timeline-svg path {
-  stroke-width: 2;
-  fill: none;
-  opacity: 0.8;
-}
+
 
 /* Dialogue box */
 .dialogue-box {
@@ -80,62 +72,12 @@
   z-index: 50;
 }
 
-/* Branch labels panel */
-.branch-labels {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: #fff;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  border: 1px solid #e2e8f0;
-  z-index: 30;
-}
-
 
 
 
 .timeline-svg {
-  
- 
-  overflow: visible !important;
+  overflow-y: visible !important;
 }
 
-.timeline-svg path {
-  fill: none !important;
-  stroke: var(--secondary) !important;
-  stroke-width: 4px !important;
-  stroke-linecap: round !important;
- 
-}
-.timeline-svg circle {
-  fill: var(--primary) !important;
-  stroke: var(--secondary) !important;
-  stroke-width: 3px !important;
-  transition: transform 0.3s ease !important, fill 0.3s ease !important, stroke 0.3s ease !important;
-  cursor: pointer !important;
-}
 
-.timeline-svg circle:hover {
-  fill: var(--highlight) !important;
-  stroke: var(--text) !important;
-  transform: scale(1.2) !important;
-}
 
-/* Timeline Labels */
-.timeline-item-label {
-  position: absolute !important;
-  width: 100px !important;
-  text-align: center !important;
-  font-weight: bold !important;
-  color: var(--text) !important;
-  font-family: 'MedievalSharp', cursive !important;
-  cursor: pointer !important;
-  user-select: none !important;
-  transition: transform 0.3s ease !important, color 0.3s ease !important;
-}
-
-.timeline-item-label:hover {
-  transform: scale(1.1) !important;
-}

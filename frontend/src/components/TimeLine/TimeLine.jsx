@@ -114,6 +114,7 @@ const GitTimeline = () => {
   return (
       <div onClick={handleBackgroundClick} style={{ position: 'relative' }}>
         <div className="timeline-container">
+  
         <strong>Branches:</strong>
         <div style={{ display: "flex", flexWrap: "wrap", marginTop: 5 }}>
           {Object.entries(branchColors).map(([branch,color]) => (
@@ -123,7 +124,7 @@ const GitTimeline = () => {
             </div>
           ))}
         </div>
-      
+    
 
         <div className="timeline-content" style={{ width: containerWidth, height: containerHeight, position: 'relative' }}>
           <svg className="timeline-svg" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>

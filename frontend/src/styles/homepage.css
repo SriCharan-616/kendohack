@@ -164,7 +164,7 @@
   border: 2px solid var(--secondary) !important;
   box-shadow: 0 6px 16px rgba(92, 64, 51, 0.3) !important;
   padding: 1.5rem !important;
-  transition: transform 1s ease-in-out , box-shadow .4s ease-in-out, border-color 0.4s ease-in-out !important;
+  transition: transform .6s ease-in-out , box-shadow .6s ease-in-out, border-color 0.6s ease-in-out !important;
 }
 
 .hero-card:hover {
@@ -254,32 +254,5 @@
 }
 
 
-/* --- Dialogue Box Enhancement --- */
-.dialogue-box {
-  position: absolute !important;
-  background: var(--background) !important;
-  border: 2px solid var(--secondary) !important;
-  border-radius: 12px !important;
-  padding: 1rem !important;
-  box-shadow: 0 12px 24px rgba(196, 154, 108, 0.8) !important;
-  font-size: 0.9rem !important;
-  z-index: 1000 !important;
-  transition: transform 0.3s ease, opacity 0.3s ease !important;
-}
-
-.dialogue-box.open {
-  transform: translateY(-5px) scale(1) !important;
-  opacity: 1 !important;
-}
-
-
-
-
-
-
-/* Ensure dialogue box stays on top */
-.dialogue-box {
-  z-index: 9999 !important;
-}
 
 

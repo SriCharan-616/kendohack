@@ -21,8 +21,7 @@ import renaissanceIcon from "/assets/renaissance-Icon.png";
 import arthurIcon from "/assets/arthur.png";
 import cleopatraIcon from "/assets/cleopatra.png";
 import leonardoIcon from "/assets/leonardo.png";
-// Parchment icon for dropdown
-import parchmentIcon from "/assets/parchment-icon.png";
+
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
@@ -217,7 +216,7 @@ const characters = [
             <p style={{fontSize:'20px'}}>Flip through the story of Caesar and relive historical moments interactively.</p>
             <div className="inline-book-wrapper">
               <Book
-                character={{ name: "Caesar", era: "Ancient", img: "/assets/cleopatra.png" }}
+                character={{ name: "Caesar", era: "Ancient", img: "/assets/caesar.png" }}
                 story={caesarTimeline.events}
               />
             </div>
