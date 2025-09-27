@@ -1,0 +1,202 @@
+:root { 
+  --secondary: #8B4513;     
+  --highlight: #FFD700;     
+  --background: #F5E6D3;    
+  --text-color: #2C1810;    
+  --border-color: #A0522D;  
+  --hover-color: #CD853F;   
+  --shadow: rgba(0, 0, 0, 0.2);
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: 'MedievalSharp', cursive, serif;
+  color: var(--text-color);
+  background: url("/assets/output_black.png") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100%;
+  height: 100%;
+}
+
+/* ===================== */
+/* Page Container        */
+/* ===================== */
+.game-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 2rem;
+  gap: 2rem;
+  color: white;
+}
+
+/* ===================== */
+/* Main Content Layout   */
+/* ===================== */
+.game-page-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ===================== */
+/* Character Preview     */
+/* ===================== */
+.character-preview {
+  flex: 0 1 340px;
+  max-width: 100%;
+  min-height: 520px;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border: 3px solid var(--border-color);
+  transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
+  position: relative;
+}
+
+.character-preview h2 {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.character-preview h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+
+.char-full-image {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 4px solid var(--highlight);
+  margin-bottom: 1rem;
+}
+
+/* ============================= */
+/* Vertical Stats / Progressbars */
+/* ============================= */
+.character-stats {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+}
+
+.stat-bar-wrapper p {
+  margin: 0;
+  font-weight: bold;
+  color: var(--secondary);
+  font-size: 0.95rem;
+}
+
+.k-progressbar {
+  width: 100%;
+  height: 16px;
+  border-radius: 8px;
+  background-color: #F5E6D3;
+  border: 2px solid var(--border-color);
+  overflow: hidden;
+}
+
+.k-progressbar .k-progressbar-value {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, var(--highlight), var(--secondary));
+  border-radius: 8px;
+  transition: width 0.5s ease;
+}
+
+/* ===================== */
+/* Choice Cards Section   */
+/* ===================== */
+.choice-cards {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.choice-cards .k-card {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.choice-cards .k-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+.choice-cards .k-card-header h4 {
+  text-align: center;
+  color: var(--highlight);
+}
+
+.choice-cards .k-card-body p {
+  text-align: center;
+  font-style: italic;
+}
+
+.choice-cards .k-card-footer p {
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+
+/* ================= */
+/* Responsive        */
+/* ================= */
+@media (max-width: 1024px) {
+  .game-page-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .character-preview {
+    width: 80%;
+    min-height: auto;
+  }
+
+
+  .choice-cards {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .char-full-image { width: 140px; height: 140px; }
+}
+
+@media (max-width: 480px) {
+  .char-full-image { width: 110px; height: 110px; }
+}

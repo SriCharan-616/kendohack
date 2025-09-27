@@ -6,7 +6,7 @@ import Homepage from './pages/homepage';
 import EraSelect from './pages/era_select';
 import CharacterSelectPage from './pages/character_select';
 import CharacterProfile from "./pages/character_profile";
-
+import GamePage from "./pages/game";
 const AppRoutes = () => {
   return (
     <Router>
@@ -18,7 +18,8 @@ const AppRoutes = () => {
         <Route path="/era-select" element={<EraSelect />} />
         {/* Character selection page */}
         <Route path="/characters/:eraSlug" element={<CharacterSelectPage />} />
-         <Route path="/play/:characterName" element={<CharacterProfile />} />
+        <Route path="/play/:characterName" element={<CharacterProfile />} />
+        <Route path="/game/:characterName" element={<GamePage/>}/>
 
       </Routes>
     </Router>

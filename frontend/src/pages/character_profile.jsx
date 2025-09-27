@@ -101,21 +101,27 @@ export default function CharacterProfile() {
 
   // Handle double-click on valid timeline node
   const handleNodeDoubleClick = (node) => {
-    if (!selectedChar) return;
-    pageFlipSound.currentTime = 0;
-    pageFlipSound.play();
-    setFlipType("game");
-    setFlipped(true);
+  if (!selectedChar) return;
 
-    const encodedName = encodeURIComponent(selectedChar.name);
-    setTimeout(() => navigate(`/game/${encodedName}`), 1200);
+  // Save character and node details in localStorage
+  const dataToSave = {
+    character: selectedChar,
+    node: node
   };
+  localStorage.setItem("selectedCharacterNode", JSON.stringify(dataToSave));
 
-  // Timeline node clicks (single-click for dialogue)
-  const handleNodeClick = (nodeId) => {
-    clickSound.currentTime = 0;
-    clickSound.play();
-  };
+  // Play page flip sound
+  pageFlipSound.currentTime = 0;
+  pageFlipSound.play();
+
+  // Set flip animation type
+  setFlipType("game");
+  setFlipped(true);
+
+  // Navigate after animation
+  const encodedName = encodeURIComponent(selectedChar.name);
+  setTimeout(() => navigate(`/game/${encodedName}`), 1200);
+};
 
   if (!selectedChar) return <p style={{ padding: "2rem" }}>Character not found!</p>;
 
