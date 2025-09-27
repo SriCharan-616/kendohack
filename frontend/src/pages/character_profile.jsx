@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@progress/kendo-react-buttons";
-import { Fade, Slide } from "@progress/kendo-react-animation";
+import { Fade } from "@progress/kendo-react-animation";
 import { ProgressBar } from "@progress/kendo-react-progressbars";
 import "../styles/character_profile.css";
 import Appbar from "../components/appbar";
@@ -10,7 +10,7 @@ import Appbar from "../components/appbar";
 import TimeLine from "../components/TimeLine/TimeLine";
 import Book from "../components/Book/Book";
 
-// Import timelines for all characters
+// Import timelines
 import { caesarTimeline } from "../data/caesar";
 import { gandhiTimeline } from "../data/gandhi";
 import { lincolnTimeline } from "../data/lincoln";
@@ -32,6 +32,7 @@ function toTitleCase(str) {
     .join(" ");
 }
 
+// Animated progress bar
 const AnimatedStat = ({ value, delay }) => {
   const [fill, setFill] = useState(0);
 
@@ -47,16 +48,17 @@ const AnimatedStat = ({ value, delay }) => {
         }
         setFill(Math.round(current));
       }, 10);
+      return () => clearInterval(interval);
     }, delay);
-
     return () => clearTimeout(timeout);
   }, [value, delay]);
 
   return <ProgressBar value={fill} label={false} />;
 };
 
+// Display stats with staggered animation
 const StaggeredStats = ({ stats, timeline }) => {
-  const statEntries = Object.entries(stats);
+  const statEntries = Object.entries(stats || {});
   return (
     <div className="character-stats" style={{ width: "100%", marginTop: "1rem" }}>
       {statEntries.map(([stat, value], index) => (
@@ -80,23 +82,36 @@ export default function CharacterProfile() {
   const [selectedChar, setSelectedChar] = useState(null);
   const bgAudioRef = useRef(new Audio("/assets/bg2.mp3"));
   const [musicOn, setMusicOn] = useState(true);
-  const [lastClickedNode, setLastClickedNode] = useState(null);
   const [flipped, setFlipped] = useState(false);
+  const lastClickRef = useRef({ nodeId: null, time: 0 });
 
   const navigate = useNavigate();
 
+  // Preload audio once
+  useEffect(() => {
+    clickSound.load();
+    pageFlipSound.load();
+    bgAudioRef.current.load();
+  }, []);
+
+  // Load selected character
   useEffect(() => {
     const char = characters.find(c => c.name.toLowerCase() === characterName.toLowerCase());
     if (!char) return;
 
-    const lastEvent = char.timelineData.events[char.timelineData.events.length - 1];
+    const events = char.timelineData.events;
+    const lastEvent = events[events.length - 1];
+    const maxY = Math.max(...events.map(e => e.y));
+    const timelinePercent = maxY ? Math.round((lastEvent.y / maxY) * 100) : 0;
+
     setSelectedChar({
       ...char,
       stats: lastEvent.stats,
-      timeline: lastEvent.y
+      timeline: timelinePercent
     });
   }, [characterName]);
 
+  // Background music handling
   useEffect(() => {
     const audio = bgAudioRef.current;
     audio.loop = true;
@@ -117,20 +132,25 @@ export default function CharacterProfile() {
     }
   }, [musicOn]);
 
-  const playClickSound = () => {
-    clickSound.currentTime = 0;
-    clickSound.play();
-  };
-
+  // Handle timeline node clicks (single vs double)
   const handleNodeClick = (nodeId) => {
-    if (lastClickedNode === nodeId) {
+    if (!selectedChar) return;
+    const now = Date.now();
+    const DOUBLE_CLICK_DELAY = 800;
+
+    if (lastClickRef.current.nodeId === nodeId && now - lastClickRef.current.time < DOUBLE_CLICK_DELAY) {
       pageFlipSound.currentTime = 0;
       pageFlipSound.play();
       setFlipped(true);
-      setTimeout(() => navigate(`/game/${selectedChar.name}`), 1200);
+
+      const encodedName = encodeURIComponent(selectedChar.name);
+      setTimeout(() => navigate(`/game/${encodedName}`), 1200);
+
+      lastClickRef.current = { nodeId: null, time: 0 };
     } else {
-      setLastClickedNode(nodeId);
-      playClickSound();
+      lastClickRef.current = { nodeId, time: now };
+      clickSound.currentTime = 0;
+      clickSound.play();
     }
   };
 
@@ -140,15 +160,14 @@ export default function CharacterProfile() {
     <div className={`character-page ${flipped ? "flipped" : ""}`}>
       <Appbar title="Play Page" />
 
-      {/* Top Row: Character Preview & Book */}
-      <div className="Top" >
+      <div className="Top">
         <div className="character-preview">
           <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
           <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
           <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
           <Button
             style={{ marginTop: "1rem", fontWeight: "bold" }}
-            onClick={() => navigate(`/game/${selectedChar.name}`)}
+            onClick={() => navigate(`/game/${encodeURIComponent(selectedChar.name)}`)}
           >
             Start Game
           </Button>
@@ -159,18 +178,17 @@ export default function CharacterProfile() {
           <Book
             character={selectedChar}
             story={selectedChar.timelineData.events}
-            onNodeClick={handleNodeClick}
+            onNodeClick={handleNodeClick} // pass click handler for book nodes
           />
         </div>
       </div>
 
-      {/* Bottom Row: Timeline with scrollbar */}
       <div style={{ padding: "2rem" }}>
         <h3 style={{ marginBottom: "1rem" }}>Interactive Timeline</h3>
         <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
           <TimeLine
-            events={selectedChar.timelineData.events}
-            onNodeClick={handleNodeClick}
+            timelineData={selectedChar.timelineData} // full object
+            onNodeClick={(event) => handleNodeClick(event.id)} // click handler
           />
         </div>
       </div>
