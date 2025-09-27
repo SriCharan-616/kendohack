@@ -9,7 +9,6 @@
   padding: 2rem;
 
   overflow-x: hidden; /* remove horizontal scrollbar */
-  overflow-y: hidden; /* prevent page vertical scrollbar */
 }
 
 /* Main content: list + preview */
@@ -33,8 +32,6 @@
   gap: 1rem;
 
   max-height: calc(100vh - 120px);
-  overflow-x: hidden;
-  overflow-y: auto; /* scroll vertically */
   padding-left: 25px; 
   padding-right: 5px;
   scrollbar-width: thin; /* Firefox scrollbar */

@@ -161,9 +161,9 @@ export default function HomePage() {
           </Card>
 
           {/* Eras Section */}
-          <div className="hero-section">
-            <h2 className="hero-title">Explore Legendary Eras</h2>
-            <div className="hero-cards-container">
+          <div className="hero-section" >
+            <h2 className="hero-title">Explore Epic Eras</h2>
+            <div className="hero-cards-container" style={{ width: '95%'}}>
               {eras.map((era, idx) => (
                 <Card key={idx} className={`hero-card ${era.className}`} onClick={() => handleHeroCardClick(era.name)}>
                   <img src={era.icon} alt={era.name} className="era-icon" />
@@ -176,7 +176,7 @@ export default function HomePage() {
 
           {/* Characters Section */}
           <div className="hero-section">
-            <h2 className="hero-title">Play As Famous Characters</h2>
+            <h2 className="hero-title">Play As Famous Legends</h2>
             <div className="hero-cards-container">
               {characters.map((char, idx) => (
                 <Card key={idx} className={`hero-card ${char.era.toLowerCase()}-era`} onClick={() => handleHeroCardClick(char.name)}>

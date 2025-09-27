@@ -36,7 +36,7 @@ export const caesarTimeline = {
       description: "Began the conquest of Gaul",
       date: "58 BCE",
       branch: "military",
-      x: 1,
+      
       y: 3,
       branches: [{ branch: "gallic-tribes", color: "#8e44ad" }],
       cause: "Military expertise led to this campaign"
@@ -47,7 +47,7 @@ export const caesarTimeline = {
       description: "Defeated the migrating Helvetii tribe",
       date: "58 BCE",
       branch: "gallic-tribes",
-      x: -2,
+      
       y: 4,
       branches: [{ branch: "germanic-threat", color: "#27ae60" }],
       cause: "Strategic response to tribal movements"

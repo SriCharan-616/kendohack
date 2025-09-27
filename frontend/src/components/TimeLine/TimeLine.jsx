@@ -7,10 +7,14 @@ import "../../styles/timeline.css";
 
 // Assign colors to branches
 const getBranchColors = (events) => {
-  const colorsPalette = ["#2c3e50","#e74c3c","#3498db","#e67e22","#8e44ad","#27ae60","#f39c12","#1abc9c"];
   const uniqueBranches = [...new Set(events.map(e => e.branch))];
   const branchColors = {};
-  uniqueBranches.forEach((branch, idx) => branchColors[branch] = colorsPalette[idx % colorsPalette.length]);
+  uniqueBranches.forEach((branch, idx) => {
+    // Evenly space hues on the color wheel (0–360)
+      const hue = (idx * 360) / uniqueBranches.length;
+    // You can adjust saturation & lightness to taste
+      branchColors[branch] = `hsl(${hue}, 70%, 50%)`;
+  });  
   return branchColors;
 };
 
@@ -29,8 +33,8 @@ const EventNode = ({ event, onClick, isActive, branchColor, lane }) => (
   <div
     className={`event-node ${isActive ? "scale-125" : ""}`}
     style={{
-      left: `${50 + lane * 100}px`,
-      top: `${100 + event.y * 100}px`,
+      left: `${100 - 12 + lane * 70}px`,
+      top: `${100 - 15 + event.y * 90}px`,
       position: "absolute",
       cursor: "pointer",
       zIndex: 10
@@ -49,8 +53,8 @@ const DialogueBox = ({ event, position, onClose }) => {
       className="dialogue-box"
       style={{
         position: "absolute",
-        left: Math.min(position.x + 10, window.innerWidth - 260),
-        top: Math.max(position.y - 40, 10),
+        left: position.x - 250,
+        top: position.y - 400,
         width: "250px",
         zIndex: 1000,
         pointerEvents: "auto",
@@ -108,27 +112,28 @@ const GitTimeline = () => {
   const handleBackgroundClick = () => closeDialogue();
 
   return (
-    <div onClick={handleBackgroundClick} style={{ position: 'relative' }}>
-      <div className="timeline-container">
-        <div style={{ marginBottom: 20 }}>
-          <strong>Branches:</strong>
-          <div style={{ display: "flex", flexWrap: "wrap", marginTop: 5 }}>
-            {Object.entries(branchColors).map(([branch,color]) => (
-              <div key={branch} style={{ display:"flex", alignItems:"center", marginRight: 10, marginBottom: 4 }}>
-                <div style={{ width:12, height:12, borderRadius:"50%", backgroundColor:color, marginRight:4 }} />
-                <span style={{ fontSize:12 }}>{branch.replace("-"," ")}</span>
-              </div>
-            ))}
-          </div>
+      <div onClick={handleBackgroundClick} style={{ position: 'relative' }}>
+        <div className="timeline-container">
+        <strong>Branches:</strong>
+        <div style={{ display: "flex", flexWrap: "wrap", marginTop: 5 }}>
+          {Object.entries(branchColors).map(([branch,color]) => (
+            <div key={branch} style={{ display:"flex", alignItems:"center", marginRight: 10, marginBottom: 4 }}>
+              <div style={{ width:12, height:12, borderRadius:"50%", backgroundColor:color, marginRight:4 }} />
+              <span style={{ fontSize:12 }}>{branch.replace("-"," ")}</span>
+            </div>
+          ))}
         </div>
+      
 
         <div className="timeline-content" style={{ width: containerWidth, height: containerHeight, position: 'relative' }}>
           <svg className="timeline-svg" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
             {branchLines.map((line, idx) => {
-              const fromX = 50 + branchLanes[line.from.branch] * 100;
-              const fromY = 100 + line.from.y * 100;
-              const toX = 50 + branchLanes[line.to.branch] * 100;
-              const toY = 100 + line.to.y * 100;
+              const mulx = 70;
+              const muly = 90;
+              const fromX = 100 + branchLanes[line.from.branch] * mulx;
+              const fromY = 100 + line.from.y * muly;
+              const toX = 100 + branchLanes[line.to.branch] * mulx;
+              const toY = 100 + line.to.y * muly;
               return <line key={idx} x1={fromX} y1={fromY} x2={toX} y2={toY} stroke={line.color} strokeWidth="2" />;
             })}
           </svg>
