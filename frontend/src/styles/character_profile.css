@@ -161,25 +161,6 @@ body::-webkit-scrollbar { display: none; } /* Chrome/Safari */
   transform: translateY(-2px);
 }
 
-/* ================= */
-/* Fun fact section  */
-/* ================= */
-.character-facts {
-  margin-top: 1rem;
-  width: 100%;
-  text-align: left;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--secondary);
-  max-height: 200px; /* optional: scrollable if many facts */
-  overflow-y: auto;
-}
-
-.character-facts::-webkit-scrollbar { display: none; }
-.character-facts {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
 
 .Top {
   display: flex;
