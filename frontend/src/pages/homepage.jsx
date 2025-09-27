@@ -27,7 +27,7 @@ const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
 
 
-import  MusicDropdown  from "../components/music";  
+import  Appbar  from "../components/appbar";  
 
 export default function HomePage() {
   const [flipped, setFlipped] = useState(false);
@@ -112,22 +112,7 @@ const characters = [
 
         {/* --- FRONT PAGE --- */}
         <div className="homepage-front">
-          <AppBar className="k-appbar">
-            <AppBarSection>
-              <h2>🌟 Legends of History</h2>
-            </AppBarSection>
-            <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
-              <Button
-                className={'music-button' }
-                onClick={toggleMusic}
-              >
-                {musicOn ? "🔊 Music On" : "🔇 Music Off"}
-              </Button>
-              <MusicDropdown  />
-              
-            </AppBarSection>
-          </AppBar>
-          <AppBarSpacer />
+          <Appbar title='Legends Of History'/>
 
           {/* Welcome Portal */}
           <Card className="welcome-portal" onClick={handlePortalClick}>

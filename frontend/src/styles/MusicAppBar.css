@@ -1,0 +1,37 @@
+/* MusicAppBar.css */
+.k-appbar {
+  width: 720px !important;
+  margin: 2rem auto 0 auto !important;
+  height: 93px !important;
+  background-color: var(--background) !important;
+  color: var(--secondary) !important;
+  border-bottom: 2px solid var(--secondary) !important;
+  border-radius: 8px !important;
+  padding: 1rem 2rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  z-index: 10 !important;
+}
+
+/* Music Button & Dropdown */
+.music-button,
+.music-dropdown {
+  font-size: 1.3rem !important;
+  background: var(--primary) !important;
+  color: var(--background) !important;
+  border: 2px solid var(--secondary) !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.8rem !important;
+  cursor: pointer !important;
+  height: 48px !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.music-button.k-button:hover,
+.music-dropdown:hover {
+  background: var(--highlight) !important;
+  color: var(--text) !important;
+  transform: scale(1.04) !important;
+  box-shadow: 0 6px 16px rgba(92, 64, 51, 0.5) !important;
+}
