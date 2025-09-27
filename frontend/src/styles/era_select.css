@@ -126,6 +126,18 @@
     url('../assets/ancient-rome-texture.png') center/cover no-repeat !important;
   border-color: #B68A4B !important;
 }
+.medieval-era-card {
+  background: 
+    linear-gradient(145deg, #EDE1C9 0%, #C7B18F 100%), 
+    url('../assets/medieval-texture.png') center/cover no-repeat !important;
+  border-color: #8B0000 !important; /* Deep red for heraldry */
+}
+.renaissance-era-card {
+  background: 
+    linear-gradient(145deg, #FFF4E1 0%, #D9B784 100%), 
+    url('../assets/renaissance-texture.png') center/cover no-repeat !important;
+  border-color: #DAA520 !important; /* Golden artistic tone */
+}
 .industrial-era-card {
   background: 
     linear-gradient(145deg, #C0C0C0 0%, #8F8F8F 100%), 
@@ -146,11 +158,13 @@
   font-weight: bold !important;
   padding: 0.6rem 1rem !important;
   cursor: pointer !important;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
-.k-button:hover {
+.era-card .k-button:hover {
   transform: scale(1.08) !important;
   box-shadow: 0 10px 18px rgba(0,0,0,0.35) !important;
+  background: inherit !important; /* Keeps era-specific buttonColor */
+  color: var(--background) !important;
 }
 
 /* Story card wrapper */

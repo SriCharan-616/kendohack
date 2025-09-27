@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   AppBar,
   AppBarSection,
@@ -13,7 +13,6 @@ import { Button, DropDownButton } from "@progress/kendo-react-buttons";
 import { Fade, Slide } from "@progress/kendo-react-animation";
 import "../styles/character_select.css";
 
-import parchmentIcon from "../assets/parchment-icon.png";
 
 const characters = [
   {
@@ -42,12 +41,25 @@ const characters = [
 const clickSound = new Audio("/assets/click.mp3");
 
 export default function CharacterSelectPage() {
+  const { eraSlug } = useParams();
   const navigate = useNavigate();
-  const [selectedChar, setSelectedChar] = useState(characters[0]);
-  const [musicOn, setMusicOn] = useState(true);
   const bgAudioRef = useRef(new Audio("/assets/bg2.mp3"));
+  const [musicOn, setMusicOn] = useState(true);
 
-  // Music handling
+  // Filter characters by eraSlug
+  const filteredChars = characters.filter(
+    (char) => char.era.toLowerCase() === eraSlug
+  );
+
+  // Auto-select first character
+  const [selectedChar, setSelectedChar] = useState(filteredChars[0] || null);
+
+  useEffect(() => {
+    if (filteredChars.length > 0) setSelectedChar(filteredChars[0]);
+    else setSelectedChar(null);
+  }, [eraSlug]);
+
+  // Background music setup
   useEffect(() => {
     const audio = bgAudioRef.current;
     audio.loop = true;
@@ -79,80 +91,99 @@ export default function CharacterSelectPage() {
   };
 
   return (
-    <div className="homepage-container">
-      <div className="character-select-container">
-
-        <AppBar className="k-appbar">
-          <AppBarSection><h2>Character Selection</h2></AppBarSection>
-          <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
-            <Button
-              className={`music-button ${musicOn ? "pulse" : "pulse-flip"}`}
-              onClick={() => setMusicOn(prev => !prev)}
-            >
-              {musicOn ? "🔉 Music" : "🔇 Music"}
-            </Button>
-            <DropDownButton
-              className="music-dropdown"
-              text={<img src={parchmentIcon} alt="parchment" className="parchment-icon"/>}
-              items={[
-                { text: "Medieval Tune", onClick: () => { playClickSound(); bgAudioRef.current.src="/assets/bg2.mp3"; bgAudioRef.current.play(); setMusicOn(true);} }
-              ]}
-              popupSettings={{ className: "custom-music-dropdown-popup" }}
-            />
-          </AppBarSection>
-        </AppBar>
+    <div className="character-page">
+      {/* App Bar */}
+      <AppBar className="app-bar">
+        <AppBarSection>
+          <h2>Character Selection</h2>
+        </AppBarSection>
         <AppBarSpacer />
+        <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
+          <Button
+            className={`music-button ${musicOn ? "pulse" : "pulse-flip"}`}
+            onClick={() => setMusicOn(prev => !prev)}
+          >
+            {musicOn ? "🔉 Music" : "🔇 Music"}
+          </Button>
+          <DropDownButton
+            className="music-dropdown"
+            text={"Change Track"}
+            items={[{
+              text: "Medieval Tune",
+              onClick: () => {
+                playClickSound();
+                bgAudioRef.current.src = "/assets/bg2.mp3";
+                bgAudioRef.current.play();
+                setMusicOn(true);
+              }
+            }]}
+            popupSettings={{ className: "custom-music-dropdown-popup" }}
+          />
+        </AppBarSection>
+      </AppBar>
 
+      {/* Content container */}
+      <div className="character-select-container">
         <div className="character-select-main">
-
-          {/* --- Character List --- */}
+          
+          {/* Character List */}
           <div className="character-list">
-            {characters.map((char, idx) => (
-              <Card
-                key={idx}
-                className={`hero-card ${selectedChar.name === char.name ? "selected" : ""}`}
-                onClick={() => handleSelectCharacter(char)}
-              >
-                <CardHeader>
-                  <CardTitle>{char.name}</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <img src={char.img} alt={char.name} className="char-thumbnail"/>
-                  <p>{char.era} Era</p>
-                </CardBody>
-              </Card>
+            {filteredChars.map((char, idx) => (
+              <Fade key={idx}>
+                <Card
+                  className={`hero-card ${selectedChar?.name === char.name ? "selected" : ""}`}
+                  onClick={() => handleSelectCharacter(char)}
+                >
+                  <CardHeader>
+                    <CardTitle>{char.name}</CardTitle>
+                  </CardHeader>
+                  <CardBody>
+                    <img src={char.img} alt={char.name} className="char-thumbnail" />
+                    <p>{char.era.replace(/-/g, " ")} Era</p>
+                  </CardBody>
+                </Card>
+              </Fade>
             ))}
           </div>
 
-          {/* --- Character Preview --- */}
-          <Slide direction="end" in={true}>
-            <Fade in={true}>
-              <div className="character-preview">
-                <h2>{selectedChar.name} ({selectedChar.era} Era)</h2>
-                <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image"/>
-                
-                {/* Stats */}
-                <div className="character-stats">
-                  {Object.entries(selectedChar.stats).map(([stat, value]) => (
-                    <div className="stat-bar-wrapper" key={stat}>
-                      <p>{stat.charAt(0).toUpperCase() + stat.slice(1)}: {value}</p>
-                      <div className="stat-bar">
-                        <div className="stat-fill" style={{ width: `${value}%` }}></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          {/* Character Preview */}
+          {selectedChar && (
+            <Slide direction="end" in={true}>
+              <Fade in={true}>
+                <div className="character-preview">
+                  <h2>{selectedChar.name} ({selectedChar.era.replace(/-/g, " ")} Era)</h2>
+                  <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
 
-                {/* Timeline */}
-                <div className="timeline-section">
-                  <p>Timeline Progress: {selectedChar.timeline}%</p>
-                  <div className="stat-bar">
-                    <div className="stat-fill timeline-fill" style={{ width: `${selectedChar.timeline}%` }}></div>
+                  {/* Stats */}
+                  <div className="character-stats">
+                    {Object.entries(selectedChar.stats).map(([stat, value]) => (
+                      <div className="stat-bar-wrapper" key={stat}>
+                        <p>{stat.charAt(0).toUpperCase() + stat.slice(1)}: {value}</p>
+                        <div className="stat-bar">
+                          <div className="stat-fill" style={{ width: `${value}%` }}></div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+
+                  {/* Timeline */}
+                  <div className="timeline-section">
+                    <p>Timeline Progress: {selectedChar.timeline}%</p>
+                    <div className="stat-bar">
+                      <div className="stat-fill timeline-fill" style={{ width: `${selectedChar.timeline}%` }}></div>
+                    </div>
+                  </div>
+
+                  <Button
+                    style={{ marginTop: "1rem", fontWeight: "bold" }}
+                    onClick={() => navigate(`/play/${selectedChar.name.toLowerCase()}`)}
+                  >
+                    Enter Game
+                  </Button>
                 </div>
-              </div>
-            </Fade>
-          </Slide>
+              </Fade>
+            </Slide>
+          )}
 
         </div>
       </div>

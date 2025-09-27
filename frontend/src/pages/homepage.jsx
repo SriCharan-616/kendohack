@@ -14,15 +14,15 @@ import "../styles/homepage.css";
 import Book from "../components/Book/Book";
 import { caesarTimeline } from "../data/caesar";
 // Era icons
-import ancientIcon from "../assets/ancient-icon.png";
-import medievalIcon from "../assets/medieval-icon.png";
-import renaissanceIcon from "../assets/renaissance-icon.png";
+import ancientIcon from "/assets/ancient-Icon.png";
+import medievalIcon from "/assets/medieval-Icon.png";
+import renaissanceIcon from "/assets/renaissance-Icon.png";
 // Character icons
-import arthurIcon from "../assets/arthur.png";
-import cleopatraIcon from "../assets/cleopatra.png";
-import leonardoIcon from "../assets/leonardo.png";
+import arthurIcon from "/assets/arthur.png";
+import cleopatraIcon from "/assets/cleopatra.png";
+import leonardoIcon from "/assets/leonardo.png";
 // Parchment icon for dropdown
-import parchmentIcon from "../assets/parchment-icon.png";
+import parchmentIcon from "/assets/parchment-icon.png";
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
@@ -92,32 +92,48 @@ export default function HomePage() {
   };
 
   /* --- Data --- */
-  const eras = [
-    { 
-      name: "Ancient Era", 
-      icon: ancientIcon, 
-      description: "Step into the dawn of civilization, where kings, empires, and legendary heroes shaped history.", 
-      className: "ancient-era" 
-    },
-    { 
-      name: "Medieval Era", 
-      icon: medievalIcon, 
-      description: "Explore castles, knights, and epic quests in a world of chivalry and intrigue.", 
-      className: "medieval-era" 
-    },
-    { 
-      name: "Renaissance Era", 
-      icon: renaissanceIcon, 
-      description: "Witness the rebirth of art, science, and culture as visionaries change the world.", 
-      className: "renaissance-era" 
-    }
-  ];
+  /* --- Data --- */
+const eras = [
+  { 
+    name: "Ancient Era", 
+    icon: ancientIcon, 
+    description: "Step into the dawn of civilization, where kings, empires, and legendary heroes shaped history.", 
+    className: "ancient-era" 
+  },
+  { 
+    name: "Medieval Era", 
+    icon: medievalIcon, 
+    description: "Explore castles, knights, and epic quests in a world of chivalry and intrigue.", 
+    className: "medieval-era" 
+  },
+  { 
+    name: "Renaissance Era", 
+    icon: renaissanceIcon, 
+    description: "Witness the rebirth of art, science, and culture as visionaries change the world.", 
+    className: "renaissance-era" 
+  },
+  { 
+    name: "Industrial Era", 
+    icon: "/assets/industrial-icon.png", 
+    description: "Discover the rise of machines, industry, and urban civilization.", 
+    className: "industrial-era" 
+  },
+  { 
+    name: "Modern Era", 
+    icon: "/assets/modern-icon.png", 
+    description: "Experience contemporary history with global events, innovations, and revolutions.", 
+    className: "modern-era" 
+  }
+];
 
-  const characters = [
-    { name: "Arthur", era: "Medieval", img: arthurIcon },
-    { name: "Cleopatra", era: "Ancient", img: cleopatraIcon },
-    { name: "Leonardo", era: "Renaissance", img: leonardoIcon }
-  ];
+const characters = [
+  { name: "Arthur", era: "Medieval", img: arthurIcon },
+  { name: "Cleopatra", era: "Ancient", img: cleopatraIcon },
+  { name: "Leonardo", era: "Renaissance", img: leonardoIcon },
+  { name: "Napoleon", era: "Modern", img: "/assets/napoleon.png" },
+  { name: "Marie Curie", era: "Modern", img: "/assets/marie-curie.png" },
+];
+
 
   return (
     <div className="homepage-container">
