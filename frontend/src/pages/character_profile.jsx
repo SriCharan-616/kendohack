@@ -84,13 +84,6 @@ export default function CharacterProfile() {
   const lastClickRef = useRef({ nodeId: null, time: 0 });
   const navigate = useNavigate();
 
-  // Preload audio
-  useEffect(() => {
-    clickSound.load();
-    pageFlipSound.load();
-    bgAudioRef.current.load();
-  }, []);
-
   // Load selected character
   useEffect(() => {
     const char = characters.find(c => c.name.toLowerCase() === characterName.toLowerCase());
@@ -108,38 +101,7 @@ export default function CharacterProfile() {
     });
   }, [characterName]);
 
-  // Background music
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    audio.loop = true;
-    audio.volume = 0.2;
-    if (musicOn) audio.play().catch(console.log);
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, []);
 
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    if (musicOn) audio.play().catch(console.log);
-    else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  }, [musicOn]);
-
-  // Start game (flip page)
-  const startGame = () => {
-    if (!selectedChar) return;
-
-    pageFlipSound.currentTime = 0;
-    pageFlipSound.play();
-    setFlipped(true);
-
-    const encodedName = encodeURIComponent(selectedChar.name);
-    setTimeout(() => navigate(`/game/${encodedName}`), 1200);
-  };
 
   // Timeline node clicks
   const handleNodeClick = (nodeId) => {
@@ -177,12 +139,6 @@ export default function CharacterProfile() {
               <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
               <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
               <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
-              <Button
-                style={{ marginTop: "1rem", fontWeight: "bold" }}
-                onClick={startGame}
-              >
-                Start Game
-              </Button>
             </div>
 
             <div style={{ flex: 1, maxWidth: "700px" }}>
