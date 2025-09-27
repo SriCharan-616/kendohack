@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
 :root {
   --primary: #8B5E3C !important;     /* bronze brown */
   --secondary: #5C4033 !important;   /* dark wood */
@@ -15,7 +17,6 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-family: 'MedievalSharp', cursive !important;
   color: var(--text) !important;
 }
 
@@ -220,3 +221,17 @@
 
 
 
+/* Force Dancing Script everywhere on the homepage */
+body, html, 
+.homepage-container, 
+.homepage-book, 
+.homepage-front, 
+.homepage-back, 
+.welcome-portal, 
+.hero-section, 
+.hero-title, 
+.hero-card, 
+.custom-music-dropdown-popup .k-item,
+.inline-book-wrapper {
+    font-family: 'Dancing Script', cursive !important;
+}
