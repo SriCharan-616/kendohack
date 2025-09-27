@@ -8,7 +8,7 @@ import {
 import TimeLine from "../components/TimeLine/TimeLine";
 import "../styles/homepage.css";
 import Book from "../components/Book/Book";
-import { caesarTimeline } from "../data/caesar";
+
 // Era icons
 import ancientIcon from "/assets/ancient-Icon.png";
 import medievalIcon from "/assets/medieval-Icon.png";
@@ -18,6 +18,7 @@ import arthurIcon from "/assets/arthur.png";
 import cleopatraIcon from "/assets/cleopatra.png";
 import leonardoIcon from "/assets/leonardo.png";
 
+import {caesarTimeline} from "../data/caesar";
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
@@ -143,7 +144,9 @@ const characters = [
           <div className="hero-section">
             <h2 className="hero-title" style={{ marginBottom: '0px' }}>Dynamic Timeline</h2>
             <span style={{fontSize:'20px'}}>Watch And Change History With Your Decisions.</span>
-            <TimeLine />
+            <TimeLine
+            timelineData={caesarTimeline} 
+          />
           </div>
 
           {/* Interactive Storybook Section */}

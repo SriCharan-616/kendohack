@@ -80,19 +80,10 @@ const StaggeredStats = ({ stats, timeline }) => {
 export default function CharacterProfile() {
   const { characterName } = useParams();
   const [selectedChar, setSelectedChar] = useState(null);
-  const bgAudioRef = useRef(new Audio("/assets/bg2.mp3"));
-  const [musicOn, setMusicOn] = useState(true);
   const [flipped, setFlipped] = useState(false);
   const lastClickRef = useRef({ nodeId: null, time: 0 });
 
   const navigate = useNavigate();
-
-  // Preload audio once
-  useEffect(() => {
-    clickSound.load();
-    pageFlipSound.load();
-    bgAudioRef.current.load();
-  }, []);
 
   // Load selected character
   useEffect(() => {
@@ -110,27 +101,7 @@ export default function CharacterProfile() {
       timeline: timelinePercent
     });
   }, [characterName]);
-
-  // Background music handling
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    audio.loop = true;
-    audio.volume = 0.2;
-    if (musicOn) audio.play().catch(console.log);
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, []);
-
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    if (musicOn) audio.play().catch(console.log);
-    else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  }, [musicOn]);
+  
 
   // Handle timeline node clicks (single vs double)
   const handleNodeClick = (nodeId) => {
@@ -183,7 +154,7 @@ export default function CharacterProfile() {
         </div>
       </div>
 
-      <div style={{ padding: "2rem" }}>
+      <div className='timeline-wrapper' style={{ padding: "2rem" }}>
         <h3 style={{ marginBottom: "1rem" }}>Interactive Timeline</h3>
         <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
           <TimeLine
