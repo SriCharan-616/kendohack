@@ -1,0 +1,33 @@
+/* PlayPage Left-Aligned Character Preview */
+.character-select-container {
+  display: flex;
+  justify-content: flex-start; /* left-aligned */
+   padding: 2rem 0 2rem 15rem
+}
+
+.character-preview {
+  flex: 0 0 400px; /* fixed width */
+  min-height: 600px;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* left align text */
+  background: white;
+  border: 3px solid #A0522D;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .character-preview {
+    width: 100%;
+    min-height: auto;
+    align-items: center; /* center on mobile */
+  }
+  .char-full-image { width: 150px; height: 150px; }
+}
+
+@media (max-width: 480px) {
+  .char-full-image { width: 120px; height: 120px; }
+}

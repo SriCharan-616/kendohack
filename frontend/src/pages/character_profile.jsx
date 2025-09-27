@@ -1,18 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   AppBar,
   AppBarSection,
-  AppBarSpacer,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody
+  AppBarSpacer
 } from "@progress/kendo-react-layout";
-import { Button, DropDownButton } from "@progress/kendo-react-buttons";
+import { Button } from "@progress/kendo-react-buttons";
 import { Fade, Slide } from "@progress/kendo-react-animation";
 import { ProgressBar } from "@progress/kendo-react-progressbars";
-import "../styles/character_select.css";
+import "../styles/character_profile.css"; // reuse same CSS
 
 const characters = [
   { name: "Arthur", era: "medieval-era", img: "/assets/arthur.png", stats: { strength: 85, intelligence: 70, agility: 75 }, timeline: 60 },
@@ -32,14 +28,13 @@ function toTitleCase(str) {
     .join(" ");
 }
 
-// Animated stat with smooth filling
 const AnimatedStat = ({ value, delay }) => {
   const [fill, setFill] = useState(0);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       let current = 0;
-      const step = value / 50; // adjust speed
+      const step = value / 50;
       const interval = setInterval(() => {
         current += step;
         if (current >= value) {
@@ -56,7 +51,6 @@ const AnimatedStat = ({ value, delay }) => {
   return <ProgressBar value={fill} label={false} />;
 };
 
-// Component for staggered stats + timeline
 const StaggeredStats = ({ stats, timeline }) => {
   const statEntries = Object.entries(stats);
   return (
@@ -69,7 +63,6 @@ const StaggeredStats = ({ stats, timeline }) => {
           </div>
         </Fade>
       ))}
-
       <div className="timeline-section" style={{ marginTop: "1rem" }}>
         <p>Timeline Progress: {timeline}%</p>
         <AnimatedStat value={timeline} delay={statEntries.length * 300} />
@@ -78,22 +71,17 @@ const StaggeredStats = ({ stats, timeline }) => {
   );
 };
 
-export default function CharacterSelect() {
-  const { eraSlug } = useParams();
-  const navigate = useNavigate();
+export default function CharacterProfile() {
+  const { characterName } = useParams();
+  const [selectedChar, setSelectedChar] = useState(null);
   const bgAudioRef = useRef(new Audio("/assets/bg2.mp3"));
   const [musicOn, setMusicOn] = useState(true);
 
-  const filteredChars = characters.filter(
-    (char) => char.era.toLowerCase() === eraSlug
-  );
-
-  const [selectedChar, setSelectedChar] = useState(filteredChars[0] || null);
-
+  // Load only the previously selected character
   useEffect(() => {
-    if (filteredChars.length > 0) setSelectedChar(filteredChars[0]);
-    else setSelectedChar(null);
-  }, [eraSlug]);
+    const char = characters.find(c => c.name.toLowerCase() === characterName.toLowerCase());
+    if (char) setSelectedChar(char);
+  }, [characterName]);
 
   useEffect(() => {
     const audio = bgAudioRef.current;
@@ -120,16 +108,14 @@ export default function CharacterSelect() {
     clickSound.play();
   };
 
-  const handleSelectCharacter = (char) => {
-    playClickSound();
-    setSelectedChar(char);
-  };
+  if (!selectedChar) return <p style={{ padding: "2rem" }}>Character not found!</p>;
 
   return (
     <div className="character-page">
+      {/* Navbar */}
       <AppBar className="app-bar">
         <AppBarSection>
-          <h2>Character Selection</h2>
+          <h2>Play Page</h2>
         </AppBarSection>
         <AppBarSpacer />
         <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
@@ -139,66 +125,26 @@ export default function CharacterSelect() {
           >
             {musicOn ? "🔉 Music" : "🔇 Music"}
           </Button>
-          <DropDownButton
-            className="music-dropdown"
-            text={"Change Track"}
-            items={[{
-              text: "Medieval Tune",
-              onClick: () => {
-                playClickSound();
-                bgAudioRef.current.src = "/assets/bg2.mp3";
-                bgAudioRef.current.play();
-                setMusicOn(true);
-              }
-            }]}
-            popupSettings={{ className: "custom-music-dropdown-popup" }}
-          />
         </AppBarSection>
       </AppBar>
 
-      <div className="character-select-container">
-        <div className="character-select-main">
-
-          <div className="character-list">
-            {filteredChars.map((char, idx) => (
-              <Fade key={idx}>
-                <Card
-                  className={`hero-card ${selectedChar?.name === char.name ? "selected" : ""}`}
-                  onClick={() => handleSelectCharacter(char)}
-                >
-                  <CardHeader>
-                    <CardTitle>{char.name}</CardTitle>
-                  </CardHeader>
-                  <CardBody>
-                    <img src={char.img} alt={char.name} className="char-thumbnail" />
-                    <p>{toTitleCase(char.era)}</p>
-                  </CardBody>
-                </Card>
-              </Fade>
-            ))}
-          </div>
-
-          {selectedChar && (
-            <Slide direction="end" in={true}>
-              <Fade in={true}>
-                <div className="character-preview">
-                  <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
-                  <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
-
-                  <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
-
-                  <Button
-                    style={{ marginTop: "1rem", fontWeight: "bold" }}
-                    onClick={() => navigate(`/play/${selectedChar.name.toLowerCase()}`)}
-                  >
-                    Select Character
-                  </Button>
-                </div>
-              </Fade>
-            </Slide>
-          )}
-
-        </div>
+      {/* Character Preview Left-Aligned */}
+      <div className="character-select-container" style={{ justifyContent: "flex-start" }}>
+        <Slide direction="start" in={true}>
+          <Fade in={true}>
+            <div className="character-preview" style={{ marginLeft: "2rem" }}>
+              <h2>{selectedChar.name} ({toTitleCase(selectedChar.era)})</h2>
+              <img src={selectedChar.img} alt={selectedChar.name} className="char-full-image" />
+              <StaggeredStats stats={selectedChar.stats} timeline={selectedChar.timeline} />
+              <Button
+                style={{ marginTop: "1rem", fontWeight: "bold" }}
+                onClick={playClickSound}
+              >
+                Start Game
+              </Button>
+            </div>
+          </Fade>
+        </Slide>
       </div>
     </div>
   );
