@@ -15,15 +15,15 @@
 
 /* Event nodes */
 .event-node {
-  position: absolute;
+  position: fixed;
   cursor: pointer;
   transition: transform 0.5s;
   opacity: 1; /* always visible */
-  z-index: 20;
+ 
 }
 
 .event-node.scale-125 {
-  transform: scale(1.25);
+  transform: scale(1.1);
 }
 
 /* Circle of node */
@@ -39,7 +39,6 @@
 
 .event-node:hover{
   transform: scale(1.1);
-  z-index: 2;
 }
 
 /* Label below node */
@@ -62,7 +61,7 @@
 
 /* Dialogue box */
 .dialogue-box {
-  position: fixed;
+  position: absolute;
   max-width: 20rem;
   background-color: white;
   color: #fff;
@@ -87,4 +86,7 @@
   opacity: 0;
 }
 
-
+.timeline-container:has(.event-node.scale-125)
+  .event-node:not(.scale-125) {
+  opacity: 0;
+}

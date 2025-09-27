@@ -25,39 +25,18 @@ import leonardoIcon from "/assets/leonardo.png";
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
-// Background music options
-const musicList = [
-  { text: "Medieval Tune", file: "/assets/bg2.mp3" },
-  { text: "Ancient Melody", file: "/assets/bg_ancient.mp3" },
-  { text: "Renaissance Song", file: "/assets/bg_renaissance.mp3" }
-];
+
+
+import  MusicDropdown  from "../components/music";  
 
 export default function HomePage() {
   const [flipped, setFlipped] = useState(false);
   const [musicOn, setMusicOn] = useState(true);
-  const [zoom, setZoom] = useState(0.8);
+  
   const navigate = useNavigate();
-  const bgAudioRef = useRef(new Audio(musicList[0].file));
+  
 
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    audio.loop = true;
-    audio.volume = 0.2;
-    if (musicOn) audio.play().catch(console.log);
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, []);
-
-  useEffect(() => {
-    const audio = bgAudioRef.current;
-    if (musicOn) audio.play().catch(console.log);
-    else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  }, [musicOn]);
+  
 
   const playClickSound = () => {
     clickSound.currentTime = 0;
@@ -76,14 +55,7 @@ export default function HomePage() {
     setMusicOn(prev => !prev);
   };
 
-  const changeMusic = (file) => {
-    const audio = bgAudioRef.current;
-    audio.pause();
-    audio.currentTime = 0;
-    audio.src = file;
-    audio.play().catch(console.log);
-    setMusicOn(true);
-  };
+ 
 
   const handleHeroCardClick = (name) => {
     playClickSound();
@@ -151,19 +123,8 @@ const characters = [
               >
                 {musicOn ? "🔊 Music On" : "🔇 Music Off"}
               </Button>
-
-              <DropDownButton
-                className="music-dropdown"
-                text="🎵"
-                items={musicList.map(m => ({
-                  text: m.text,
-                  onClick: () => {
-                    playClickSound();
-                    changeMusic(m.file);
-                  }
-                }))}
-                popupSettings={{ className: "custom-music-dropdown-popup" }}
-              />
+              <MusicDropdown  />
+              
             </AppBarSection>
           </AppBar>
           <AppBarSpacer />
@@ -192,7 +153,7 @@ const characters = [
           {/* Characters Section */}
           <div className="hero-section">
             <h2 className="hero-title">Play As Famous Legends</h2>
-            <div className="hero-cards-container">
+            <div className="hero-cards-container" style={{ width: '95%'}}>
               {characters.map((char, idx) => (
                 <Card key={idx} className={`hero-card ${char.era.toLowerCase()}-era`} onClick={() => handleHeroCardClick(char.name)}>
                   <img src={char.img} alt={char.name} className="era-icon" />
@@ -225,7 +186,6 @@ const characters = [
 
         {/* --- BACK PAGE --- */}
         <div className="homepage-back">
-          <h1>🌍 Era Selection</h1>
           <p>Select your adventure to begin your historical journey.</p>
         </div>
 
