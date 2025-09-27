@@ -17,8 +17,9 @@
 .event-node {
   position: absolute;
   cursor: pointer;
-  transition: transform 0.5s, opacity 0.3s;
+  transition: transform 0.5s;
   opacity: 1; /* always visible */
+  z-index: 20;
 }
 
 .event-node.scale-125 {
@@ -37,9 +38,8 @@
 
 
 .event-node:hover{
-  position: inherit;
   transform: scale(1.1);
-  z-index: 9999;
+  z-index: 2;
 }
 
 /* Label below node */
@@ -55,15 +55,16 @@
   padding: 0.1rem 0.3rem;
   border-radius: 0.2rem;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  z-index: 10; /* relative to the node */
+  pointer-events: none;
 }
-
 
 
 /* Dialogue box */
 .dialogue-box {
   position: fixed;
   max-width: 20rem;
-  background-color: #1a202c;
+  background-color: white;
   color: #fff;
   padding: 1rem;
   border-radius: 0.5rem;

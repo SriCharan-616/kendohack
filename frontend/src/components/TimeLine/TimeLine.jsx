@@ -33,7 +33,7 @@ const EventNode = ({ event, onClick, isActive, branchColor, lane }) => (
   <div
     className={`event-node ${isActive ? "scale-125" : ""}`}
     style={{
-      left: `${100 - 12 + lane * 70}px`,
+      left: `${100 - 10 + lane * 70}px`,
       top: `${100 - 15 + event.y * 90}px`,
       position: "absolute",
       cursor: "pointer",
