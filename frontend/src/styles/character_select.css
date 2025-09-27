@@ -44,23 +44,7 @@ body::-webkit-scrollbar { display: none; }
   align-items: flex-start;
 }
 
-.character-stats {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-top: 1rem;
-}
-
-.stat-bar-wrapper p {
-  margin-bottom: 4px;
-  font-weight: bold;
-  color: var(--secondary);
-}
-
-
 /* Sidebar character list */
-/* Sidebar character list fixed */
 .character-list {
   position: relative;
   width: 300px;
@@ -68,11 +52,12 @@ body::-webkit-scrollbar { display: none; }
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow-y:scroll;/* allow independent scrolling */
+  overflow-y:scroll;
   padding: 1rem;
   border-right: 3px solid var(--highlight);
   box-shadow: 2px 0 10px var(--shadow);
 }
+
 .hero-card {
   background: white;
   border: 2px solid var(--border-color);
@@ -120,8 +105,8 @@ body::-webkit-scrollbar { display: none; }
 .character-preview {
   flex: 1;
   background: white;
-  width: 400px; /* fixed width */
-  min-height: 600px; /* fixed height */
+  width: 400px;
+  min-height: 600px;
   border: 3px solid var(--border-color);
   border-radius: 16px;
   padding: 2rem;
@@ -129,7 +114,6 @@ body::-webkit-scrollbar { display: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 500px;
   position: relative;
 }
 
@@ -165,23 +149,42 @@ body::-webkit-scrollbar { display: none; }
   transform: translateY(-2px);
 }
 
-.k-progressbar {
-  height: 18px;
-  border-radius: 10px;
-  background-color: #F5E6D3; /* light medieval background */
-  border: 2px solid var(--border-color);
-  margin-bottom: 0.5rem;
+/* Fun fact section */
+.character-facts {
+  margin-top: 1rem;
+  width: 100%;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--secondary);
 }
 
-.k-progressbar .k-progressbar-value {
-  background: linear-gradient(135deg, var(--highlight), var(--secondary));
-  border-radius: 10px;
+.character-page {
+  perspective: 2500px;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
 }
 
-.timeline-section .k-progressbar .k-progressbar-value {
-  background: var(--highlight);
+.character-page.flipped {
+  transform: rotateY(180deg);
 }
 
+/* Flip animation for individual character card */
+.hero-card.flip-card {
+  transform: rotateY(180deg);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Optional: enhance the card flip with shadow */
+.hero-card.flip-card img {
+  transform: scale(1.05);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Ensure preview disappears smoothly during page flip */
+.character-preview {
+  backface-visibility: hidden;
+}
 
 /* Responsive */
 @media (max-width: 768px) {

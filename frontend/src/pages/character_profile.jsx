@@ -1,22 +1,21 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  AppBar,
-  AppBarSection,
-  AppBarSpacer
-} from "@progress/kendo-react-layout";
 import { Button } from "@progress/kendo-react-buttons";
 import { Fade, Slide } from "@progress/kendo-react-animation";
 import { ProgressBar } from "@progress/kendo-react-progressbars";
-import "../styles/character_profile.css"; // reuse same CSS
+import "../styles/character_profile.css";
+import Appbar from "../components/appbar";
+
+// Import timelines for all characters
+import { caesarTimeline } from "../data/caesar";
+import { gandhiTimeline } from "../data/gandhi";
+import { lincolnTimeline } from "../data/lincoln";
+// Add more timelines as needed
 
 const characters = [
-  { name: "Arthur", era: "medieval-era", img: "/assets/arthur.png", stats: { strength: 85, intelligence: 70, agility: 75 }, timeline: 60 },
-  { name: "Cleopatra", era: "ancient-rome-era", img: "/assets/cleopatra.png", stats: { strength: 60, intelligence: 95, agility: 80 }, timeline: 50 },
-  { name: "Leonardo", era: "renaissance-era", img: "/assets/leonardo.png", stats: { strength: 55, intelligence: 98, agility: 65 }, timeline: 70 },
-  { name: "Abraham Lincoln", era: "industrial-era", img: "/assets/lincoln.png", stats: { strength: 70, intelligence: 88, agility: 60 }, timeline: 75 },
-  { name: "Gandhi", era: "modern-era", img: "/assets/gandhi.png", stats: { strength: 35, intelligence: 94, agility: 55 }, timeline: 85 },
-  { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/caesar.png", stats: { strength: 90, intelligence: 85, agility: 72 }, timeline: 55 }
+  { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/caesar.png", timelineData: caesarTimeline },
+  { name: "Mahatma Gandhi", era: "modern-era", img: "/assets/gandhi.png", timelineData: gandhiTimeline },
+  { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/lincoln.png", timelineData: lincolnTimeline },
 ];
 
 const clickSound = new Audio("/assets/click.mp3");
@@ -77,10 +76,17 @@ export default function CharacterProfile() {
   const bgAudioRef = useRef(new Audio("/assets/bg2.mp3"));
   const [musicOn, setMusicOn] = useState(true);
 
-  // Load only the previously selected character
   useEffect(() => {
     const char = characters.find(c => c.name.toLowerCase() === characterName.toLowerCase());
-    if (char) setSelectedChar(char);
+    if (!char) return;
+
+    // Always take the latest stats from the last timeline event
+    const lastEvent = char.timelineData.events[char.timelineData.events.length - 1];
+    setSelectedChar({
+      ...char,
+      stats: lastEvent.stats,
+      timeline: lastEvent.y
+    });
   }, [characterName]);
 
   useEffect(() => {
@@ -112,23 +118,7 @@ export default function CharacterProfile() {
 
   return (
     <div className="character-page">
-      {/* Navbar */}
-      <AppBar className="app-bar">
-        <AppBarSection>
-          <h2>Play Page</h2>
-        </AppBarSection>
-        <AppBarSpacer />
-        <AppBarSection style={{ display: "flex", gap: "0.5rem" }}>
-          <Button
-            className={`music-button ${musicOn ? "pulse" : "pulse-flip"}`}
-            onClick={() => setMusicOn(prev => !prev)}
-          >
-            {musicOn ? "🔉 Music" : "🔇 Music"}
-          </Button>
-        </AppBarSection>
-      </AppBar>
-
-      {/* Character Preview Left-Aligned */}
+      <Appbar title="Play Page" />
       <div className="character-select-container" style={{ justifyContent: "flex-start" }}>
         <Slide direction="start" in={true}>
           <Fade in={true}>
