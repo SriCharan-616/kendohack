@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button } from "@progress/kendo-react-buttons";
 import { Fade } from "@progress/kendo-react-animation";
 import { ProgressBar } from "@progress/kendo-react-progressbars";
 import "../styles/character_profile.css";
@@ -25,12 +24,6 @@ const characters = [
   { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/lincoln.png", timelineData: lincolnTimeline },
 ];
 
-function toTitleCase(str) {
-  return str
-    .split("-")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
 
 // Animated progress bar
 const AnimatedStat = ({ value, delay }) => {

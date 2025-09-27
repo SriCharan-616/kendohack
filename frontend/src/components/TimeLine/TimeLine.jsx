@@ -52,14 +52,14 @@ const EventNode = ({ event, onClick, isActive, branchColor, lane }) => {
   );
 };
 
-// Dialogue Box Component
+// Dialogue Box Component (shifted slightly to the right)
 const DialogueBox = ({ event, position, onClose }) => {
   if (!event) return null;
   return (
     <div
       className="dialogue-box"
       style={{
-        left: `${position.x}px`,
+        left: `${position.x + 60}px`, // shifted right
         top: `${position.y}px`,
         width: "250px",
         zIndex: 1000,
@@ -126,9 +126,9 @@ const TimeLine = ({ timelineData, onNodeDoubleClick }) => {
         lastClickRef.current = { nodeId: null, time: 0 };
         return; // skip dialogue box
       } else if (!event.valid) {
-        // Show tooltip for invalid node
+        // Show tooltip near cursor
         setTooltipMessage("❌ This node is invalid. Cannot enter the game.");
-        setTooltipPosition(position);
+        setTooltipPosition({ x: position.x + 15, y: position.y - 40 }); // slightly above and right
         setShowTooltip(true);
         setTimeout(() => setShowTooltip(false), 1500); // hide after 1.5s
         lastClickRef.current = { nodeId: null, time: 0 };
@@ -244,7 +244,7 @@ const TimeLine = ({ timelineData, onNodeDoubleClick }) => {
               key={event.id}
               event={event}
               branchColor={branchColors[event.branch]}
-              onClick={handleEventClick} // ✅ Updated handler
+              onClick={handleEventClick}
               isActive={selectedEvent?.id === event.id}
               lane={branchLanes[event.branch]}
             />
@@ -257,13 +257,24 @@ const TimeLine = ({ timelineData, onNodeDoubleClick }) => {
           />
 
           {showTooltip && (
-            <Tooltip
-              anchorElement={() => document.elementFromPoint(tooltipPosition.x, tooltipPosition.y)}
-              position="top"
-              show={true}
+            <div
+              className="tooltip-custom"
+              style={{
+                position: "absolute",
+                left: tooltipPosition.x,
+                top: tooltipPosition.y,
+                background: "#333",
+                color: "#fff",
+                padding: "6px 10px",
+                borderRadius: 4,
+                fontSize: 12,
+                zIndex: 2000,
+                pointerEvents: "none",
+                whiteSpace: "nowrap",
+              }}
             >
               {tooltipMessage}
-            </Tooltip>
+            </div>
           )}
         </div>
       </div>
