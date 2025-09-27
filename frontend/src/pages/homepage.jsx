@@ -94,7 +94,7 @@ const characters = [
   { name: "Marie Curie", era: "Modern", img: "/assets/marie-curie.png" },
 ];
 
-
+ console.log("Timeline Data:", caesarTimelineeg.events);
   return (
     <div className="homepage-container">
       <div className={`homepage-book ${flipped ? "flipped" : ""}`}>
@@ -146,8 +146,9 @@ const characters = [
             <h2 className="hero-title" style={{ marginBottom: '0px' }}>Dynamic Timeline</h2>
             <span style={{fontSize:'20px'}}>Watch And Change History With Your Decisions.</span>
             <TimeLine
-            timelineData={caesarTimelineeg.events} 
+            timelineData={caesarTimelineeg} 
           />
+          
           </div>
 
           {/* Interactive Storybook Section */}
