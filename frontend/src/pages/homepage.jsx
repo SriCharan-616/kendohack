@@ -23,7 +23,7 @@ const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
 
 
-import  Appbar  from "../components/appbar";  
+import  MusicAppBar  from "../components/appbar";  
 
 export default function HomePage() {
   const [flipped, setFlipped] = useState(false);
@@ -40,7 +40,10 @@ export default function HomePage() {
     pageFlipSound.play();
     setFlipped(true);
     setTimeout(() => navigate("/era-select"), 1200);
+    
   };
+
+   
 
   const handleHeroCardClick = (name) => {
     playClickSound();
@@ -96,7 +99,10 @@ const characters = [
 
         {/* --- FRONT PAGE --- */}
         <div className="homepage-front">
-          <Appbar title='Legends Of History'/>
+          <MusicAppBar
+            title="Legends Of History"
+            onHomeClick={() => {} }
+          />
 
           {/* Welcome Portal */}
           <Card className="welcome-portal" onClick={handlePortalClick}>
@@ -143,7 +149,7 @@ const characters = [
           {/* Interactive Storybook Section */}
           <div className="hero-section">
             <h2 className="hero-title" style={{ marginBottom: '0px' }}>Ancient Chronicles</h2>
-            <p style={{fontSize:'20px'}}>Flip through the story of Caesar and relive historical moments interactively.</p>
+            <p style={{fontSize:'20px'}}>Flip through the story of your timeline.</p>
             <div className="inline-book-wrapper">
               <Book
                 character={{ name: "Caesar", era: "Ancient", img: "/assets/caesar.png" }}

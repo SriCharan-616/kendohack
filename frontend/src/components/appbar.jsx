@@ -1,6 +1,5 @@
 // MusicAppBar.jsx
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   AppBarSection,
@@ -9,16 +8,14 @@ import {
 import { Button } from "@progress/kendo-react-buttons";
 import "../styles/MusicAppBar.css";
 
-const MusicAppBar = ({ title }) => {
-  const navigate = useNavigate();
-
+const MusicAppBar = ({ title, onHomeClick }) => {
   const musicList = [
     { text: "track1", file: "/assets/bg1.mp3" },
     { text: "track2", file: "/assets/bg2.mp3" },
     { text: "track3", file: "/assets/bg3.mp3" },
   ];
 
-  // ⬇️ Load previous state from sessionStorage or defaults
+  // Session storage load
   const savedMusicOn = sessionStorage.getItem("musicOn");
   const savedSelectedMusic = sessionStorage.getItem("selectedMusic");
 
@@ -32,24 +29,19 @@ const MusicAppBar = ({ title }) => {
   const bgAudioRef = useRef(new Audio(selectedMusic));
   const clickSound = useRef(new Audio("/assets/click.mp3"));
 
-  // Initialize background audio
+  // Initialize audio
   useEffect(() => {
     const audio = bgAudioRef.current;
     audio.loop = true;
     audio.volume = 0.5;
-
-    // ensure correct src from sessionStorage
     audio.src = selectedMusic;
-
     if (musicOn) audio.play().catch(console.log);
-
     return () => {
       audio.pause();
       audio.currentTime = 0;
     };
   }, []);
 
-  // Handle music on/off changes + persist in sessionStorage
   useEffect(() => {
     sessionStorage.setItem("musicOn", musicOn);
     const audio = bgAudioRef.current;
@@ -60,24 +52,20 @@ const MusicAppBar = ({ title }) => {
     }
   }, [musicOn]);
 
-  // Handle selectedMusic changes + persist in sessionStorage
   useEffect(() => {
     sessionStorage.setItem("selectedMusic", selectedMusic);
   }, [selectedMusic]);
 
-  // Play click sound
   const playClickSound = () => {
     clickSound.currentTime = 0;
     clickSound.current.play();
   };
 
-  // Toggle music
   const toggleMusic = () => {
     playClickSound();
     setMusicOn((prev) => !prev);
   };
 
-  // Change track
   const changeMusic = (file) => {
     playClickSound();
     const audio = bgAudioRef.current;
@@ -91,7 +79,13 @@ const MusicAppBar = ({ title }) => {
 
   return (
     <AppBar className="k-appbar">
-      <Button className="music-button" onClick={() => navigate("/")}>
+      {/* Home now calls parent-provided function */}
+      <Button
+        className="music-button"
+        onClick={() => {
+          onHomeClick && onHomeClick();
+        }}
+      >
         Home
       </Button>
       <AppBarSpacer />

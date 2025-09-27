@@ -13,7 +13,7 @@ import industrialImage from "/assets/industrial.png";
 import modernImage from "/assets/modern.png";
 
 // Sounds
-const clickSound = new Audio("/assets/click.mp3");
+const clickSound = new Audio("/assets/page-flip.mp3");
 
 // Background music list
 const musicList = [
@@ -27,13 +27,19 @@ const musicList = [
 const EraSelectPage = () => {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
-
+  const [flipType, setFlipType] = useState(null);
   const playClickSound = () => {
     clickSound.currentTime = 0;
     clickSound.play();
   };
 
- 
+  const goHome = () => {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    setFlipType("home"); 
+    setFlipped(true);
+    setTimeout(() => navigate("/"), 1200);
+  };
 
   /* --- Era Data --- */
   const eras = [
@@ -95,7 +101,7 @@ const EraSelectPage = () => {
         {/* --- FRONT PAGE --- */}
         <div className="homepage-front">
           {/* Use custom Appbar */}
-          <Appbar title="Era Selection" />
+          <Appbar title="Era Selection" onHomeClick={goHome}/>
           <div className="manuscript-content-centered">
             <header className="manuscript-header">
               <div className="center-ornament">◆</div>
@@ -122,6 +128,7 @@ const EraSelectPage = () => {
                           }}
                           onClick={() => {
                             playClickSound();
+                            setFlipType("era");
                             setFlipped(true);
                             const eraSlug = era.name
                               .toLowerCase()
@@ -169,7 +176,12 @@ const EraSelectPage = () => {
 
         {/* --- BACK PAGE --- */}
         <div className="homepage-back">
-          <h1>You are entering an Era...</h1>
+          {flipType === "era" && (
+            <p className="era">You are entering an Era...</p>
+          )}
+          {flipType === "home" && (
+            <p className="goback">Going back home...</p>
+          )}
         </div>
       </div>
     </div>
