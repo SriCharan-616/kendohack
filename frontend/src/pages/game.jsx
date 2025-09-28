@@ -245,16 +245,14 @@ export default function GamePage() {
           <div className="choice-cards">
             {choices.map((choice, idx) => (
               <div
-                key={choice.id || idx} // ✅ fixed key warning
+                key={choice.id || idx}
                 className="k-card"
                 onClick={() => handleChoiceClick(choice)}
               >
-                <div className="k-card-header">
-                  <h4>{choice.description}</h4>
-                </div>
-                <div className="k-card-body">
-                  <p>{choice.event}</p>
-                </div>
+                {/* Everything inside one container */}
+                <h4>{choice.title || "Choice"}</h4>
+                <p>{choice.description || "No description provided"}</p>
+                {choice.event && <small>{choice.event}</small>}
               </div>
             ))}
             {message && (
@@ -269,6 +267,7 @@ export default function GamePage() {
               </p>
             )}
           </div>
+
         </div>
   )}
         {/* BACK FACE */}
