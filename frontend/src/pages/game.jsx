@@ -75,13 +75,13 @@ export default function GamePage() {
   const [animatingNode, setAnimatingNode] = useState(null);
 
   // Fetch choices
-  const fetchChoices = async (name, prevEvents, currEvent) => {
+  const fetchChoices = async (name, prevEvents, currEvent,pend) => {
     console.log("Fetching choices for event:", currEvent);
     setLoadingChoices(true);
 
     // derive eventNumber and maxEvents from timelineNodes
     const eventNumber = currEvent.y;
-    
+    const aend = end == 0?pend:end
     // current stats/personality/timePeriod/age from currentEvent
     const currentStats = currEvent.stats;
     const currentPersonality = currEvent.personality;
@@ -99,7 +99,7 @@ export default function GamePage() {
           currentStats,
           currentPersonality,
           eventNumber,
-          end,
+          maxEvents:aend,
           timePeriod,
           characterAge,
         }),
@@ -132,7 +132,7 @@ export default function GamePage() {
 
     const startNode = savedData.node;
     const fullTimeline = savedData.character.timelineData.events;
-
+    setend(fullTimeline.length);
     const updatedfulltimeline = fullTimeline.map((ev) =>
       ev.id === startNode.id ? { ...ev, branches: [{ branch: "new_branch" }] } : ev
     );
@@ -140,9 +140,9 @@ export default function GamePage() {
     setTimelineNodes(updatedfulltimeline);
     setCurrentEvent(startNode);
     setname(savedData.character.name);
-    setend(fullTimeline.length);
+    
 
-    fetchChoices(savedData.character.name, [], startNode);
+    fetchChoices(savedData.character.name, [], startNode,fullTimeline.length);
   }, [navigate]);
 
   if (!gameData) return null;
@@ -152,6 +152,19 @@ export default function GamePage() {
   // Handle choice click with timeline branch animation
   const handleChoiceClick = (choice) => {
     
+    if (end === y) {
+      pageFlipSound.currentTime = 0;
+      pageFlipSound.play();
+      setFlipType("player-book");
+      setFlipped(true);
+      setTimeout(
+        () => navigate('/story-summary',{ 
+      state: { timelineData: timelineNodes, characterName: name } 
+    }),
+        1200
+      );
+      return;
+    }
 
     const newPreviousEvents = [...previousEvents, currentEvent];
     setPreviousEvents(newPreviousEvents);
@@ -168,20 +181,10 @@ export default function GamePage() {
       stats: choice.new_stats,
       personality: choice.new_personality,
     };
-    if (end === newEvent.y) {
-      clickSound.currentTime = 0;
-      clickSound.play();
-      setFlipType("player-book");
-      setFlipped(true);
-      setTimeout(
-        () => navigate('/player-books'),
-        1200
-      );
-    }
-    sety(y + 1);
-    setAnimatingNode(newEvent);
 
     
+    sety(y + 1);
+    setAnimatingNode(newEvent);
 
     successSound.currentTime = 0;
     successSound.volume = 0.5;
@@ -198,7 +201,7 @@ export default function GamePage() {
         setCurrentEvent(newEvent);
         setCurrentStats(newEvent.stats);
         setAnimatingNode(null);
-        fetchChoices(name, newPreviousEvents, newEvent);
+        fetchChoices(name, newPreviousEvents, newEvent,timelineNodes.length);
         clearInterval(interval);
       } else {
         // Show animating placeholder node

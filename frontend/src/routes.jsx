@@ -8,6 +8,7 @@ import CharacterSelectPage from './pages/character_select';
 import CharacterProfile from "./pages/character_profile";
 import GamePage from "./pages/game";
 import PlayerBooksPage from "./pages/player_books";
+import StorySummary from './pages/story_summary';
 const AppRoutes = () => {
   return (
     <Router>
@@ -22,7 +23,7 @@ const AppRoutes = () => {
         <Route path="/play/:characterName" element={<CharacterProfile />} />
         <Route path="/game/:characterName" element={<GamePage/>}/>
         <Route path="/player-books" element={<PlayerBooksPage />} />
-
+        <Route path="/story-summary" element={<StorySummary/>}/>
 
       </Routes>
     </Router>

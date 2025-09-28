@@ -32,7 +32,7 @@ export default async function getChoices(req, res) {
       ? currentEvent
       : `${eventNumber}. ${currentEvent?.title || 'Current Event'}: ${currentEvent?.event || currentEvent?.description || JSON.stringify(currentEvent)}`;
 
-  const end = maxEvents - eventNumber + 1;
+  const end = maxEvents - eventNumber ;
 
     // Create comprehensive prompt
     const prompt = `
@@ -48,7 +48,7 @@ CURRENT SITUATION:
 Previous Events Timeline: ${prevText}
 Current Critical Event: ${currText}
 Event Number: ${eventNumber} 
-In ${end} number of events the character will reach the end of their end. Give according
+In ${end} number of events the character will reach their end. Give according
 to that.
 
 CHARACTER STATE:
@@ -78,8 +78,8 @@ OUTPUT FORMAT (STRICT JSON):
 {
   "choice1": {
     "title": "Concise decision title (max 8 words)",
-    "description": "Detailed explanation of ${name}'s decision, motivations, and reasoning (1-2 short sentences)",
-    "event": "Immediate consequences and reactions to this decision (1-2 short sentences)",
+    "description": "explanation of ${name}'s decision, motivations, and reasoning (1-2 short sentences)",
+    "event": "Immediate consequences and reactions to this decision (1 short sentence)",
     "new_age": "new age different from current event age",
     "new_year": "new year different from current event year",
     "new_stats": {...}(new stats based on this choice),
