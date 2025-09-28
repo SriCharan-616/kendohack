@@ -16,7 +16,6 @@
 }
 
 html, body {
-  font-family: 'MedievalSharp', cursive, serif;
   color: var(--text-color);
   background: url("/assets/output_black.png") no-repeat center center fixed;
   background-size: cover;

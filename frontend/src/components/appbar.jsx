@@ -129,9 +129,12 @@ const MusicAppBar = ({ title, onHomeClick }) => {
           className="music-dropdown"
           value={selectedMusic}
           onChange={(e) => changeMusic(e.target.value)}
+          style={{ WebkitAppearance: "none", // Chrome/Safari
+      MozAppearance: "none", // Firefox
+      appearance: "none",fontFamily: "'Dancing Script', cursive, serif" }}
         >
           {musicList.map((m, idx) => (
-            <option key={idx} value={m.file}>
+            <option key={idx} value={m.file} className="music-dropdown">
               {m.text}
             </option>
           ))}
