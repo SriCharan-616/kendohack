@@ -135,11 +135,12 @@ html, body {
 }
 
 /* ===================== */
-/* Choice Cards Section   */
-/* ===================== */
-.choice-cards .k-card {
-  flex: 0 0 100px;       /* Fixed width */
-  height: 200px;          /* Fixed height */
+/* Choice Cards Section   *//* ===================== */
+.choice-cards{
+  gap: 1.5rem;
+  flex: 0 0 340px;   /* 0 grow, 0 shrink, 340px basis */
+  width: 340px;      /* fallback for older browsers */
+  height: 530px;          /* Fixed height */
   background: #FCFBFB;    /* Solid background */
   border-radius: 10px;
   cursor: pointer;
