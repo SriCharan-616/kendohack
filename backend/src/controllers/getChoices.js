@@ -46,7 +46,7 @@ Give the answer in json format with fields exactly like:
   "end": true/false
 }
 `;
-
+    console.log("Prompt to Nuclia:", prompt);
     const url = `${BACKEND}/v1/kb/${KB_ID}/ask`;
 
     const resp = await fetch(url, {

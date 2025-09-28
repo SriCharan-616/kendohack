@@ -110,7 +110,7 @@ export default function GamePage() {
   }
   sety(savedData.node.y + 1);
   setGameData(savedData);
-  setCurrentStats(savedData.character.stats);
+  setCurrentStats(savedData.node.stats);
 
   const startNode = savedData.node;
 
@@ -159,6 +159,7 @@ export default function GamePage() {
       branch:"new_branch",
       branches: [],
       y: y,
+      event: choice.event,
       stats: choice.new_stats ,
       personality: choice.new_personality,
     };
