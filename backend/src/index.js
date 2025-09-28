@@ -72,7 +72,7 @@ app.get("/api/player-books/:name", (req, res) => {
 });
 
 // Save/update player book
-app.post("/api/player-books/:name", (req, res) => {
+app.post("/api/player-book/:name", (req, res) => {
   try {
     const files = fs.readdirSync(STORAGE_PATH).filter(f => f.endsWith(".json"));
     let file = files.find(f => {

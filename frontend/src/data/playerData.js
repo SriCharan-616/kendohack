@@ -16,7 +16,7 @@ export const getPlayerBook = async (playerName) => {
 
 // Save/update a player's book
 export const savePlayerBook = async (playerName, events) => {
-  const res = await fetch(`http://localhost:5000/api/player-books/${playerName}`, {
+  const res = await fetch(`http://localhost:5000/api/player-book/${playerName}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(events),

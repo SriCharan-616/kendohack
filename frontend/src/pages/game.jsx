@@ -181,7 +181,7 @@ export default function GamePage() {
       setFlipped(true);
       setTimeout(
         () => navigate('/story-summary',{ 
-      state: { timelineData:updatedTimeline, characterName: name } 
+      state: { timelineData:updatedTimeline, characterName: name, personality:newEvent.personality,stats:newEvent.stats } 
     }),
         1200
       );
