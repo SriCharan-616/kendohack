@@ -54,6 +54,17 @@ html, body {
   animation: magicalSpin 1s linear infinite;
 }
 
+.personality-badge {
+  background-color: var(--highlight);
+  color: var(--text-color);
+  font-weight: bold;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+
 @keyframes magicalSpin {
   0% {
     transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);

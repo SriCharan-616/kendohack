@@ -212,7 +212,8 @@ return (
                 loadingChoices ? "loading-image" : ""
               }`}
             />
-            <p>Current Personality: {currentEvent.personality}</p>
+            <div className="personality-badge"><p>Current Personality: {currentEvent.personality}</p>
+            </div>
             Current Stats:
             <StaggeredStats stats={currentStats} />
           </div>
