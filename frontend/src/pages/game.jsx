@@ -4,7 +4,7 @@ import { ProgressBar } from "@progress/kendo-react-progressbars";
 import { Fade } from "@progress/kendo-react-animation";
 import Appbar from "../components/appbar";
 import TimeLine from "../components/TimeLine/TimeLine";
-import "../styles/character_profile.css";
+import "../styles/game_page.css";
 
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
@@ -228,16 +228,14 @@ export default function GamePage() {
           <div className="choice-cards">
             {choices.map((choice, idx) => (
               <div
-                key={choice.id || idx} // ✅ fixed key warning
+                key={choice.id || idx}
                 className="k-card"
                 onClick={() => handleChoiceClick(choice)}
               >
-                <div className="k-card-header">
-                  <h4>{choice.description}</h4>
-                </div>
-                <div className="k-card-body">
-                  <p>{choice.event}</p>
-                </div>
+                {/* Everything inside one container */}
+                <h4>{choice.title || "Choice"}</h4>
+                <p>{choice.description || "No description provided"}</p>
+                {choice.event && <small>{choice.event}</small>}
               </div>
             ))}
             {message && (
@@ -252,6 +250,7 @@ export default function GamePage() {
               </p>
             )}
           </div>
+
         </div>
   )}
         {/* BACK FACE */}

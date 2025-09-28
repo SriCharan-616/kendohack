@@ -137,41 +137,42 @@ html, body {
 /* ===================== */
 /* Choice Cards Section   */
 /* ===================== */
-.choice-cards {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  width: 100%;
-}
-
 .choice-cards .k-card {
-  flex: 1;
-  background: rgba(255,255,255,0.1);
+  flex: 0 0 100px;       /* Fixed width */
+  height: 200px;          /* Fixed height */
+  background: #FCFBFB;    /* Solid background */
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center content */
+  align-items: center;     /* Horizontally center content */
+  text-align: center;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .choice-cards .k-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 18px var(--shadow);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
 }
 
-.choice-cards .k-card-header h4 {
-  text-align: center;
+.choice-cards .k-card h4 {
   color: var(--highlight);
+  margin-bottom: 0.5rem;
 }
 
-.choice-cards .k-card-body p {
-  text-align: center;
+.choice-cards .k-card p {
   font-style: italic;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
 }
 
-.choice-cards .k-card-footer p {
-  text-align: center;
+.choice-cards .k-card small {
+  color: var(--secondary);
   font-size: 0.85rem;
 }
-
 
 /* ================= */
 /* Responsive        */
