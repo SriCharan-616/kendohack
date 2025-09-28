@@ -1,16 +1,16 @@
 // MusicAppBar.jsx
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom"; // <-- import useNavigate
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   AppBarSection,
-  AppBarSpacer,
+  Avatar
 } from "@progress/kendo-react-layout";
 import { Button } from "@progress/kendo-react-buttons";
 import "../styles/MusicAppBar.css";
 
 const MusicAppBar = ({ title, onHomeClick }) => {
-  const navigate = useNavigate(); // <-- initialize navigate
+  const navigate = useNavigate();
 
   const musicList = [
     { text: "track1", file: "/assets/bg1.mp3" },
@@ -80,46 +80,56 @@ const MusicAppBar = ({ title, onHomeClick }) => {
 
   const goToPlayerBooks = () => {
     playClickSound();
-    navigate("/player-books"); // <-- navigate to player-books page
+    navigate("/player-books");
   };
 
   return (
-    <AppBar className="k-appbar" style={{ display: "flex", alignItems: "center", padding: "0 1rem", height: "60px" }}>
+    <AppBar className="k-appbar">
+      {/* Avatar Background */}
+      <div className="appbar-avatar-bg">
+        <Avatar style={{backgroundColor: "#CD853F"}}
+          type="text"
+          shape="square"
+          size="large" 
+        />
+        <Avatar style={{backgroundColor: "#CD853F"}}
+          type="image"
+          shape="square"
+          size="large" 
+        />
+        <Avatar style={{backgroundColor: "#CD853F"}}
+          type="image"
+          shape="square"
+          size="large"
+        />
+      </div>
+
       {/* Left: Home */}
-      <AppBarSection style={{ flex: "0 0 auto" }}>
-        <Button className="music-button" onClick={() => onHomeClick && onHomeClick()}>
+      <AppBarSection className="appbar-left">
+        <Button
+          className="music-button"
+          onClick={() => onHomeClick && onHomeClick()}
+        >
           Home
         </Button>
       </AppBarSection>
 
       {/* Center: Title */}
-      <AppBarSection
-        style={{
-          flex: "1 1 auto",
-          textAlign: "center",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          padding: "0 1rem",
-        }}
-      >
-        <h2 style={{ margin: 0, fontSize: "1rem", lineHeight: "1.2" }}>{title}</h2>
+      <AppBarSection className="appbar-center">
+        <h2>{title}</h2>
       </AppBarSection>
 
       {/* Right: Music + Player Books */}
-      <AppBarSection
-        style={{
-          flex: "0 0 auto",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-        }}
-      >
+      <AppBarSection className="appbar-right">
         <Button className="music-button" onClick={toggleMusic}>
           {musicOn ? "🔊 On" : "🔇 Off"}
         </Button>
 
-        <select className="music-dropdown" value={selectedMusic} onChange={(e) => changeMusic(e.target.value)}>
+        <select
+          className="music-dropdown"
+          value={selectedMusic}
+          onChange={(e) => changeMusic(e.target.value)}
+        >
           {musicList.map((m, idx) => (
             <option key={idx} value={m.file}>
               {m.text}
@@ -128,11 +138,10 @@ const MusicAppBar = ({ title, onHomeClick }) => {
         </select>
 
         <Button className="music-button" onClick={goToPlayerBooks}>
-        Books
+          Books
         </Button>
       </AppBarSection>
     </AppBar>
-
   );
 };
 
