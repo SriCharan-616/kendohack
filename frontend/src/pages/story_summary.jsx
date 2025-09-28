@@ -115,10 +115,12 @@ export default function StorySummary() {
     console.log(characterName);
     try {
       await savePlayerBook(playerName.trim(), newBranchEvents,characterName); // call imported function
-      alert("Book uploaded successfully!");
+      setFlipType("upload");
+      setFlipped(true);
+        setTimeout(() => navigate(`/player-books`),1200);
     } catch (err) {
       console.error(err);
-      alert("Upload failed");
+      
     } finally { setUploading(false); }
   };
 
@@ -196,6 +198,7 @@ export default function StorySummary() {
 
         <div className="story-summary-back">
           {flipType === "home" && <p>Going back home...</p>}
+          {flipType === "upload" && <p>File uploaded. Going to books...</p>}
         </div>
       </div>
     </div>

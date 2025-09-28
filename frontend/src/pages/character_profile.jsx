@@ -162,7 +162,7 @@ export default function CharacterProfile() {
         {/* BACK FACE */}
         <div className="character-page-back">
           {flipType === "game" && <p className="game-flip">Entering the game...</p>}
-          {flipType === "home" && <p className="home-flip">Going back home...</p>}
+          {flipType === "home" && <p >Going back home...</p>}
         </div>
       </div>
     </div>
