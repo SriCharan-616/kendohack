@@ -85,17 +85,66 @@ html, body {
   max-height: 700px;
 }
 
+/* ============================= */
+/* Player Input, Review, Rating  */
+/* ============================= */
+.player-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.player-name-label,
+.player-review-label,
+.player-rating-label {
+  font-weight: bold;
+  color: #8B4513;
+  font-size: 1rem;
+}
+
+.player-name-input,
+.player-review-input {
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid #A0522D;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #2C1810;
+}
+
+.player-name-input:focus,
+.player-review-input:focus {
+  border-color: #FFD700;
+  box-shadow: 0 0 6px #FFD700;
+}
+
+.player-review-input {
+  resize: vertical;
+}
+
+.player-rating {
+  font-size: 1.5rem;
+  color: #FFD700;
+}
+
+/* ============================= */
+/* Upload Button                */
+/* ============================= */
 .upload-button {
-  margin: 2rem;
-  padding: 0.8rem 1.6rem;
+  background-color: #8B4513;
+  color: white;
   font-weight: bold;
   border-radius: 25px;
+  padding: 0.8rem 1.6rem;
   border: none;
-  background: #8B4513;
-  color: white;
+  width: max-content;
+  align-self: flex-start;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 .upload-button:hover {
-  background: #CD853F;
+  background-color: #CD853F;
 }

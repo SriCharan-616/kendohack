@@ -6,7 +6,9 @@ import Book from "../components/Book/Book";
 import "../styles/story_summary.css";
 import { ProgressBar } from "@progress/kendo-react-progressbars";
 import { Fade } from "@progress/kendo-react-animation";
-import { savePlayerBook } from "../data/playerData"; // use your imported function
+import { Input, TextArea, Rating } from "@progress/kendo-react-inputs";
+import { Button } from "@progress/kendo-react-buttons";
+import { savePlayerBook } from "../data/playerData";
 
 // Import timelines
 import { caesarTimeline } from "../data/caesar";
@@ -42,10 +44,8 @@ const StaggeredStats = ({ stats }) => {
     <div className="character-stats">
       {statEntries.map(([stat, value], index) => (
         <Fade key={stat} transitionEnterDuration={300}>
-          <div className="stat-bar-wrapper" style={{ marginBottom: "0.8rem" }}>
-            <p>
-              {stat.charAt(0).toUpperCase() + stat.slice(1)}: {value}
-            </p>
+          <div className="stat-bar-wrapper">
+            <p>{stat.charAt(0).toUpperCase() + stat.slice(1)}: {value}</p>
             <AnimatedStat value={value} delay={index * 300} />
           </div>
         </Fade>
@@ -59,34 +59,21 @@ const pageFlipSound = new Audio("/assets/page-flip.mp3");
 
 // Characters master list
 const characters = [
-  {
-    name: "Julius Caesar",
-    era: "ancient-rome-era",
-    img: "/assets/julius_caesar.png",
-    timelineData: caesarTimeline,
-  },
-  {
-    name: "Mahatma Gandhi",
-    era: "modern-era",
-    img: "/assets/mahatma_gandhi.png",
-    timelineData: gandhiTimeline,
-  },
-  {
-    name: "Abraham Lincoln",
-    era: "industrial-revolution",
-    img: "/assets/abraham_lincoln.png",
-    timelineData: lincolnTimeline,
-  },
+  { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/julius_caesar.png", timelineData: caesarTimeline },
+  { name: "Mahatma Gandhi", era: "modern-era", img: "/assets/mahatma_gandhi.png", timelineData: gandhiTimeline },
+  { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/abraham_lincoln.png", timelineData: lincolnTimeline },
 ];
 
 export default function StorySummary() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { timelineData, characterName,personality,stats } = location.state || {};
+  const { timelineData, characterName, personality, stats } = location.state || {};
 
   const [flipped, setFlipped] = useState(false);
   const [flipType, setFlipType] = useState(null);
-  const [playerName, setPlayerName] = useState(""); // New state for player's name
+  const [playerName, setPlayerName] = useState("");
+  const [playerReview, setPlayerReview] = useState("");
+  const [playerRating, setPlayerRating] = useState(0);
   const [uploading, setUploading] = useState(false);
 
   if (!timelineData) {
@@ -98,25 +85,21 @@ export default function StorySummary() {
     );
   }
 
-  function getNewBranchTimeline(events = []) {
+  const getNewBranchTimeline = (events = []) => {
     if (!Array.isArray(events)) return [];
-    const firstBranchIndex = events.findIndex(
-      ev =>
-        ev &&
-        (ev.branch === "new_branch" ||
-          (Array.isArray(ev.branches) && ev.branches.length > 0))
+    const firstBranchIndex = events.findIndex(ev =>
+      ev && (ev.branch === "new_branch" || (Array.isArray(ev.branches) && ev.branches.length > 0))
     );
     if (firstBranchIndex === -1) return events;
     const beforeBranch = events.slice(0, firstBranchIndex + 1);
     const newBranchEvents = events.filter(ev => ev.branch === "new_branch");
     return [...beforeBranch, ...newBranchEvents];
-  }
+  };
 
-  const characterObj = characters.find(
-    c => c.name.toLowerCase() === (characterName || "").toLowerCase()
-  );
+  const characterObj = characters.find(c => c.name.toLowerCase() === (characterName || "").toLowerCase());
   const bookEra = characterObj?.era || "unknown-era";
   const bookImg = characterObj?.img || "/assets/default.png";
+  const newBranchEvents = getNewBranchTimeline(timelineData);
 
   const goHome = () => {
     pageFlipSound.currentTime = 0;
@@ -125,30 +108,22 @@ export default function StorySummary() {
     setFlipped(true);
     setTimeout(() => navigate("/"), 1200);
   };
-  const newBranchEvents = getNewBranchTimeline(timelineData);
+
   const handleUpload = async () => {
-    if (!playerName.trim()) {
-      alert("Please enter your name");
-      return;
-    }
+    if (!playerName.trim()) { alert("Please enter your name"); return; }
     setUploading(true);
     try {
-      await savePlayerBook(playerName.trim(), newBranchEvents); // call imported function
+      await savePlayerBook(playerName.trim(), { timeline: newBranchEvents, review: playerReview, rating: playerRating });
       alert("Book uploaded successfully!");
     } catch (err) {
       console.error(err);
       alert("Upload failed");
-    } finally {
-      setUploading(false);
-    }
+    } finally { setUploading(false); }
   };
-
-  
 
   return (
     <div className="story-summary-container">
       <div className={`story-summary-book ${flipped ? "flipped" : ""}`}>
-        {/* FRONT FACE */}
         <div className="story-summary-front">
           <Appbar title="Story Summary" onHomeClick={goHome} />
 
@@ -159,9 +134,50 @@ export default function StorySummary() {
               <div className="personality-badge">
                 <p>End Personality: {personality}</p>
               </div>
-              End Stats:
+
               <StaggeredStats stats={stats} />
-            
+
+              {/* Player Name Input, Review, Rating, Upload */}
+              <Fade transitionEnterDuration={500}>
+                <div className="player-upload-container">
+                  <label htmlFor="playerName" className="player-name-label">Enter Your Name:</label>
+                  <Input
+                    id="playerName"
+                    value={playerName}
+                    onChange={e => setPlayerName(e.value)}
+                    placeholder="Your name"
+                    className="player-name-input"
+                  />
+
+                  <label htmlFor="playerReview" className="player-review-label">Write a Review:</label>
+                  <TextArea
+                    id="playerReview"
+                    value={playerReview}
+                    onChange={e => setPlayerReview(e.value)}
+                    placeholder="Share your thoughts about your story..."
+                    className="player-review-input"
+                    rows={4}
+                  />
+
+                  <label className="player-rating-label">Rate your story:</label>
+                  <Rating
+                    value={playerRating}
+                    onChange={e => setPlayerRating(e.value)}
+                    max={5}
+                    className="player-rating"
+                  />
+
+                  <Button
+                    themeColor="primary"
+                    look="outline"
+                    onClick={handleUpload}
+                    disabled={uploading}
+                    className="upload-button"
+                  >
+                    {uploading ? "Uploading..." : "Upload Your Book"}
+                  </Button>
+                </div>
+              </Fade>
             </div>
 
             <div className="story-content">
@@ -170,43 +186,17 @@ export default function StorySummary() {
 
               <h3>Your History</h3>
               <Book
-                character={{
-                  name: characterName,
-                  era: bookEra,
-                  img: bookImg,
-                }}
+                character={{ name: characterName, era: bookEra, img: bookImg }}
                 story={newBranchEvents}
               />
-
-              {/* Player name input form */}
-              <div className="player-name-form">
-                <label htmlFor="playerName">Enter Your Name:</label>
-                <input
-                  type="text"
-                  id="playerName"
-                  value={playerName}
-                  onChange={e => setPlayerName(e.target.value)}
-                  placeholder="Your name"
-                />
-              </div>
             </div>
           </div>
-
-          <button
-            className="upload-button"
-            onClick={handleUpload}
-            disabled={uploading}
-          >
-            {uploading ? "Uploading..." : "Upload Your Book"}
-          </button>
         </div>
 
-        {/* BACK FACE */}
         <div className="story-summary-back">
           {flipType === "home" && <p>Going back home...</p>}
         </div>
-        </div>
       </div>
-    
-            );
+    </div>
+  );
 }
