@@ -1,0 +1,160 @@
+{
+  "name": "Abraham Lincoln",
+  "events": [
+    {
+      "id": 1,
+      "title": "Birth",
+      "age": 0,
+      "event": "Born in a log cabin in Hardin County, Kentucky",
+      "date": "1809",
+      "branch": "main",
+      "y": 0,
+      "branches": [],
+      "stats": {
+        "popularity": 5,
+        "political_power": 0,
+        "wealth": 1
+      },
+      "personality": "Curious and hardworking child with a strong sense of morality.",
+      "valid": false
+    },
+    {
+      "id": 2,
+      "title": "Early Career",
+      "age": 21,
+      "event": "Began working as a store clerk and self-educating in law",
+      "date": "1830",
+      "branch": "main",
+      "y": 1,
+      "branches": [],
+      "stats": {
+        "popularity": 6,
+        "political_power": 0,
+        "wealth": 2
+      },
+      "personality": "Ambitious and determined, learning skills to rise in society.",
+      "valid": true
+    },
+    {
+      "id": 3,
+      "title": "Political Debut",
+      "age": 28,
+      "event": "Elected to the Illinois State Legislature",
+      "date": "1837",
+      "branch": "main",
+      "y": 2,
+      "branches": [],
+      "stats": {
+        "popularity": 10,
+        "political_power": 5,
+        "wealth": 3
+      },
+      "personality": "Developing political skills, debating, and building connections.",
+      "valid": true
+    },
+    {
+      "id": 4,
+      "title": "U.S. Congress",
+      "age": 35,
+      "event": "Served one term in the U.S. House of Representatives",
+      "date": "1847",
+      "branch": "main",
+      "y": 3,
+      "branches": [],
+      "stats": {
+        "popularity": 15,
+        "political_power": 10,
+        "wealth": 4
+      },
+      "personality": "Gaining national political exposure and understanding federal governance.",
+      "valid": true
+    },
+    {
+      "id": 5,
+      "title": "Senate Race",
+      "age": 43,
+      "event": "Ran for U.S. Senate, gaining national recognition despite losing",
+      "date": "1858",
+      "branch": "main",
+      "y": 4,
+      "branches": [],
+      "stats": {
+        "popularity": 25,
+        "political_power": 20,
+        "wealth": 5
+      },
+      "personality": "Courageous and principled, solidifying anti-slavery stance.",
+      "valid": true
+    },
+    {
+      "id": 6,
+      "title": "Presidential Election",
+      "age": 52,
+      "event": "Elected as the 16th President of the United States",
+      "date": "1860",
+      "branch": "main",
+      "y": 5,
+      "branches": [
+        {
+          "branch": "new_branch"
+        }
+      ],
+      "stats": {
+        "popularity": 40,
+        "political_power": 50,
+        "wealth": 10
+      },
+      "personality": "Determined leader, focused on preserving the Union.",
+      "valid": true
+    },
+    {
+      "id": 9,
+      "title": "Seek Compromise with Southern Leaders",
+      "branch": "new_branch",
+      "branches": [],
+      "y": 6,
+      "date": 1861,
+      "age": 53,
+      "event": "This approach is met with skepticism from Northern supporters but opens channels for potential negotiation.",
+      "stats": {
+        "popularity": 40,
+        "political_power": 50,
+        "wealth": 10
+      },
+      "personality": "This choice reflects his analytical nature, showing a desire for diplomacy, though it may be seen as a weakness by some."
+    },
+    {
+      "id": 10,
+      "title": "Pursue Compromise with Southern Leaders",
+      "branch": "new_branch",
+      "branches": [],
+      "y": 7,
+      "date": 1862,
+      "age": 54,
+      "event": "Initial reactions are mixed, with some Northern supporters expressing disappointment but others appreciating the effort for peace.",
+      "stats": {
+        "popularity": 35,
+        "political_power": 45,
+        "wealth": 10
+      },
+      "personality": "This choice reinforces an analytical and diplomatic approach, though it may be perceived as a sign of weakness by some."
+    },
+    {
+      "id": 11,
+      "title": "Propose a Radical Peace Plan",
+      "branch": "new_branch",
+      "branches": [],
+      "y": 8,
+      "date": 1862,
+      "age": 54,
+      "event": "This bold move garners both admiration and outrage, as it challenges the prevailing views of Northern supporters and Southern leaders alike.",
+      "stats": {
+        "popularity": 25,
+        "political_power": 40,
+        "wealth": 10
+      },
+      "personality": "This decision highlights Lincoln's willingness to take risks for peace, showcasing his transformative vision but also exposing him to criticism.",
+      "placeholder": true
+    }
+  ]
+}
