@@ -4,7 +4,7 @@ import { ProgressBar } from "@progress/kendo-react-progressbars";
 import { Fade } from "@progress/kendo-react-animation";
 import Appbar from "../components/appbar";
 import TimeLine from "../components/TimeLine/TimeLine";
-import "../styles/character_profile.css"; // reusing the same CSS
+import "../styles/character_profile.css";
 
 // Sounds
 const clickSound = new Audio("/assets/click.mp3");
@@ -43,7 +43,9 @@ const StaggeredStats = ({ stats }) => {
       {statEntries.map(([stat, value], index) => (
         <Fade key={stat} transitionEnterDuration={300}>
           <div className="stat-bar-wrapper" style={{ marginBottom: "0.8rem" }}>
-            <p>{stat.charAt(0).toUpperCase() + stat.slice(1)}: {value}</p>
+            <p>
+              {stat.charAt(0).toUpperCase() + stat.slice(1)}: {value}
+            </p>
             <AnimatedStat value={value} delay={index * 300} />
           </div>
         </Fade>
@@ -61,52 +63,101 @@ export default function GamePage() {
   const [flipped, setFlipped] = useState(false);
   const [flipType, setFlipType] = useState(null);
 
-  // Load character and node
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("selectedCharacterNode"));
-    if (!savedData) {
-      navigate("/");
-      return;
+  // NEW: choices + current event
+  const [choices, setChoices] = useState([]);
+  const [currentEvent, setCurrentEvent] = useState(null);
+  const [previousEvents, setPreviousEvents] = useState([]);
+
+  // ✅ define fetchChoices first
+  const fetchChoices = async (prevEvents, currEvent) => {
+    console.log("Fetching choices for:", currEvent, prevEvents);
+    try {
+      const res = await fetch('http://localhost:5000/get-options', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    currentEvent: currEvent ,
+    previousEvents: prevEvents
+  })
+});
+      const data = await res.json();
+      console.log("Received choices:", data.choice1.description);
+      // Backend returns choice1, choice2, choice3
+      setChoices([
+        { ...data.choice1.description, id: "c1" },
+        { ...data.choice2.description, id: "c2" },
+        { ...data.choice3.description, id: "c3" },
+      ]);
+    } catch (err) {
+      console.error(err);
     }
-    setGameData(savedData);
-    setCurrentStats(savedData.character.stats);
-    setTimelineNodes(savedData.character.timelineData.events);
-  }, [navigate]);
+  };
+
+  // Load character and first event
+  useEffect(() => {
+  const savedData = JSON.parse(localStorage.getItem("selectedCharacterNode"));
+  console.log("Loaded game data:", savedData);
+  if (!savedData) {
+    navigate("/");
+    return;
+  }
+
+  setGameData(savedData);
+  setCurrentStats(savedData.character.stats);
+
+  // Timeline is the character's full timeline
+  const fullTimeline = savedData.character.timelineData.events;
+  setTimelineNodes(fullTimeline);
+
+  // Current event is the node saved in local storage
+  const startNode = savedData.node;
+  setCurrentEvent(startNode);
+
+  // First fetch choices with current node from local storage
+  fetchChoices([], startNode);
+}, [navigate]);
+
 
   if (!gameData) return null;
 
-  const { character, node } = gameData;
+  const { character } = gameData;
 
-  // Handle choice cards
-  const handleCardChoice = (choice) => {
+  // Handle choice click
+  const handleChoiceClick = (choice) => {
     clickSound.currentTime = 0;
     clickSound.play();
 
-    // Update stats dynamically
-    const newStats = {};
-    Object.keys(currentStats).forEach((key) => {
-      newStats[key] = currentStats[key] + Math.floor(Math.random() * 11 - 5);
-      if (newStats[key] < 0) newStats[key] = 0;
-      if (newStats[key] > 100) newStats[key] = 100;
-    });
-    setCurrentStats(newStats);
+    // Store old event in previousEvents
+    const newPreviousEvents = [...previousEvents, currentEvent];
+    setPreviousEvents(newPreviousEvents);
 
-    // Update timeline
-    const lastNode = timelineNodes[timelineNodes.length - 1];
-    const newNode = {
-      id: lastNode.id + 1,
-      title: `${choice} Outcome`,
-      y: lastNode.y + Math.floor(Math.random() * 10 + 5),
-      stats: newStats,
-      personality: `After choosing "${choice}", ${character.name} feels stronger!`,
+    // The choice now becomes the new current event
+    const newEvent = {
+      id: timelineNodes.length + 1,
+      title: choice.event || "New Event",
+      y:
+        timelineNodes[timelineNodes.length - 1].y +
+        Math.floor(Math.random() * 10 + 5),
+      stats: choice.new_stats || currentStats,
+      personality: choice.new_personality || "",
     };
-    setTimelineNodes([...timelineNodes, newNode]);
 
-    // Feedback message
-    setMessage(`You chose "${choice}"! Stats updated and timeline advanced.`);
+    // Update timeline with new event
+    const updatedTimeline = [...timelineNodes, newEvent];
+    setTimelineNodes(updatedTimeline);
+    setCurrentEvent(newEvent);
+
+    // Update stats dynamically
+    setCurrentStats(newEvent.stats);
+
+    // Show feedback
+    setMessage(`You chose: ${choice.description}`);
 
     successSound.currentTime = 0;
     successSound.play();
+
+    // Fetch next 3 choices from backend
+    fetchChoices(newPreviousEvents, newEvent);
   };
 
   const goHome = () => {
@@ -128,8 +179,15 @@ export default function GamePage() {
             {/* Character Preview */}
             <div className="character-preview" style={{ marginTop: "2rem" }}>
               <h2>{character.name}</h2>
-              <img src={character.img} alt={character.name} className="char-full-image" />
-              <p>{timelineNodes[timelineNodes.length - 1]?.personality || node.personality}</p>
+              <img
+                src={character.img}
+                alt={character.name}
+                className="char-full-image"
+              />
+              <p>
+                {timelineNodes[timelineNodes.length - 1]?.personality ||
+                  currentEvent?.personality}
+              </p>
               <StaggeredStats stats={currentStats} />
             </div>
 
@@ -142,22 +200,28 @@ export default function GamePage() {
 
           {/* Choice Cards */}
           <div className="choice-cards">
-            {["Option 1", "Option 2", "Option 3"].map((option) => (
+            {choices.map((choice, idx) => (
               <div
-                key={option}
+                key={choice.id || idx} // ✅ fixed key warning
                 className="k-card"
-                onClick={() => handleCardChoice(option)}
+                onClick={() => handleChoiceClick(choice)}
               >
                 <div className="k-card-header">
-                  <h4>{option}</h4>
+                  <h4>{choice.description}</h4>
                 </div>
                 <div className="k-card-body">
-                  <p>Click to see what happens</p>
+                  <p>{choice.event}</p>
                 </div>
               </div>
             ))}
             {message && (
-              <p style={{ marginTop: "1rem", fontStyle: "italic", color: "#FFD700" }}>
+              <p
+                style={{
+                  marginTop: "1rem",
+                  fontStyle: "italic",
+                  color: "#FFD700",
+                }}
+              >
                 {message}
               </p>
             )}

@@ -86,7 +86,7 @@ const DialogueBox = ({ event, position, onClose }) => {
           <p style={{ color: "#f1c40f" }}>📅 {event.date}</p>
           {event.cause && <p style={{ color: "#2ecc71" }}>🔗 {event.cause}</p>}
           <p style={{ color: event.valid ? "#2ecc71" : "#e74c3c" }}>
-            {event.valid ? "✅ Valid Branch" : "❌ Invalid Branch"}
+            {event.valid  ? "✅ Valid Branch" : "❌ Invalid Branch"}
           </p>
         </CardBody>
       </Card>
@@ -125,7 +125,7 @@ const TimeLine = ({ timelineData, onNodeDoubleClick }) => {
         onNodeDoubleClick(event);
         lastClickRef.current = { nodeId: null, time: 0 };
         return; // skip dialogue box
-      } else if (!event.valid) {
+      } else if (!event.valid && onNodeDoubleClick) {
         // Show tooltip near cursor
         setTooltipMessage("❌ This node is invalid. Cannot enter the game.");
         setTooltipPosition({ x: position.x + 15, y: position.y - 40 }); // slightly above and right

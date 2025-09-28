@@ -7,12 +7,21 @@ const KB_TOKEN = process.env.KB_TOKEN;
 
 export default async function getChoices(req, res) {
   try {
-    const { currentEvent, previousEvents } = req.body;
+    let { currentEvent, previousEvents } = req.body;
+
+    // Ensure we send strings to the prompt
+    const prevText = (previousEvents || [])
+      .map(ev => (typeof ev === 'string' ? ev : ev.title || ev.event || JSON.stringify(ev)))
+      .join(' | ');
+    const currText =
+      typeof currentEvent === 'string'
+        ? currentEvent
+        : currentEvent?.title || currentEvent?.event || JSON.stringify(currentEvent);
 
     const prompt = `
 We have the following historical events:
-Previous events: ${previousEvents.join(' | ')}
-Current event: ${currentEvent}
+Previous events: ${prevText}
+Current event: ${currText}
 the number in previous events and current event is for reference of timeflow. higher the number, later the event.
 you are lincoln at the current event now.
 
@@ -24,15 +33,15 @@ Generate 3 possible decisions lincoln could take now:
 
 There could be an ending where it is very different from history but it must be possible. so as long as possible
 the choices can be different from history.
-.make sure the choices have similar timeflow as the main timeline and they must reach an end
-at a similar time as main timeline. the 3 choices should have choice description, and the the fielsd in other choices
-if this choice is the final choice in the timeline, then mark end as true. else mark it as false. give the 
-answer in json format with fields:
+Make sure the choices have similar timeflow as the main timeline and they must reach an end
+at a similar time as main timeline. The 3 choices should have choice description, and the fields in other choices.
+If this choice is the final choice in the timeline, then mark end as true. Else mark it as false.
+Give the answer in json format with fields exactly like:
 {
-  "choice1": {"description": "...", "event":"...", "new_stats": {...}, "new_personality" : "...",
+  "choice1": {"description": "...", "event":"...", "new_stats": {...}, "new_personality" : "..."},
   "choice2": {...},
   "choice3": {...},
-  end: true/false
+  "end": true/false
 }
 `;
 
@@ -42,18 +51,19 @@ answer in json format with fields:
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-NUCLIA-SERVICEACCOUNT': `Bearer ${KB_TOKEN}`
+        'X-NUCLIA-SERVICEACCOUNT': `Bearer ${KB_TOKEN}`,
       },
       body: JSON.stringify({
         query: prompt,
         max_answer_length: 500,
         temperature: 0.2,
-        retrieve_count: 5
-      })
+        retrieve_count: 5,
+      }),
     });
 
     const raw = await resp.text();
-    // split each JSON object by newline and parse only valid items
+
+    // Split each JSON object by newline and parse only valid items
     const lines = raw.split('\n').filter(line => line.trim());
     let answerText = '';
 
@@ -68,10 +78,10 @@ answer in json format with fields:
       }
     }
 
-    // remove markdown code blocks if present
+    // Remove markdown code blocks if present
     answerText = answerText.replace(/```/g, '').trim();
 
-    // extract JSON block
+    // Extract JSON block
     let choices;
     try {
       const start = answerText.indexOf('{');
@@ -79,11 +89,18 @@ answer in json format with fields:
       choices = JSON.parse(answerText.substring(start, end + 1));
     } catch (err) {
       console.error('Could not parse JSON from Nuclia answer:', answerText);
-      return res.status(500).json({ error: 'Nuclia answer not valid JSON', rawAnswer: answerText });
+      return res.status(500).json({
+        error: 'Nuclia answer not valid JSON',
+        rawAnswer: answerText,
+      });
+    }
+
+    // ✅ Ensure structure
+    if (!choices.choice1 || !choices.choice2 || !choices.choice3) {
+      return res.status(500).json({ error: 'Invalid structure', raw: choices });
     }
 
     res.json(choices);
-
   } catch (err) {
     console.error('Error querying KB:', err);
     res.status(500).json({ error: 'Server error', details: err.message });
