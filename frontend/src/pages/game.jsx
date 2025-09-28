@@ -153,6 +153,7 @@ export default function GamePage() {
 
     setMessage(`You chose: ${choice.description}`);
     successSound.currentTime = 0;
+    successSound.volume = 0.5;
     successSound.play();
 
     // Animate timeline branch appearing
@@ -183,55 +184,83 @@ export default function GamePage() {
     setTimeout(() => navigate("/"), 1200);
   };
 
-  return (
-    <div className="character-page-container">
-      <div className={`character-page-book ${flipped ? "flipped" : ""}`}>
-        <div className="character-page-front">
-          <Appbar title="Game Page" onHomeClick={goHome} />
+return (
+  <div className="character-page-container">
+    {/* Add loading class to character-page-book while fetching choices */}
+    <div
+      className={`character-page-book ${flipped ? "flipped" : ""} ${
+        loadingChoices ? "loading" : ""
+      }`}
+    >
+      {/* FRONT FACE */}
+      <div className="character-page-front">
+        <Appbar title="Game Page" onHomeClick={goHome} />
 
-          <div className="Top">
-            {/* Character Preview */}
-            <div className="character-preview" style={{ marginTop: "2rem" }}>
-              <h2>{character.name}</h2>
-              <img src={character.img} alt={character.name} className="char-full-image" />
-              <p>Current Personality: {currentEvent.personality}</p>
-              Current Stats:
-              <StaggeredStats stats={currentStats} />
-            </div>
-
-            {/* Timeline */}
-            <div>
-              <h3>Timeline</h3>
-              <TimeLine timelineData={{ events: timelineNodes }} animatingNode={animatingNode} />
-            </div>
+        <div className="Top">
+          {/* Character Preview */}
+          <div
+            className={`character-preview ${
+              loadingChoices ? "loading-preview" : ""
+            }`}
+            style={{ marginTop: "2rem" }}
+          >
+            <h2>{character.name}</h2>
+            <img
+              src={character.img}
+              alt={character.name}
+              className={`char-full-image ${
+                loadingChoices ? "loading-image" : ""
+              }`}
+            />
+            <p>Current Personality: {currentEvent.personality}</p>
+            Current Stats:
+            <StaggeredStats stats={currentStats} />
           </div>
 
-          {/* Current Event */}
-          {currentEvent && (
-            <div className="current-event-card">
-              <h4>{currentEvent.title}</h4>
-              <p>{currentEvent.event || ""}</p>
-              <p>What's Next?</p>
-            </div>
-          )}
-
-          {/* Choice Cards */}
-          <div className="choice-cards">
-            {choices.map((choice, idx) => (
-              <div key={choice.id || idx} className="k-card" onClick={() => handleChoiceClick(choice)}>
-                <h4>{choice.title || "Choice"}</h4>
-                <p>{choice.description || "No description provided"}</p>
-                {choice.event && <small>{choice.event}</small>}
-              </div>
-            ))}
+          {/* Timeline */}
+          <div>
+            <h3>Timeline</h3>
+            <TimeLine
+              timelineData={{ events: timelineNodes }}
+              animatingNode={animatingNode}
+            />
           </div>
         </div>
 
-        {/* BACK FACE */}
-        <div className="character-page-back">
-          {flipType === "home" && <p>Going back home...</p>}
+        {/* Current Event */}
+        {currentEvent && (
+          <div
+            className={`current-event-card ${
+              loadingChoices ? "loading-card" : ""
+            }`}
+          >
+            <h4>{currentEvent.title}</h4>
+            <p>{currentEvent.event || ""}</p>
+            <p>What's Next?</p>
+          </div>
+        )}
+
+        {/* Choice Cards */}
+        <div className="choice-cards">
+          {choices.map((choice, idx) => (
+            <div
+              key={choice.id || idx}
+              className={`k-card ${loadingChoices ? "loading-card-spin" : ""}`}
+              onClick={() => handleChoiceClick(choice)}
+            >
+              <h4>{choice.title || "Choice"}</h4>
+              <p>{choice.description || "No description provided"}</p>
+              {choice.event && <small>{choice.event}</small>}
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* BACK FACE */}
+      <div className="character-page-back">
+        {flipType === "home" && <p>Going back home...</p>}
+      </div>
     </div>
-  );
+  </div>
+);
 }
