@@ -3,14 +3,14 @@ import dotenv from "dotenv";
 import cors from "cors";   
 import fs from "fs";
 import path from "path";
-import get from "./controllers/getChoices.js";
+import getChoices from "./controllers/getChoices.js";
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/get-options", get);
+app.post("/get-options", getChoices);
 
 // Path to player_books storage
 const STORAGE_PATH = path.join(process.cwd(), "storage", "player_books");
