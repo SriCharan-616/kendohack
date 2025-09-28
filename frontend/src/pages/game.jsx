@@ -236,7 +236,7 @@ export default function GamePage() {
             </div>
 
             {/* Timeline */}
-            <div>
+            <div >
               <h3>Timeline</h3>
               <TimeLine timelineData={{ events: timelineNodes }} />
             </div>
