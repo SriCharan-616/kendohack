@@ -32,11 +32,19 @@ export default function PlayerBooksPage() {
     };
     fetchPlayers();
   }, []);
-
+  const formatName = (name) => {
+  if (typeof name !== "string") return "";
+  return name
+    .trim()                 // remove leading/trailing spaces
+    .toLowerCase()          // convert to lowercase
+    .split(/\s+/)           // split by one or more spaces
+    .join("_");             // join with underscore
+};
   const handlePlayerClick = (player) => {
     clickSound.currentTime = 0;
     clickSound.play();
     setSelectedPlayer(player);
+    console.log("Selected player:", player);
   };
 
   const goHome = () => {
@@ -68,7 +76,7 @@ export default function PlayerBooksPage() {
                   onClick={() => handlePlayerClick(player)}
                 >
                   <img
-                    src={`/assets/${player.name.toLowerCase()}.png`}
+                    src={`/assets/${formatName(player.name)}.png`}
                     alt={player.name}
                     className="char-thumbnail"
                   />

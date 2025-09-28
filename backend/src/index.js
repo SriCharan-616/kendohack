@@ -13,21 +13,17 @@ app.use(express.json());
 app.use("/get-options", get);
 
 // Path to player_books storage
-const STORAGE_PATH = path.join(
-  process.cwd(),
-  "storage",
-  "player_books"
-);
+const STORAGE_PATH = path.join(process.cwd(), "storage", "player_books");
 
 // Ensure folder exists
 if (!fs.existsSync(STORAGE_PATH)) {
   fs.mkdirSync(STORAGE_PATH, { recursive: true });
 }
 
-// Helper to read JSON file and return events array
+// Helper to read JSON file and return the whole data
 const readPlayerBook = (filePath) => {
   const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  return data.events || []; // ensure it's an array
+  return data;
 };
 
 // Fetch all player books
@@ -35,9 +31,12 @@ app.get("/api/player-books", (req, res) => {
   try {
     const files = fs.readdirSync(STORAGE_PATH).filter(f => f.endsWith(".json"));
     const players = files.map(file => {
-      const name = path.basename(file, ".json");
-      const events = readPlayerBook(path.join(STORAGE_PATH, file));
-      return { name, events };
+      const filePath = path.join(STORAGE_PATH, file);
+      const data = readPlayerBook(filePath);
+      return {
+        name: data.name,         // <-- read name from JSON
+        events: data.events || [] // <-- events array
+      };
     });
     res.json(players);
   } catch (err) {
@@ -49,12 +48,19 @@ app.get("/api/player-books", (req, res) => {
 // Fetch single player's book
 app.get("/api/player-books/:name", (req, res) => {
   try {
-    const filePath = path.join(STORAGE_PATH, `${req.params.name}.json`);
-    if (!fs.existsSync(filePath)) {
+    const files = fs.readdirSync(STORAGE_PATH).filter(f => f.endsWith(".json"));
+    // Find JSON file where data.name matches requested name
+    const file = files.find(f => {
+      const data = readPlayerBook(path.join(STORAGE_PATH, f));
+      return data.name.toLowerCase() === req.params.name.toLowerCase();
+    });
+
+    if (!file) {
       return res.status(404).json({ error: "Book not found" });
     }
-    const events = readPlayerBook(filePath);
-    res.json({ name: req.params.name, events });
+
+    const data = readPlayerBook(path.join(STORAGE_PATH, file));
+    res.json({ name: data.name, events: data.events || [] });
   } catch (err) {
     console.error("Error reading single book:", err);
     res.status(500).json({ error: "Failed to read player book" });
@@ -64,9 +70,22 @@ app.get("/api/player-books/:name", (req, res) => {
 // Save/update player book
 app.post("/api/player-books/:name", (req, res) => {
   try {
-    const filePath = path.join(STORAGE_PATH, `${req.params.name}.json`);
-    // Always save as { events: [...] }
-    const dataToSave = { events: req.body };
+    const files = fs.readdirSync(STORAGE_PATH).filter(f => f.endsWith(".json"));
+    // Find file where data.name matches requested name
+    let file = files.find(f => {
+      const data = readPlayerBook(path.join(STORAGE_PATH, f));
+      return data.name.toLowerCase() === req.params.name.toLowerCase();
+    });
+
+    // If file doesn't exist, create new JSON with sanitized filename
+    if (!file) {
+      const sanitizedName = req.params.name.toLowerCase().replace(/\s+/g, "_");
+      file = `${sanitizedName}.json`;
+    }
+
+    const filePath = path.join(STORAGE_PATH, file);
+    // Save as { name, events }
+    const dataToSave = { name: req.params.name, events: req.body };
     fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2), "utf-8");
     res.json({ success: true, name: req.params.name });
   } catch (err) {
@@ -75,13 +94,11 @@ app.post("/api/player-books/:name", (req, res) => {
   }
 });
 
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log("Storage path:", STORAGE_PATH);
-console.log("Files found:", fs.readdirSync(STORAGE_PATH));
-
+  console.log("Files found:", fs.readdirSync(STORAGE_PATH));
 });
 
 export default app;
