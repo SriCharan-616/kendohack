@@ -112,7 +112,7 @@ export default function PlayerBooksPage() {
         {/* BACK FACE */}
         <div className="character-page-back">
           {flipType === "home" && (
-            <p className="home-flip">Going back home...</p>
+            <p >Going back home...</p>
           )}
         </div>
       </div>

@@ -2,21 +2,21 @@
 
 // Fetch all players
 export const getAllPlayerBooks = async () => {
-  const res = await fetch("http://localhost:5000/api/player-books");
+  const res = await fetch("https://replayhistory.onrender.com/api/player-books");
   if (!res.ok) throw new Error("Failed to fetch player books");
   return await res.json(); // [{ name, events }]
 };
 
 // Fetch a single player's book
 export const getPlayerBook = async (playerName) => {
-  const res = await fetch(`http://localhost:5000/api/player-books/${playerName}`);
+  const res = await fetch(`https://replayhistory.onrender.com/api/player-books/${playerName}`);
   if (!res.ok) throw new Error("Failed to fetch player book");
   return await res.json(); // { name, events }
 };
 
 // Save/update a player's book
 export const savePlayerBook = async (playerName, events,charname) => {
-  const res = await fetch(`http://localhost:5000/api/player-book/${playerName}`, {
+  const res = await fetch(`https://replayhistory.onrender.com/api/player-book/${playerName}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
