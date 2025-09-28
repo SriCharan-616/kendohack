@@ -112,7 +112,7 @@ HISTORICAL AUTHENTICITY CHECKLIST:
 
 `;
 
-    console.log(prompt);
+    
     
     const url = `${BACKEND}/v1/kb/${KB_ID}/ask`;
 

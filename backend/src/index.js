@@ -85,9 +85,9 @@ app.post("/api/player-book/:name", (req, res) => {
       const sanitizedName = req.params.name.toLowerCase().replace(/\s+/g, "_");
       file = `${sanitizedName}.json`;
     }
-
+  
     const filePath = path.join(STORAGE_PATH, file);
-    const dataToSave = { name: req.params.name, events: req.body };
+    const dataToSave = { name: req.body.charname, events: req.body.events };
     fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2), "utf-8");
 
     res.json({

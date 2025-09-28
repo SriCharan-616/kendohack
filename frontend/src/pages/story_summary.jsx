@@ -112,8 +112,9 @@ export default function StorySummary() {
   const handleUpload = async () => {
     if (!playerName.trim()) { alert("Please enter your name"); return; }
     setUploading(true);
+    console.log(characterName);
     try {
-      await savePlayerBook(playerName.trim(), { timeline: newBranchEvents, review: playerReview, rating: playerRating });
+      await savePlayerBook(playerName.trim(), newBranchEvents,characterName); // call imported function
       alert("Book uploaded successfully!");
     } catch (err) {
       console.error(err);
