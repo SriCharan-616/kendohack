@@ -1,29 +1,33 @@
+/* AppBar Container */
 .k-appbar {
-  width: 720px !important;
+  width: 740px !important;
   margin: 2rem auto 0 auto !important;
   height: 93px !important;
   background-color: var(--background) !important;
   color: var(--secondary) !important;
   border-bottom: 2px solid var(--secondary) !important;
   border-radius: 8px !important;
-  padding: 1rem 2rem !important;
+  padding: 0 2rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   position: relative !important;
   overflow: hidden !important;
   z-index: 10 !important;
+  gap: 15px;
 }
 
 /* Avatar background (watermark style) */
 .appbar-avatar-bg {
   position: absolute;
-  left: 31.9%;
+  left: 33.1%;
   top: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.5;
+  opacity: 0.1;
   pointer-events: none;
   z-index: 1;
+  display: flex;
+  gap: 5px;
 }
 
 /* Sections layering above avatar */
@@ -32,11 +36,15 @@
 .appbar-right {
   position: relative;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+/* Center title */
 .appbar-center h2 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.2;
   text-align: center;
   white-space: nowrap;
@@ -44,24 +52,53 @@
   text-overflow: ellipsis;
 }
 
-/* Music Button & Dropdown */
-.music-button,
-.music-dropdown {
+/* Music Buttons */
+.music-button {
+  font-family: 'Dancing Script', cursive !important;
   font-size: 1.3rem !important;
   background: var(--primary) !important;
   color: var(--background) !important;
   border: 2px solid var(--secondary) !important;
   border-radius: 8px !important;
-  padding: 0.5rem 0.8rem !important;
+  padding: 0.5rem 1.2rem !important;
   cursor: pointer !important;
-  height: 48px !important;
+  min-height: 48px !important;
   transition: all 0.3s ease-in-out !important;
 }
 
-.music-button.k-button:hover,
+.music-button:hover {
+  background: var(--highlight) !important;
+  color: var(--text) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 6px 16px rgba(92, 64, 51, 0.5) !important;
+}
+
+/* Music Dropdown */
+.music-dropdown {
+  font-family: 'Dancing Script', cursive !important;
+  font-size: 1.2rem !important;
+  background: var(--primary) !important;
+  color: var(--background) !important;
+  border: 2px solid var(--secondary) !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 1rem !important;
+  min-width: 120px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease-in-out !important;
+  appearance: none; /* remove default arrow */
+}
+
 .music-dropdown:hover {
   background: var(--highlight) !important;
   color: var(--text) !important;
-  transform: scale(1.04) !important;
-  box-shadow: 0 6px 16px rgba(92, 64, 51, 0.5) !important;
+  transform: scale(1.02) !important;
+}
+
+/* Optional: Custom dropdown arrow */
+.music-dropdown::after {
+  content: "▾";
+  position: absolute;
+  right: 1rem;
+  pointer-events: none;
+  color: var(--background);
 }
