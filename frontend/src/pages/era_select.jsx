@@ -1,8 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardBody } from "@progress/kendo-react-layout";
-import { Button, DropDownButton } from "@progress/kendo-react-buttons";
-import { Fade } from "@progress/kendo-react-animation";
+import { Button } from "@progress/kendo-react-buttons";
 import "../styles/era_select.css";
 
 import Appbar from "../components/appbar";
@@ -15,28 +14,26 @@ import modernImage from "/assets/modern.png";
 // Sounds
 const clickSound = new Audio("/assets/page-flip.mp3");
 
-// Background music list
+// Background music list (if needed later)
 const musicList = [
   { text: "Medieval Tune", file: "/assets/bg2.mp3" },
   { text: "Ancient Melody", file: "/assets/bg_ancient.mp3" },
   { text: "Renaissance Song", file: "/assets/bg_renaissance.mp3" }
 ];
 
-
-
 const EraSelectPage = () => {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
   const [flipType, setFlipType] = useState(null);
+
   const playClickSound = () => {
     clickSound.currentTime = 0;
     clickSound.play();
   };
 
   const goHome = () => {
-    clickSound.currentTime = 0;
-    clickSound.play();
-    setFlipType("home"); 
+    playClickSound();
+    setFlipType("home");
     setFlipped(true);
     setTimeout(() => navigate("/"), 1200);
   };
@@ -100,76 +97,75 @@ const EraSelectPage = () => {
       <div className={`homepage-book ${flipped ? "flipped" : ""}`}>
         {/* --- FRONT PAGE --- */}
         <div className="homepage-front">
-          {/* Use custom Appbar */}
-          <Appbar title="Era Selection" onHomeClick={goHome}/>
+          {/* Custom Appbar */}
+          <Appbar title="Era Selection" onHomeClick={goHome} />
+
           <div className="manuscript-content-centered">
             <header className="manuscript-header">
-              
               <h1>Select the era you want to explore</h1>
             </header>
 
-            {eras.map((era, idx) => (
-              
-                <Card className={`era-card ${era.className}`}>
-                  <div className="card-content-wrapper">
-                    <div className="card-text-section">
-                      <CardHeader>
-                        <CardTitle>
-                          {era.name} ({era.years})
-                        </CardTitle>
-                      </CardHeader>
-                      <CardBody>
-                        <p>{era.description}</p>
-                        <Button
-                          style={{
-                            background: era.buttonColor,
-                            color: "var(--background)",
-                            fontWeight: "bold"
-                          }}
-                          onClick={() => {
-                            playClickSound();
-                            setFlipType("era");
-                            setFlipped(true);
-                            const eraSlug = era.name
-                              .toLowerCase()
-                              .replace(/\s+/g, "-");
-                            setTimeout(
-                              () => navigate(`/characters/${eraSlug}`),
-                              1200
-                            );
-                          }}
-                        >
-                          Explore {era.name.split(" ")[0]}
-                        </Button>
-                      </CardBody>
-                    </div>
-                    <div className="card-image-section">
-                      <img src={era.img} alt={era.name} className="era-image" />
-                      <div className="card-decorations">
-                        <span
-                          className={
-                            era.className === "ancient-rome-card"
-                              ? "laurel-wreath"
-                              : era.className === "industrial-era-card"
-                              ? "gear"
-                              : "tech-icon"
-                          }
-                          style={{
-                            fontSize: "3rem",
-                            lineHeight: 1,
-                            display: "inline-block",
-                            transform: "translateY(-15%)",
-                            transition: "transform 0.3s ease, color 0.3s ease",
-                            cursor: "pointer"
-                          }}
-                        >
-                          {era.decoration}
-                        </span>
-                      </div>
+            {eras.map((era) => (
+              <Card key={era.name} className={`era-card ${era.className}`}>
+                <div className="card-content-wrapper">
+                  <div className="card-text-section">
+                    <CardHeader>
+                      <CardTitle>
+                        {era.name} ({era.years})
+                      </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <p>{era.description}</p>
+                      <Button
+                        style={{
+                          background: era.buttonColor,
+                          color: "var(--background)",
+                          fontWeight: "bold"
+                        }}
+                        onClick={() => {
+                          playClickSound();
+                          setFlipType("era");
+                          setFlipped(true);
+                          const eraSlug = era.name
+                            .toLowerCase()
+                            .replace(/\s+/g, "-");
+                          setTimeout(
+                            () => navigate(`/characters/${eraSlug}`),
+                            1200
+                          );
+                        }}
+                      >
+                        Explore {era.name.split(" ")[0]}
+                      </Button>
+                    </CardBody>
+                  </div>
+
+                  <div className="card-image-section">
+                    <img src={era.img} alt={era.name} className="era-image" />
+                    <div className="card-decorations">
+                      <span
+                        className={
+                          era.className === "ancient-rome-card"
+                            ? "laurel-wreath"
+                            : era.className === "industrial-era-card"
+                            ? "gear"
+                            : "tech-icon"
+                        }
+                        style={{
+                          fontSize: "3rem",
+                          lineHeight: 1,
+                          display: "inline-block",
+                          transform: "translateY(-15%)",
+                          transition: "transform 0.3s ease, color 0.3s ease",
+                          cursor: "pointer"
+                        }}
+                      >
+                        {era.decoration}
+                      </span>
                     </div>
                   </div>
-                </Card>
-             
+                </div>
+              </Card>
             ))}
           </div>
         </div>
