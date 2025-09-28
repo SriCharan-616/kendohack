@@ -9,6 +9,32 @@
   --alert: #A03C2C !important;       /* medieval red */
 }
 
+.hero-cards-container {
+  display: flex !important;
+  gap: 1rem !important;
+  overflow-x: auto !important;   /* enable horizontal scroll */
+  overflow-y: hidden !important;
+  padding-bottom: 0.5rem !important;
+  scroll-behavior: smooth !important;
+  scroll-snap-type: x mandatory !important;
+  width: 100% !important;
+}
+
+/* Optional: hide default scrollbar for Webkit */
+.hero-cards-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.hero-cards-container::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 4px;
+}
+
+.hero-cards-container::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+
 /* Container */
 .homepage-container {
   width: 100% !important;
