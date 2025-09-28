@@ -133,22 +133,29 @@ html, body {
   border-radius: 8px;
   transition: width 0.5s ease;
 }
-
 /* ===================== */
-/* Choice Cards Section   *//* ===================== */
-.choice-cards{
-  gap: 1.5rem;
-  flex: 0 0 340px;   /* 0 grow, 0 shrink, 340px basis */
-  width: 340px;      /* fallback for older browsers */
-  height: 530px;          /* Fixed height */
-  background: #FCFBFB;    /* Solid background */
+/* Choice Cards Section   */
+/* ===================== */
+.choice-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 1.5rem;                           /* spacing between cards */
+  width: 100%;
+  max-width: 1080px;                     /* optional, controls row width */
+  margin: 0 auto;                        /* center container */
+  padding: 1.5rem;
+}
+
+.choice-cards .k-card {
+  height: 530px;                         /* fixed height */
+  background: #FCFBFB;                   /* solid background */
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertically center content */
-  align-items: center;     /* Horizontally center content */
+  justify-content: center;               /* vertically center content */
+  align-items: center;                   /* horizontally center content */
   text-align: center;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -179,27 +186,13 @@ html, body {
 /* Responsive        */
 /* ================= */
 @media (max-width: 1024px) {
-  .game-page-content {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .character-preview {
-    width: 80%;
-    min-height: auto;
-  }
-
-
   .choice-cards {
-    flex-direction: column;
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on tablet */
   }
 }
 
 @media (max-width: 768px) {
-  .char-full-image { width: 140px; height: 140px; }
+  .choice-cards {
+    grid-template-columns: 1fr;           /* 1 card per row on mobile */
+  }
 }
-
-@media (max-width: 480px) {
-  .char-full-image { width: 110px; height: 110px; }
-}
-
