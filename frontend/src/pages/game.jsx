@@ -63,30 +63,31 @@ export default function GamePage() {
   const [flipped, setFlipped] = useState(false);
   const [flipType, setFlipType] = useState(null);
   const [loadingChoices, setLoadingChoices] = useState(false);
-  const [y,sety] = useState(0);
+  const [y, sety] = useState(0);
+
   // NEW: choices + current event
   const [choices, setChoices] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [previousEvents, setPreviousEvents] = useState([]);
-  const [name,setname] = useState("");
-  // ✅ define fetchChoices first
+  const [name, setname] = useState("");
+
+  // Animate node for timeline branch creation
+  const [animatingNode, setAnimatingNode] = useState(null);
+
+  // Fetch choices
   const fetchChoices = async (name, prevEvents, currEvent) => {
-     setLoadingChoices(true);
-    console.log("Fetching choices for:", currEvent, prevEvents);
+    setLoadingChoices(true);
     try {
-      const res = await fetch('http://localhost:5000/get-options', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    name: name ,
-    currentEvent: currEvent ,
-    previousEvents: prevEvents
-  })
-});
+      const res = await fetch("http://localhost:5000/get-options", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          currentEvent: currEvent,
+          previousEvents: prevEvents,
+        }),
+      });
       const data = await res.json();
-      console.log("Received choices:", data.choice1.description);
-      console.log("Received choices:", data.choice1);
-      // Backend returns choice1, choice2, choice3
       setChoices([
         { ...data.choice1, id: "c1" },
         { ...data.choice2, id: "c2" },
@@ -94,93 +95,85 @@ export default function GamePage() {
       ]);
     } catch (err) {
       console.error(err);
-    }
-    finally{
+    } finally {
       setLoadingChoices(false);
     }
   };
 
   // Load character and first event
   useEffect(() => {
-  const savedData = JSON.parse(localStorage.getItem("selectedCharacterNode"));
-  console.log("Loaded game data:", savedData);
-  if (!savedData) {
-    navigate("/");
-    return;
-  }
-  sety(savedData.node.y + 1);
-  setGameData(savedData);
-  setCurrentStats(savedData.node.stats);
-
-  const startNode = savedData.node;
-
-  // Timeline is the character's full timeline
-  const fullTimeline = savedData.character.timelineData.events;
-
-  const updatedfulltimeline = (fullTimeline).map((ev) => {
-    if (ev.id === startNode.id) {
-      return {
-        ...ev,
-        branches: [ {branch:"new_branch"}]
-      };
+    const savedData = JSON.parse(localStorage.getItem("selectedCharacterNode"));
+    if (!savedData) {
+      navigate("/");
+      return;
     }
-    return ev;
-  });
-  
-  setTimelineNodes(updatedfulltimeline);
 
-  // Current event is the node saved in local storage
-  
-  setCurrentEvent(startNode);
-  setname(savedData.character.name);
- 
-  // First fetch choices with current node from local storage
-  fetchChoices(savedData.character.name,[], startNode);
-}, [navigate]);
+    sety(savedData.node.y + 1);
+    setGameData(savedData);
+    setCurrentStats(savedData.node.stats);
 
+    const startNode = savedData.node;
+    const fullTimeline = savedData.character.timelineData.events;
+
+    const updatedfulltimeline = fullTimeline.map((ev) =>
+      ev.id === startNode.id ? { ...ev, branches: [{ branch: "new_branch" }] } : ev
+    );
+
+    setTimelineNodes(updatedfulltimeline);
+    setCurrentEvent(startNode);
+    setname(savedData.character.name);
+
+    fetchChoices(savedData.character.name, [], startNode);
+  }, [navigate]);
 
   if (!gameData) return null;
 
   const { character } = gameData;
 
-  // Handle choice click
+  // Handle choice click with timeline branch animation
   const handleChoiceClick = (choice) => {
     clickSound.currentTime = 0;
     clickSound.play();
-    
-    // Store old event in previousEvents
+
     const newPreviousEvents = [...previousEvents, currentEvent];
     setPreviousEvents(newPreviousEvents);
-    
-    // The choice now becomes the new current event
+
     const newEvent = {
       id: timelineNodes.length + 1,
       title: choice.title || "New Event",
-      branch:"new_branch",
+      branch: "new_branch",
       branches: [],
       y: y,
       event: choice.event,
-      stats: choice.new_stats ,
+      stats: choice.new_stats,
       personality: choice.new_personality,
     };
-    sety(y+1);
-    // Update timeline with new event
-    const updatedTimeline = [...timelineNodes, newEvent];
-  
-    setTimelineNodes(updatedTimeline);
-    setCurrentEvent(newEvent);
+    sety(y + 1);
+    setAnimatingNode(newEvent);
 
-    // Update stats dynamically
-    setCurrentStats(newEvent.stats);
-
-    // Show feedback
     setMessage(`You chose: ${choice.description}`);
-
     successSound.currentTime = 0;
+    successSound.volume = 0.5;
     successSound.play();
 
-    // Fetch next 3 choices from backend
-    fetchChoices(name,newPreviousEvents, newEvent);
+    // Animate timeline branch appearing
+    let step = 0;
+    const steps = 20; // total frames for animation
+    const interval = setInterval(() => {
+      step++;
+      if (step >= steps) {
+        // Finish animation
+        setTimelineNodes([...timelineNodes, newEvent]);
+        setCurrentEvent(newEvent);
+        setCurrentStats(newEvent.stats);
+        setAnimatingNode(null);
+        fetchChoices(name, newPreviousEvents, newEvent);
+        clearInterval(interval);
+      } else {
+        // Show animating placeholder node
+        setTimelineNodes([...timelineNodes, { ...newEvent, placeholder: true }]);
+      }
+    }, 50);
   };
 
   const goHome = () => {
@@ -191,80 +184,84 @@ export default function GamePage() {
     setTimeout(() => navigate("/"), 1200);
   };
 
-  return (
-    <div className="character-page-container">
-      <div className={`character-page-book ${flipped ? "flipped" : ""}`}>
-        {/* FRONT FACE */}
-        {loadingChoices ? (
-    <Fade transitionEnterDuration={500} transitionExitDuration={300}>
-      <div
-        style={{
-          position: "fixed",
-        height: "100%",
-        width: "100%",
-        top: "50%",  
-        fontSize: "2rem",     
-        fontWeight: "bold",
-        color: "black",     // bright orange for visibility
-        textAlign: "center",
-        pointerEvents: "none",
-        zIndex: 1000,         // on top of other elements
-      }}
-      >
-        Loading choices...
+return (
+  <div className="character-page-container">
+    {/* Add loading class to character-page-book while fetching choices */}
+    <div
+      className={`character-page-book ${flipped ? "flipped" : ""} ${
+        loadingChoices ? "loading" : ""
+      }`}
+    >
+      {/* FRONT FACE */}
+      <div className="character-page-front">
+        <Appbar title="Game Page" onHomeClick={goHome} />
+
+        <div className="Top">
+          {/* Character Preview */}
+          <div
+            className={`character-preview ${
+              loadingChoices ? "loading-preview" : ""
+            }`}
+            style={{ marginTop: "2rem" }}
+          >
+            <h2>{character.name}</h2>
+            <img
+              src={character.img}
+              alt={character.name}
+              className={`char-full-image ${
+                loadingChoices ? "loading-image" : ""
+              }`}
+            />
+            <div className="personality-badge"><p>Current Personality: {currentEvent.personality}</p>
+            </div>
+            Current Stats:
+            <StaggeredStats stats={currentStats} />
+          </div>
+
+          {/* Timeline */}
+          <div>
+            <h3>Timeline</h3>
+            <TimeLine
+              timelineData={{ events: timelineNodes }}
+              animatingNode={animatingNode}
+            />
+          </div>
+        </div>
+
+        {/* Current Event */}
+        {currentEvent && (
+          <div
+            className={`current-event-card ${
+              loadingChoices ? "loading-card" : ""
+            }`}
+          >
+            <h4>{currentEvent.title}</h4>
+            <p>{currentEvent.event || ""}</p>
+            <p>What's Next?</p>
+          </div>
+        )}
+
+        {/* Choice Cards */}
+        <div className="choice-cards">
+          {choices.map((choice, idx) => (
+            <div
+              key={choice.id || idx}
+              className={`k-card ${loadingChoices ? "loading-card-spin" : ""}`}
+              onClick={() => handleChoiceClick(choice)}
+            >
+              <h4>{choice.title || "Choice"}</h4>
+              <p>{choice.description || "No description provided"}</p>
+              {choice.event && <small>{choice.event}</small>}
+            </div>
+          ))}
+        </div>
       </div>
-    </Fade>
-  ) : (
-        <div className="character-page-front">
-          <Appbar title="Game Page" onHomeClick={goHome} />
 
-          <div className="Top">
-            {/* Character Preview */}
-            <div className="character-preview" style={{ marginTop: "2rem" }}>
-              <h2>{character.name}</h2>
-              <img
-                src={character.img}
-                alt={character.name}
-                className="char-full-image"
-              />
-              <p>
-                Current Personality:
-                {currentEvent.personality}
-              </p>
-              Current Stats:
-              <StaggeredStats stats={currentStats} />
-            </div>
-
-            {/* Timeline */}
-            <div >
-              <h3>Timeline</h3>
-              <TimeLine timelineData={{ events: timelineNodes }} />
-            </div>
-          </div>
-
-          {/* Choice Cards */}
-          <div className="choice-cards">
-            {choices.map((choice, idx) => (
-              <div
-                key={choice.id || idx}
-                className="k-card"
-                onClick={() => handleChoiceClick(choice)}
-              >
-                {/* Everything inside one container */}
-                <h4>{choice.title || "Choice"}</h4>
-                <p>{choice.description || "No description provided"}</p>
-                {choice.event && <small>{choice.event}</small>}
-              </div>
-            ))}
-          </div>
-
-        </div>
-  )}
-        {/* BACK FACE */}
-        <div className="character-page-back">
-          {flipType === "home" && <p>Going back home...</p>}
-        </div>
+      {/* BACK FACE */}
+      <div className="character-page-back">
+        {flipType === "home" && <p>Going back home...</p>}
       </div>
     </div>
-  );
+  </div>
+);
 }
