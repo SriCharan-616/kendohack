@@ -34,8 +34,9 @@ app.get("/api/player-books", (req, res) => {
       const filePath = path.join(STORAGE_PATH, file);
       const data = readPlayerBook(filePath);
       return {
-        name: data.name,         // <-- read name from JSON
-        events: data.events || [] // <-- events array
+        playername: path.parse(file).name, // filename without .json
+        name: data.name,
+        events: data.events || []
       };
     });
     res.json(players);
@@ -49,7 +50,6 @@ app.get("/api/player-books", (req, res) => {
 app.get("/api/player-books/:name", (req, res) => {
   try {
     const files = fs.readdirSync(STORAGE_PATH).filter(f => f.endsWith(".json"));
-    // Find JSON file where data.name matches requested name
     const file = files.find(f => {
       const data = readPlayerBook(path.join(STORAGE_PATH, f));
       return data.name.toLowerCase() === req.params.name.toLowerCase();
@@ -60,7 +60,11 @@ app.get("/api/player-books/:name", (req, res) => {
     }
 
     const data = readPlayerBook(path.join(STORAGE_PATH, file));
-    res.json({ name: data.name, events: data.events || [] });
+    res.json({
+      playername: path.parse(file).name, // filename without .json
+      name: data.name,
+      events: data.events || []
+    });
   } catch (err) {
     console.error("Error reading single book:", err);
     res.status(500).json({ error: "Failed to read player book" });
@@ -71,7 +75,6 @@ app.get("/api/player-books/:name", (req, res) => {
 app.post("/api/player-books/:name", (req, res) => {
   try {
     const files = fs.readdirSync(STORAGE_PATH).filter(f => f.endsWith(".json"));
-    // Find file where data.name matches requested name
     let file = files.find(f => {
       const data = readPlayerBook(path.join(STORAGE_PATH, f));
       return data.name.toLowerCase() === req.params.name.toLowerCase();
@@ -84,10 +87,14 @@ app.post("/api/player-books/:name", (req, res) => {
     }
 
     const filePath = path.join(STORAGE_PATH, file);
-    // Save as { name, events }
     const dataToSave = { name: req.params.name, events: req.body };
     fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2), "utf-8");
-    res.json({ success: true, name: req.params.name });
+
+    res.json({
+      success: true,
+      playername: path.parse(file).name, // filename without .json
+      name: req.params.name
+    });
   } catch (err) {
     console.error("Error saving book:", err);
     res.status(500).json({ error: "Failed to save player book" });
