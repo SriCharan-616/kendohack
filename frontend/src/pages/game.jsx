@@ -118,7 +118,7 @@ export default function GamePage() {
     const updatedfulltimeline = fullTimeline.map((ev) =>
       ev.id === startNode.id ? { ...ev, branches: [{ branch: "new_branch" }] } : ev
     );
-
+    co
     setTimelineNodes(updatedfulltimeline);
     setCurrentEvent(startNode);
     setname(savedData.character.name);
@@ -140,7 +140,7 @@ export default function GamePage() {
 
     const newEvent = {
       id: timelineNodes.length + 1,
-      title: choice.title || "New Event",
+      title: choice.title ,
       branch: "new_branch",
       branches: [],
       y: y,

@@ -18,10 +18,7 @@ export default async function getChoices(req, res) {
       timePeriod = "",
       characterTitle = "",
       currentLocation = "",
-      characterAge = "",
-      keyRelationships = "",
-      availableResources = "",
-      externalPressures = ""
+      characterAge = ""
     } = req.body;
 
     // Ensure we send strings to the prompt
@@ -72,9 +69,6 @@ Event Number: ${eventNumber} (higher numbers = later in timeline)
 CHARACTER STATE:
 Current Stats: ${JSON.stringify(currentStats)}
 Current Personality: ${currentPersonality}
-Key Relationships: ${keyRelationships || "Various political and personal connections"}
-Available Resources: ${availableResources || "Standard resources for the era"}
-External Pressures: ${externalPressures || "Political and social pressures of the time"}
 
 RANDOMIZATION FACTORS (to ensure variety):
 - Decision Seed: ${randomSeed}
