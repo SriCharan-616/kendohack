@@ -123,15 +123,6 @@ html, body {
   transition: transform 0.6s ease;
 }
 
-/* Optional: image rotation during spin */
-.character-page-book.loading .char-full-image {
-  animation: imageSpin 1s linear infinite;
-}
-
-@keyframes imageSpin {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
 
 /* ===================== */
 /* Current Event Display  */
