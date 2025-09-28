@@ -15,11 +15,14 @@ export const getPlayerBook = async (playerName) => {
 };
 
 // Save/update a player's book
-export const savePlayerBook = async (playerName, events) => {
+export const savePlayerBook = async (playerName, events,charname) => {
   const res = await fetch(`http://localhost:5000/api/player-book/${playerName}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(events),
+    body: JSON.stringify({
+      events: events,
+      charname: charname
+    }),
   });
   if (!res.ok) throw new Error("Failed to save player book");
   return await res.json();

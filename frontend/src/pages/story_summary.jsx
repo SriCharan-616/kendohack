@@ -132,8 +132,9 @@ export default function StorySummary() {
       return;
     }
     setUploading(true);
+    console.log(characterName);
     try {
-      await savePlayerBook(playerName.trim(), newBranchEvents); // call imported function
+      await savePlayerBook(playerName.trim(), newBranchEvents,characterName); // call imported function
       alert("Book uploaded successfully!");
     } catch (err) {
       console.error(err);
