@@ -55,6 +55,7 @@ const StaggeredStats = ({ stats }) => {
 };
 
 export default function GamePage() {
+  const backend = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const [gameData, setGameData] = useState(null);
   const [currentStats, setCurrentStats] = useState({});

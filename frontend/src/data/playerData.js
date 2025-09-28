@@ -1,5 +1,5 @@
 // frontend/src/data/playerData.js
-
+const backend = import.meta.env.VITE_BACKEND_URL;
 // Fetch all players
 export const getAllPlayerBooks = async () => {
   const res = await fetch(`${backend}/api/player-books`);
