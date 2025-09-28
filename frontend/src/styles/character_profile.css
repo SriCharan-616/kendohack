@@ -51,7 +51,7 @@ html, body {
   flex: 0 0 260px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
   padding: 1rem;
   border-right: 3px solid var(--highlight);
   box-shadow: 2px 0 10px var(--shadow);
