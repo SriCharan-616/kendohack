@@ -49,10 +49,6 @@ export default function PlayerBooksPage() {
     setTimeout(() => navigate("/"), 1200);
   };
 
-  if (loading) {
-    return <p style={{ padding: "2rem" }}>Loading player books...</p>;
-  }
-
   return (
     <div className="character-page-container">
       <div className={`character-page-book ${flipped ? "flipped" : ""}`}>
