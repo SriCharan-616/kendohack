@@ -15,9 +15,9 @@ const characters = [
   { name: "Arthur", era: "medieval-era", img: "/assets/arthur.png", fact: "Arthur is the legendary king of Britain, known for the Knights of the Round Table and Excalibur." },
   { name: "Cleopatra", era: "ancient-rome-era", img: "/assets/cleopatra.png", fact: "Cleopatra VII was the last active ruler of the Ptolemaic Kingdom of Egypt and was known for her intelligence and charm." },
   { name: "Leonardo", era: "renaissance-era", img: "/assets/leonardo.png", fact: "Leonardo da Vinci was a polymath of the Renaissance, excelling in art, science, and engineering." },
-  { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/lincoln.png", fact: "Abraham Lincoln was the 16th President of the United States and led the country during the Civil War." },
-  { name: "Mahatma Gandhi", era: "modern-era", img: "/assets/Gandhi.png", fact: "Mahatma Gandhi led India to independence using nonviolent civil disobedience." },
-  { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/caesar.png", fact: "Julius Caesar was a Roman general and statesman who played a critical role in the demise of the Roman Republic." }
+  { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/abraham_lincoln.png", fact: "Abraham Lincoln was the 16th President of the United States and led the country during the Civil War." },
+  { name: "Mahatma Gandhi", era: "modern-era", img: "/assets/mahatma_gandhi.png", fact: "Mahatma Gandhi led India to independence using nonviolent civil disobedience." },
+  { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/julius_caesar.png", fact: "Julius Caesar was a Roman general and statesman who played a critical role in the demise of the Roman Republic." }
 ];
 
 const clickSound = new Audio("/assets/click.mp3");
@@ -32,6 +32,7 @@ export default function CharacterSelectPage() {
   const filteredChars = characters.filter(
     (char) => char.era.toLowerCase() === eraSlug
   );
+  
 
   const [selectedChar, setSelectedChar] = useState(filteredChars[0] || null);
 

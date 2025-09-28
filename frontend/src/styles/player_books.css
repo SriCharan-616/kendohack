@@ -1,0 +1,183 @@
+:root {
+  --secondary: #8B4513;     
+  --highlight: #FFD700;     
+  --background: #F5E6D3;    
+  --text-color: #2C1810;    
+  --border-color: #A0522D;  
+  --hover-color: #CD853F;   
+  --shadow: rgba(0, 0, 0, 0.2);
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: 'MedievalSharp', cursive, serif;
+  color: var(--text-color);
+  background: url("/assets/output_black.png") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100%;
+  height: 100%;
+}
+
+.character-page-front {
+  scrollbar-width: none;
+}
+.character-page-front::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sidebar */
+.character-list {
+  flex: 0 0 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 1rem;
+  border-right: 3px solid var(--highlight);
+  box-shadow: 2px 0 10px var(--shadow);
+  background: white;
+  border-radius: 12px;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+.character-list::-webkit-scrollbar { display: none; }
+.character-list { -ms-overflow-style: none; scrollbar-width: none; }
+
+.hero-card {
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px var(--shadow);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+}
+.hero-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
+  border-color: var(--highlight);
+}
+.hero-card.selected {
+  border: 3px solid var(--highlight);
+  background: linear-gradient(135deg, white, #FFFAF0);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+.char-thumbnail {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border-color);
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s;
+}
+.hero-card:hover .char-thumbnail { transform: scale(1.1); }
+.hero-card .k-card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--secondary);
+  text-align: center;
+}
+
+/* Character Preview */
+.character-preview {
+  flex: 0 1 340px;
+  max-width: 100%;
+  min-height: 520px;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border: 3px solid var(--border-color);
+  transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
+  transform-style: preserve-3d;
+  position: relative;
+}
+.character-preview h2 {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Top layout */
+.Top {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+.Top .character-preview {
+  flex: 0 0 340px;
+  max-width: 100%;
+}
+.Top > div:nth-child(2) {
+  flex: 1;
+  max-width: 700px;
+}
+
+/* Flip Book */
+.character-page-container {
+  perspective: 2500px;
+}
+.character-page-book {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
+  position: relative;
+  margin: 0 auto;
+}
+.character-page-book.flipped {
+  transform: rotateY(180deg);
+}
+.character-page-front,
+.character-page-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  top: 0;
+  left: 0;
+}
+.character-page-front {
+  z-index: 2;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.character-page-back {
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--text-color);
+  background: url("/assets/output_black.png") center/cover no-repeat;
+}
+.home-flip {
+  color: var(--highlight);
+  font-size: 1.4rem;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .character-list { width: 80%; max-width: 300px; }
+  .character-preview { width: 80%; min-height: auto; }
+}

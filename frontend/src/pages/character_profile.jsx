@@ -19,9 +19,9 @@ const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
 
 const characters = [
-  { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/caesar.png", timelineData: caesarTimeline },
-  { name: "Mahatma Gandhi", era: "modern-era", img: "/assets/Gandhi.png", timelineData: gandhiTimeline },
-  { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/lincoln.png", timelineData: lincolnTimeline },
+  { name: "Julius Caesar", era: "ancient-rome-era", img: "/assets/julius_caesar.png", timelineData: caesarTimeline },
+  { name: "Mahatma Gandhi", era: "modern-era", img: "/assets/mahatma_gandhi.png", timelineData: gandhiTimeline },
+  { name: "Abraham Lincoln", era: "industrial-revolution", img: "/assets/abraham_lincoln.png", timelineData: lincolnTimeline },
 ];
 
 

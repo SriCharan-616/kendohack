@@ -36,9 +36,7 @@ html, body {
   padding: 2rem;
   gap: 2rem;
   color: white;
-
-  /* Perspective for 3D rotation */
-  perspective: 1500px;
+  perspective: 1500px; /* 3D perspective */
 }
 
 /* ===================== */
@@ -49,43 +47,12 @@ html, body {
   transition: transform 1.2s cubic-bezier(0.68,-0.55,0.265,1.55);
 }
 
-/* Spin animation for loading */
+/* Loading: Page Flip Animation */
 .character-page-book.loading {
-  animation: magicalSpin 1s linear infinite;
+  animation: pageFlip 0.8s ease-in-out forwards;
 }
 
-.personality-badge {
-  background-color: var(--highlight);
-  color: var(--text-color);
-  font-weight: bold;
-  padding: 0.25rem 0.6rem;
-  border-radius: 0.3rem;
-  font-size: 0.9rem;
-  display: inline-block;
-}
-
-
-@keyframes magicalSpin {
-  0% {
-    transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);
-  }
-  25% {
-    transform: rotateY(90deg) rotateX(15deg) rotateZ(5deg);
-  }
-  50% {
-    transform: rotateY(180deg) rotateX(30deg) rotateZ(-5deg);
-  }
-  75% {
-    transform: rotateY(270deg) rotateX(15deg) rotateZ(5deg);
-  }
-  100% {
-    transform: rotateY(360deg) rotateX(0deg) rotateZ(0deg);
-  }
-}
-
-/* ===================== */
-/* Character Preview     */
-/* ===================== */
+/* Character Preview */
 .character-preview {
   flex: 0 1 340px;
   max-width: 100%;
@@ -98,18 +65,13 @@ html, body {
   align-items: center;
   background: white;
   border: 3px solid var(--border-color);
-  transition: transform 0.6s ease; /* smooth minor shake during spin */
+  transition: transform 0.6s ease;
   position: relative;
 }
 
-/* Optional: slight bounce while spinning */
+/* Preview lifts slightly during loading */
 .character-page-book.loading .character-preview {
-  animation: previewBounce 1s infinite ease-in-out;
-}
-
-@keyframes previewBounce {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  animation: pageLift 0.8s ease-in-out forwards;
 }
 
 /* Character Image */
@@ -122,7 +84,6 @@ html, body {
   margin-bottom: 1rem;
   transition: transform 0.6s ease;
 }
-
 
 /* ===================== */
 /* Current Event Display  */
@@ -145,14 +106,9 @@ html, body {
   transition: transform 0.6s ease;
 }
 
+/* Slight shake for event card during page flip */
 .character-page-book.loading .current-event-card {
-  animation: cardShake 1s infinite ease-in-out;
-}
-
-@keyframes cardShake {
-  0%, 100% { transform: rotateZ(0deg); }
-  25% { transform: rotateZ(3deg); }
-  75% { transform: rotateZ(-3deg); }
+  animation: cardShake 0.8s ease-in-out forwards;
 }
 
 /* ===================== */
@@ -183,15 +139,9 @@ html, body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Cards rotate slightly during loading */
+/* Choice cards flip slightly during loading */
 .character-page-book.loading .k-card {
-  animation: cardSpin 1s infinite linear;
-}
-
-@keyframes cardSpin {
-  0% { transform: rotateY(0deg) rotateX(0deg); }
-  50% { transform: rotateY(15deg) rotateX(10deg); }
-  100% { transform: rotateY(0deg) rotateX(0deg); }
+  animation: cardFlip 0.8s ease-in-out forwards;
 }
 
 /* Hover effect */
@@ -223,6 +173,39 @@ html, body {
   animation: branchAppear 1s forwards;
 }
 
+/* ===================== */
+/* Animations             */
+/* ===================== */
+
+/* Page Flip Keyframes */
+@keyframes pageFlip {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(-180deg); }
+  100% { transform: rotateY(-360deg); }
+}
+
+/* Preview Lift */
+@keyframes pageLift {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Card Flip */
+@keyframes cardFlip {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(90deg); }
+  100% { transform: rotateY(0deg); }
+}
+
+/* Event Card Shake */
+@keyframes cardShake {
+  0%, 100% { transform: rotateZ(0deg); }
+  25% { transform: rotateZ(3deg); }
+  75% { transform: rotateZ(-3deg); }
+}
+
+/* Timeline node animation */
 @keyframes branchAppear {
   0% { opacity: 0; transform: translateY(-20px) scale(0.8); }
   50% { opacity: 0.7; transform: translateY(-10px) scale(0.9); }

@@ -157,7 +157,7 @@ const characters = [
             <p style={{fontSize:'20px'}}>Flip through the story of your timeline.</p>
             <div className="inline-book-wrapper">
               <Book
-                character={{ name: "Caesar", era: "Ancient", img: "/assets/caesar.png" }}
+                character={{ name: "Caesar", era: "Ancient", img: "/assets/julius_caesar.png" }}
                 story={caesarTimeline.events}
               />
             </div>

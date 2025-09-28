@@ -33,10 +33,20 @@ export default function PlayerBooksPage() {
     fetchPlayers();
   }, []);
 
+  const formatName = (name) => {
+    if (typeof name !== "string") return "";
+    return name
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .join("_");
+  };
+
   const handlePlayerClick = (player) => {
     clickSound.currentTime = 0;
     clickSound.play();
     setSelectedPlayer(player);
+    console.log("Selected player:", player);
   };
 
   const goHome = () => {
@@ -61,18 +71,20 @@ export default function PlayerBooksPage() {
             <div className="character-list">
               {players.map((player) => (
                 <div
-                  key={player.name}
+                  key={player.playername} // Use playername as key
                   className={`hero-card ${
-                    selectedPlayer?.name === player.name ? "selected" : ""
+                    selectedPlayer?.playername === player.playername
+                      ? "selected"
+                      : ""
                   }`}
                   onClick={() => handlePlayerClick(player)}
                 >
                   <img
-                    src={`/assets/${player.name.toLowerCase()}.png`}
+                    src={`/assets/${formatName(player.name)}.png`} // Use 'name' for image path
                     alt={player.name}
                     className="char-thumbnail"
                   />
-                  <div className="k-card-title">{player.name}</div>
+                  <div className="k-card-title">{player.playername}</div>
                 </div>
               ))}
             </div>
@@ -81,7 +93,7 @@ export default function PlayerBooksPage() {
             <div className="character-preview">
               {selectedPlayer ? (
                 <>
-                  <h2>{selectedPlayer.name}'s Book</h2>
+                  <h2>{selectedPlayer.playername}'s Book</h2>
                   <Book
                     character={{ name: selectedPlayer.name }}
                     story={selectedPlayer.events.map((e) => ({
