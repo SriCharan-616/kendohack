@@ -6,6 +6,7 @@ import { getAllPlayerBooks } from "../data/playerData";
 import "../styles/player_books.css";
 
 // Sounds
+const clickSound = new Audio("/assets/click.mp3");
 const pageFlipSound = new Audio("/assets/page-flip.mp3");
 
 export default function PlayerBooksPage() {
@@ -33,8 +34,8 @@ export default function PlayerBooksPage() {
   }, []);
 
   const handlePlayerClick = (player) => {
-    pageFlipSound.currentTime = 0;
-    pageFlipSound.play();
+    clickSound.currentTime = 0;
+    clickSound.play();
     setSelectedPlayer(player);
   };
 
@@ -47,10 +48,6 @@ export default function PlayerBooksPage() {
     // Navigate after flip animation
     setTimeout(() => navigate("/"), 1200);
   };
-
-  if (loading) {
-    return <p style={{ padding: "2rem" }}>Loading player books...</p>;
-  }
 
   return (
     <div className="character-page-container">
