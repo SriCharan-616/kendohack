@@ -7,8 +7,9 @@ const KB_TOKEN = process.env.KB_TOKEN;
 
 export default async function getChoices(req, res) {
   try {
-    let { currentEvent, previousEvents } = req.body;
-
+    
+    let { name, currentEvent, previousEvents } = req.body;
+  
     // Ensure we send strings to the prompt
     const prevText = (previousEvents || [])
       .map(ev => (typeof ev === 'string' ? ev : ev.title || ev.event || JSON.stringify(ev)))
@@ -19,11 +20,11 @@ export default async function getChoices(req, res) {
         : currentEvent?.title || currentEvent?.event || JSON.stringify(currentEvent);
 
     const prompt = `
+    you are currently this character: ${name}
 We have the following historical events:
 Previous events: ${prevText}
 Current event: ${currText}
 the number in previous events and current event is for reference of timeflow. higher the number, later the event.
-you are lincoln at the current event now.
 
 Based on these,  
 Generate 3 possible decisions lincoln could take now:

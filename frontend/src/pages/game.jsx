@@ -68,9 +68,9 @@ export default function GamePage() {
   const [choices, setChoices] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [previousEvents, setPreviousEvents] = useState([]);
-
+  const [name,setname] = useState("");
   // ✅ define fetchChoices first
-  const fetchChoices = async (prevEvents, currEvent) => {
+  const fetchChoices = async (name, prevEvents, currEvent) => {
      setLoadingChoices(true);
     console.log("Fetching choices for:", currEvent, prevEvents);
     try {
@@ -78,6 +78,7 @@ export default function GamePage() {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
+    name: name ,
     currentEvent: currEvent ,
     previousEvents: prevEvents
   })
@@ -107,20 +108,34 @@ export default function GamePage() {
     navigate("/");
     return;
   }
-  sety(savedData.node.y);
+  sety(savedData.node.y + 1);
   setGameData(savedData);
   setCurrentStats(savedData.character.stats);
 
+  const startNode = savedData.node;
+
   // Timeline is the character's full timeline
   const fullTimeline = savedData.character.timelineData.events;
-  setTimelineNodes(fullTimeline);
+
+  const updatedfulltimeline = (fullTimeline).map((ev) => {
+    if (ev.id === startNode.id) {
+      return {
+        ...ev,
+        branches: [ {branch:"new_branch"}]
+      };
+    }
+    return ev;
+  });
+  
+  setTimelineNodes(updatedfulltimeline);
 
   // Current event is the node saved in local storage
-  const startNode = savedData.node;
+  
   setCurrentEvent(startNode);
-
+  setname(savedData.character.name);
+ 
   // First fetch choices with current node from local storage
-  fetchChoices([], startNode);
+  fetchChoices(savedData.character.name,[], startNode);
 }, [navigate]);
 
 
@@ -132,24 +147,25 @@ export default function GamePage() {
   const handleChoiceClick = (choice) => {
     clickSound.currentTime = 0;
     clickSound.play();
-
+    
     // Store old event in previousEvents
     const newPreviousEvents = [...previousEvents, currentEvent];
     setPreviousEvents(newPreviousEvents);
-    sety(y+1);
+    
     // The choice now becomes the new current event
     const newEvent = {
       id: timelineNodes.length + 1,
       title: choice.title || "New Event",
-      branch:"new branch",
+      branch:"new_branch",
       branches: [],
       y: y,
       stats: choice.new_stats ,
       personality: choice.new_personality,
     };
-
+    sety(y+1);
     // Update timeline with new event
     const updatedTimeline = [...timelineNodes, newEvent];
+  
     setTimelineNodes(updatedTimeline);
     setCurrentEvent(newEvent);
 
@@ -163,7 +179,7 @@ export default function GamePage() {
     successSound.play();
 
     // Fetch next 3 choices from backend
-    fetchChoices(newPreviousEvents, newEvent);
+    fetchChoices(name,newPreviousEvents, newEvent);
   };
 
   const goHome = () => {
@@ -211,9 +227,10 @@ export default function GamePage() {
                 className="char-full-image"
               />
               <p>
-                {timelineNodes[timelineNodes.length - 1]?.personality ||
-                  currentEvent?.personality}
+                Current Personality:
+                {currentEvent.personality}
               </p>
+              Current Stats:
               <StaggeredStats stats={currentStats} />
             </div>
 
