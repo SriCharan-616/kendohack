@@ -93,7 +93,7 @@ const characters = [
   { name: "Napoleon", era: "Modern", img: "/assets/napoleon.png" },
   { name: "Marie Curie", era: "Modern", img: "/assets/marie-curie.png" },
 ];
-
+console.log(caesarTimeline.events);
  
   return (
     <div className="homepage-container">

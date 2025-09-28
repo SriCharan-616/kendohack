@@ -87,7 +87,7 @@ export default function GamePage() {
     const currentPersonality = currEvent.personality;
     const timePeriod = currEvent.date;
     const characterAge = currEvent.age;
-    console.log(end)
+    
     try {
       const res = await fetch("http://localhost:5000/get-options", {
         method: "POST",
@@ -151,20 +151,10 @@ export default function GamePage() {
 
   // Handle choice click with timeline branch animation
   const handleChoiceClick = (choice) => {
-    
-    if (end === y) {
-      pageFlipSound.currentTime = 0;
-      pageFlipSound.play();
-      setFlipType("player-book");
-      setFlipped(true);
-      setTimeout(
-        () => navigate('/story-summary',{ 
-      state: { timelineData: timelineNodes, characterName: name } 
-    }),
-        1200
-      );
+    if (loadingChoices){
       return;
     }
+    
 
     const newPreviousEvents = [...previousEvents, currentEvent];
     setPreviousEvents(newPreviousEvents);
@@ -181,8 +171,23 @@ export default function GamePage() {
       stats: choice.new_stats,
       personality: choice.new_personality,
     };
-
+    const updatedTimeline = [...timelineNodes, { ...newEvent, placeholder: true }];
+    setTimelineNodes([...timelineNodes, { ...newEvent, placeholder: true }]);
     
+    if (end === y) {
+      pageFlipSound.currentTime = 0;
+      pageFlipSound.play();
+      setFlipType("player-book");
+      setFlipped(true);
+      setTimeout(
+        () => navigate('/story-summary',{ 
+      state: { timelineData:updatedTimeline, characterName: name } 
+    }),
+        1200
+      );
+      return;
+    }
+
     sety(y + 1);
     setAnimatingNode(newEvent);
 
@@ -190,24 +195,17 @@ export default function GamePage() {
     successSound.volume = 0.5;
     successSound.play();
 
-    // Animate timeline branch appearing
-    let step = 0;
-    const steps = 20; // total frames for animation
-    const interval = setInterval(() => {
-      step++;
-      if (step >= steps) {
-        // Finish animation
-        setTimelineNodes([...timelineNodes, newEvent]);
+    setTimelineNodes([...timelineNodes, newEvent]);
         setCurrentEvent(newEvent);
         setCurrentStats(newEvent.stats);
-        setAnimatingNode(null);
+        
+
+    
+        
         fetchChoices(name, newPreviousEvents, newEvent,timelineNodes.length);
-        clearInterval(interval);
-      } else {
-        // Show animating placeholder node
-        setTimelineNodes([...timelineNodes, { ...newEvent, placeholder: true }]);
-      }
-    }, 50);
+      
+        
+      
   };
 
   const goHome = () => {
@@ -254,9 +252,9 @@ export default function GamePage() {
             </div>
 
             {/* Timeline */}
-            <div>
+            <div className="timeline">
               <h3>Timeline</h3>
-              <TimeLine timelineData={{ events: timelineNodes }} animatingNode={animatingNode} />
+              <TimeLine timelineData={{ events: timelineNodes }} />
             </div>
           </div>
 

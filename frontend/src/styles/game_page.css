@@ -49,7 +49,7 @@ html, body {
 
 /* Loading: Page Flip Animation */
 .character-page-book.loading {
-  animation: pageFlip 0.8s ease-in-out forwards;
+  animation: pageFlip 0.8s ease-in-out forwards infinite;
 }
 
 /* Character Preview */
@@ -70,9 +70,7 @@ html, body {
 }
 
 /* Preview lifts slightly during loading */
-.character-page-book.loading .character-preview {
-  animation: pageLift 0.8s ease-in-out forwards;
-}
+
 
 /* Character Image */
 .char-full-image {
@@ -106,10 +104,6 @@ html, body {
   transition: transform 0.6s ease;
 }
 
-/* Slight shake for event card during page flip */
-.character-page-book.loading .current-event-card {
-  animation: cardShake 0.8s ease-in-out forwards;
-}
 
 /* ===================== */
 /* Choice Cards Section   */
@@ -139,10 +133,7 @@ html, body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Choice cards flip slightly during loading */
-.character-page-book.loading .k-card {
-  animation: cardFlip 0.8s ease-in-out forwards;
-}
+
 
 /* Hover effect */
 .choice-cards .k-card:hover {
@@ -166,12 +157,7 @@ html, body {
   font-size: 0.85rem;
 }
 
-/* Timeline animation */
-.timeline-node.animating {
-  opacity: 0.5;
-  transform: translateY(-10px);
-  animation: branchAppear 1s forwards;
-}
+
 
 /* ===================== */
 /* Animations             */
@@ -184,33 +170,8 @@ html, body {
   100% { transform: rotateY(-360deg); }
 }
 
-/* Preview Lift */
-@keyframes pageLift {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
-}
 
-/* Card Flip */
-@keyframes cardFlip {
-  0% { transform: rotateY(0deg); }
-  50% { transform: rotateY(90deg); }
-  100% { transform: rotateY(0deg); }
-}
 
-/* Event Card Shake */
-@keyframes cardShake {
-  0%, 100% { transform: rotateZ(0deg); }
-  25% { transform: rotateZ(3deg); }
-  75% { transform: rotateZ(-3deg); }
-}
-
-/* Timeline node animation */
-@keyframes branchAppear {
-  0% { opacity: 0; transform: translateY(-20px) scale(0.8); }
-  50% { opacity: 0.7; transform: translateY(-10px) scale(0.9); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
 
 /* ================= */
 /* Responsive        */

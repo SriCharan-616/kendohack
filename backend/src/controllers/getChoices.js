@@ -78,7 +78,7 @@ OUTPUT FORMAT (STRICT JSON):
 {
   "choice1": {
     "title": "Concise decision title (max 8 words)",
-    "description": "explanation of ${name}'s decision, motivations, and reasoning (1-2 short sentences)",
+    "description": "explanation of ${name}'s decision, motivations, and reasoning (1 short sentences)",
     "event": "Immediate consequences and reactions to this decision (1 short sentence)",
     "new_age": "new age different from current event age",
     "new_year": "new year different from current event year",
