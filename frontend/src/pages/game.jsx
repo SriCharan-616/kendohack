@@ -256,17 +256,6 @@ export default function GamePage() {
                 {choice.event && <small>{choice.event}</small>}
               </div>
             ))}
-            {message && (
-              <p
-                style={{
-                  marginTop: "1rem",
-                  fontStyle: "italic",
-                  color: "#FFD700",
-                }}
-              >
-                {message}
-              </p>
-            )}
           </div>
 
         </div>
