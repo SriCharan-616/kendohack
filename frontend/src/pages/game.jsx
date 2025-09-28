@@ -62,7 +62,8 @@ export default function GamePage() {
   const [message, setMessage] = useState("");
   const [flipped, setFlipped] = useState(false);
   const [flipType, setFlipType] = useState(null);
-
+  const [loadingChoices, setLoadingChoices] = useState(false);
+  const [y,sety] = useState(0);
   // NEW: choices + current event
   const [choices, setChoices] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -70,6 +71,7 @@ export default function GamePage() {
 
   // ✅ define fetchChoices first
   const fetchChoices = async (prevEvents, currEvent) => {
+     setLoadingChoices(true);
     console.log("Fetching choices for:", currEvent, prevEvents);
     try {
       const res = await fetch('http://localhost:5000/get-options', {
@@ -82,14 +84,18 @@ export default function GamePage() {
 });
       const data = await res.json();
       console.log("Received choices:", data.choice1.description);
+      console.log("Received choices:", data.choice1);
       // Backend returns choice1, choice2, choice3
       setChoices([
-        { ...data.choice1.description, id: "c1" },
-        { ...data.choice2.description, id: "c2" },
-        { ...data.choice3.description, id: "c3" },
+        { ...data.choice1, id: "c1" },
+        { ...data.choice2, id: "c2" },
+        { ...data.choice3, id: "c3" },
       ]);
     } catch (err) {
       console.error(err);
+    }
+    finally{
+      setLoadingChoices(false);
     }
   };
 
@@ -101,7 +107,7 @@ export default function GamePage() {
     navigate("/");
     return;
   }
-
+  sety(savedData.node.y);
   setGameData(savedData);
   setCurrentStats(savedData.character.stats);
 
@@ -130,16 +136,16 @@ export default function GamePage() {
     // Store old event in previousEvents
     const newPreviousEvents = [...previousEvents, currentEvent];
     setPreviousEvents(newPreviousEvents);
-
+    sety(y+1);
     // The choice now becomes the new current event
     const newEvent = {
       id: timelineNodes.length + 1,
-      title: choice.event || "New Event",
-      y:
-        timelineNodes[timelineNodes.length - 1].y +
-        Math.floor(Math.random() * 10 + 5),
-      stats: choice.new_stats || currentStats,
-      personality: choice.new_personality || "",
+      title: choice.title || "New Event",
+      branch:"new branch",
+      branches: [],
+      y: y,
+      stats: choice.new_stats ,
+      personality: choice.new_personality,
     };
 
     // Update timeline with new event
@@ -172,6 +178,26 @@ export default function GamePage() {
     <div className="character-page-container">
       <div className={`character-page-book ${flipped ? "flipped" : ""}`}>
         {/* FRONT FACE */}
+        {loadingChoices ? (
+    <Fade transitionEnterDuration={500} transitionExitDuration={300}>
+      <div
+        style={{
+          position: "fixed",
+        height: "100%",
+        width: "100%",
+        top: "50%",  
+        fontSize: "2rem",     
+        fontWeight: "bold",
+        color: "black",     // bright orange for visibility
+        textAlign: "center",
+        pointerEvents: "none",
+        zIndex: 1000,         // on top of other elements
+      }}
+      >
+        Loading choices...
+      </div>
+    </Fade>
+  ) : (
         <div className="character-page-front">
           <Appbar title="Game Page" onHomeClick={goHome} />
 
@@ -227,7 +253,7 @@ export default function GamePage() {
             )}
           </div>
         </div>
-
+  )}
         {/* BACK FACE */}
         <div className="character-page-back">
           {flipType === "home" && <p>Going back home...</p>}

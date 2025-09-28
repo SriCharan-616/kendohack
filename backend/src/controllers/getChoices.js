@@ -35,10 +35,11 @@ There could be an ending where it is very different from history but it must be 
 the choices can be different from history.
 Make sure the choices have similar timeflow as the main timeline and they must reach an end
 at a similar time as main timeline. The 3 choices should have choice description, and the fields in other choices.
-If this choice is the final choice in the timeline, then mark end as true. Else mark it as false.
+new stats and new personality must be changed according to the choice u give.
+If this choice is the final choice in the timeline, then mark end as true. Else mark it as false. also give a title for the event
 Give the answer in json format with fields exactly like:
 {
-  "choice1": {"description": "...", "event":"...", "new_stats": {...}, "new_personality" : "..."},
+  "choice1": {"title":"...", "description": "...", "event":"...", "new_stats": {...}, "new_personality" : "..."},
   "choice2": {...},
   "choice3": {...},
   "end": true/false
